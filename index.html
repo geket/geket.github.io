@@ -613,12 +613,241 @@
             transition: width 1s ease-out;
         }
 
+        /* Clickable Link Badge */
+        .stat-link-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 183, 197, 0.15);
+            border: 1px solid rgba(255, 183, 197, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--petal-pink);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .stat-link-badge:hover {
+            background: rgba(255, 183, 197, 0.3);
+            border-color: var(--petal-pink);
+            transform: translate(2px, -2px);
+            box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
+        }
+
+        .stats-card {
+            position: relative;
+        }
+
+        /* Recent Stars List */
+        .recent-stars-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .star-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 183, 197, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .star-item:hover {
+            background: rgba(255, 183, 197, 0.1);
+        }
+
+        .star-item a {
+            color: var(--petal-pink);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .star-item a:hover {
+            color: var(--petal-soft);
+        }
+
+        .star-item .star-desc {
+            color: var(--moon-glow);
+            opacity: 0.6;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .star-icon {
+            color: #f1c40f;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .full-width-third {
+            grid-column: 1 / -1;
+        }
+
+        /* Activity Section */
+        .activity-section {
+            margin: 80px 0 120px;
+        }
+
+        .activity-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .activity-card {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.06), rgba(26, 26, 46, 0.5));
+            border: 1px solid rgba(255, 183, 197, 0.12);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 183, 197, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+                        0 0 30px rgba(255, 183, 197, 0.08);
+        }
+
+        .activity-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Activity Chart */
+        .activity-chart-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .activity-chart-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            min-height: 280px;
+        }
+
+        #activityChart {
+            max-width: 100%;
+        }
+
+        .chart-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .chart-label {
+            position: absolute;
+            font-size: 0.8rem;
+            color: var(--petal-soft);
+            opacity: 0.8;
+            white-space: nowrap;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .activity-feed::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .activity-feed::-webkit-scrollbar-track {
+            background: rgba(255, 183, 197, 0.05);
+            border-radius: 3px;
+        }
+
+        .activity-feed::-webkit-scrollbar-thumb {
+            background: rgba(255, 183, 197, 0.2);
+            border-radius: 3px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 183, 197, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid var(--petal-pink);
+        }
+
+        .activity-item .activity-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .activity-item .activity-content {
+            flex: 1;
+        }
+
+        .activity-item .activity-text {
+            color: var(--moon-glow);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .activity-item .activity-text a {
+            color: var(--petal-pink);
+            text-decoration: none;
+        }
+
+        .activity-item .activity-text a:hover {
+            text-decoration: underline;
+        }
+
+        .activity-item .activity-time {
+            color: var(--petal-soft);
+            opacity: 0.5;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .activity-container {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-card.full-width {
+                grid-column: auto;
+            }
+        }
+
         @media (max-width: 900px) {
             .github-stats-container {
                 grid-template-columns: 1fr;
             }
             
-            .stats-card.full-width {
+            .stats-card.full-width,
+            .stats-card.full-width-third {
                 grid-column: auto;
             }
 
@@ -629,6 +858,14 @@
 
             .custom-stat-item .stat-value {
                 font-size: 1.6rem;
+            }
+
+            .activity-container {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-card.full-width {
+                grid-column: auto;
             }
         }
 
@@ -1045,9 +1282,10 @@
 
         <!-- GitHub Stats Section -->
         <section class="stats-section">
-            <h2 class="section-title">貢献 — Contributions</h2>
+            <h2 class="section-title">統計 — Statistics</h2>
             <div class="github-stats-container">
                 <div class="stats-card custom-stat">
+                    <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
                     <div class="custom-stat-content">
                         <div class="custom-stat-header">
                             <span class="stat-icon">📊</span>
@@ -1074,6 +1312,7 @@
                     </div>
                 </div>
                 <div class="stats-card custom-stat">
+                    <a href="https://github.com/geket?tab=repositories" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
                     <div class="custom-stat-content">
                         <div class="custom-stat-header">
                             <span class="stat-icon">💻</span>
@@ -1084,7 +1323,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="stats-card full-width snake-card">
+                <div class="stats-card custom-stat full-width-third">
+                    <a href="https://github.com/geket?tab=stars" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
+                    <div class="custom-stat-content">
+                        <div class="custom-stat-header">
+                            <span class="stat-icon">⭐</span>
+                            <h3>Recent Stars</h3>
+                        </div>
+                        <div class="recent-stars-list" id="recent-stars">
+                            <div class="lang-loading">Loading starred repos...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Section -->
+        <section class="activity-section">
+            <h2 class="section-title">活動 — Activity</h2>
+            <div class="activity-container">
+                <div class="activity-card activity-chart-card">
+                    <div class="custom-stat-header">
+                        <span class="stat-icon">📈</span>
+                        <h3>Activity Overview</h3>
+                    </div>
+                    <div class="activity-chart-wrapper">
+                        <canvas id="activityChart" width="280" height="280"></canvas>
+                        <div class="chart-labels">
+                            <span class="chart-label" style="top: 5%; left: 50%; transform: translateX(-50%);">Commits</span>
+                            <span class="chart-label" style="top: 50%; right: 0; transform: translateY(-50%);">Code Review</span>
+                            <span class="chart-label" style="bottom: 15%; right: 10%;">Issues</span>
+                            <span class="chart-label" style="bottom: 15%; left: 10%;">Pull Requests</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-card recent-activity-card">
+                    <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
+                    <div class="custom-stat-header">
+                        <span class="stat-icon">🕐</span>
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-feed" id="activity-feed">
+                        <div class="lang-loading">Loading activity...</div>
+                    </div>
+                </div>
+                <div class="activity-card full-width snake-card">
                     <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
                 </div>
             </div>
@@ -1161,14 +1444,16 @@
                 <div class="step">
                     <span class="step-number">三</span>
                     <div class="step-content">
-                        <h3>Custom Stats Built-In ✓</h3>
-                        <p>Your GitHub stats are now powered by the GitHub API directly — no external services needed! The stats section shows your repos, followers, total stars, and top languages with beautiful animated bars.</p>
+                        <h3>Statistics & Activity ✓</h3>
+                        <p>Everything is built in! The Statistics section shows your GitHub stats, top languages, and recent stars. The Activity section displays your contribution chart, recent activity feed, and the snake animation.</p>
                         <div class="code-block">
-                            <span class="code-comment">// Stats pulled from GitHub API:</span><br><br>
-                            • Repository count<br>
-                            • Followers & Following<br>
-                            • Total stars across all repos<br>
-                            • Top 5 languages with color-coded bars
+                            <span class="code-comment">// All powered by GitHub API:</span><br><br>
+                            📊 Stats: repos, followers, stars<br>
+                            💻 Top Languages with color bars<br>
+                            ⭐ Recent starred repositories<br>
+                            📈 Activity radar chart<br>
+                            🕐 Live activity feed<br>
+                            🐍 Contribution snake
                         </div>
                     </div>
                 </div>
@@ -1203,29 +1488,12 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;env:<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                         </div>
-                        <p style="margin-top: 20px; opacity: 0.8;"><strong>Note:</strong> Also enable write permissions in Settings → Actions → General → Workflow permissions</p>
+                        <p style="margin-top: 20px; opacity: 0.8;"><strong>Note:</strong> Enable write permissions in Settings → Actions → General → Workflow permissions</p>
                     </div>
                 </div>
 
                 <div class="step">
                     <span class="step-number">五</span>
-                    <div class="step-content">
-                        <h3>Optional: Add Activity Feed</h3>
-                        <p>Want to show your recent GitHub activity? Add this script to display a live feed of your pushes, PRs, and more:</p>
-                        <div class="code-block">
-                            <span class="code-comment">// Add to the script section to show recent activity</span><br><br>
-                            fetch(`https://api.github.com/users/geket/events/public?per_page=5`)<br>
-                            &nbsp;&nbsp;.then(res => res.json())<br>
-                            &nbsp;&nbsp;.then(events => {<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;// Process and display your activity<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;console.log(events);<br>
-                            &nbsp;&nbsp;});
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <span class="step-number">六</span>
                     <div class="step-content">
                         <h3>Deploy & Go Live</h3>
                         <p>Everything is configured! Just push this file to your <code>geket.github.io</code> repository and your portfolio will be live with all the sakura magic.</p>
@@ -1588,6 +1856,244 @@
             .catch(err => {
                 // Stats will show placeholder values
             });
+
+        // Fetch starred repos
+        fetch(`https://api.github.com/users/${username}/starred?per_page=5&sort=created`)
+            .then(res => res.json())
+            .then(starred => {
+                if (starred && starred.length > 0 && !starred.message) {
+                    const starsContainer = document.getElementById('recent-stars');
+                    starsContainer.innerHTML = starred.map(repo => `
+                        <div class="star-item">
+                            <span class="star-icon">⭐</span>
+                            <div>
+                                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.full_name}</a>
+                                <p class="star-desc">${repo.description || 'No description'}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            })
+            .catch(err => {
+                document.getElementById('recent-stars').innerHTML = '<p style="opacity:0.6">Stars will load when deployed</p>';
+            });
+
+        // Fetch activity feed
+        fetch(`https://api.github.com/users/${username}/events/public?per_page=8`)
+            .then(res => res.json())
+            .then(events => {
+                if (events && events.length > 0 && !events.message) {
+                    const activityContainer = document.getElementById('activity-feed');
+                    
+                    const activityIcons = {
+                        'PushEvent': '📤',
+                        'PullRequestEvent': '🔀',
+                        'IssuesEvent': '🐛',
+                        'CreateEvent': '✨',
+                        'DeleteEvent': '🗑️',
+                        'WatchEvent': '⭐',
+                        'ForkEvent': '🍴',
+                        'IssueCommentEvent': '💬',
+                        'PullRequestReviewEvent': '👀',
+                        'PullRequestReviewCommentEvent': '💭',
+                        'ReleaseEvent': '🚀'
+                    };
+
+                    const formatEvent = (event) => {
+                        const repoName = event.repo.name;
+                        const repoUrl = `https://github.com/${repoName}`;
+                        
+                        switch(event.type) {
+                            case 'PushEvent':
+                                const commits = event.payload.commits?.length || 0;
+                                return `Pushed ${commits} commit${commits !== 1 ? 's' : ''} to <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'PullRequestEvent':
+                                return `${event.payload.action} a pull request in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'IssuesEvent':
+                                return `${event.payload.action} an issue in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'CreateEvent':
+                                return `Created ${event.payload.ref_type} in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'WatchEvent':
+                                return `Starred <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'ForkEvent':
+                                return `Forked <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'IssueCommentEvent':
+                                return `Commented on issue in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'PullRequestReviewEvent':
+                                return `Reviewed PR in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'PullRequestReviewCommentEvent':
+                                return `Commented on PR in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            case 'ReleaseEvent':
+                                return `Released ${event.payload.release?.tag_name || 'version'} in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            default:
+                                return `Activity in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                        }
+                    };
+
+                    const timeAgo = (date) => {
+                        const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+                        if (seconds < 60) return 'just now';
+                        const minutes = Math.floor(seconds / 60);
+                        if (minutes < 60) return `${minutes}m ago`;
+                        const hours = Math.floor(minutes / 60);
+                        if (hours < 24) return `${hours}h ago`;
+                        const days = Math.floor(hours / 24);
+                        if (days < 30) return `${days}d ago`;
+                        return new Date(date).toLocaleDateString();
+                    };
+
+                    activityContainer.innerHTML = events.slice(0, 6).map(event => `
+                        <div class="activity-item">
+                            <span class="activity-icon">${activityIcons[event.type] || '📌'}</span>
+                            <div class="activity-content">
+                                <p class="activity-text">${formatEvent(event)}</p>
+                                <p class="activity-time">${timeAgo(event.created_at)}</p>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    // Calculate activity breakdown for chart
+                    const activityCounts = {
+                        commits: 0,
+                        codeReview: 0,
+                        issues: 0,
+                        pullRequests: 0
+                    };
+
+                    events.forEach(event => {
+                        switch(event.type) {
+                            case 'PushEvent':
+                                activityCounts.commits += event.payload.commits?.length || 1;
+                                break;
+                            case 'PullRequestReviewEvent':
+                            case 'PullRequestReviewCommentEvent':
+                                activityCounts.codeReview++;
+                                break;
+                            case 'IssuesEvent':
+                            case 'IssueCommentEvent':
+                                activityCounts.issues++;
+                                break;
+                            case 'PullRequestEvent':
+                                activityCounts.pullRequests++;
+                                break;
+                        }
+                    });
+
+                    drawActivityChart(activityCounts);
+                }
+            })
+            .catch(err => {
+                document.getElementById('activity-feed').innerHTML = '<p style="opacity:0.6">Activity will load when deployed</p>';
+                drawActivityChart({ commits: 47, codeReview: 33, issues: 4, pullRequests: 16 });
+            });
+
+        // Draw Activity Chart (Radar/Diamond style like GitHub)
+        function drawActivityChart(data) {
+            const canvas = document.getElementById('activityChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.min(centerX, centerY) - 40;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Calculate total and percentages
+            const total = data.commits + data.codeReview + data.issues + data.pullRequests;
+            const values = [
+                total > 0 ? data.commits / total : 0.25,
+                total > 0 ? data.codeReview / total : 0.25,
+                total > 0 ? data.issues / total : 0.25,
+                total > 0 ? data.pullRequests / total : 0.25
+            ];
+
+            // Points for diamond shape (top, right, bottom, left)
+            const angles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(255, 183, 197, 0.1)';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0.25; i <= 1; i += 0.25) {
+                ctx.beginPath();
+                for (let j = 0; j < 4; j++) {
+                    const x = centerX + Math.cos(angles[j]) * maxRadius * i;
+                    const y = centerY + Math.sin(angles[j]) * maxRadius * i;
+                    if (j === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            // Draw axis lines
+            ctx.strokeStyle = 'rgba(255, 183, 197, 0.15)';
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(
+                    centerX + Math.cos(angles[i]) * maxRadius,
+                    centerY + Math.sin(angles[i]) * maxRadius
+                );
+                ctx.stroke();
+            }
+
+            // Draw data shape
+            ctx.beginPath();
+            const minScale = 0.15; // Minimum visibility
+            for (let i = 0; i < 4; i++) {
+                const scale = minScale + values[i] * (1 - minScale);
+                const x = centerX + Math.cos(angles[i]) * maxRadius * scale;
+                const y = centerY + Math.sin(angles[i]) * maxRadius * scale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+
+            // Fill with gradient
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+            gradient.addColorStop(0, 'rgba(100, 200, 150, 0.4)');
+            gradient.addColorStop(1, 'rgba(100, 200, 150, 0.1)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Stroke outline
+            ctx.strokeStyle = 'rgba(100, 200, 150, 0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw data points
+            ctx.fillStyle = 'rgba(100, 200, 150, 1)';
+            for (let i = 0; i < 4; i++) {
+                const scale = minScale + values[i] * (1 - minScale);
+                const x = centerX + Math.cos(angles[i]) * maxRadius * scale;
+                const y = centerY + Math.sin(angles[i]) * maxRadius * scale;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw percentage labels
+            ctx.fillStyle = 'var(--moon-glow)';
+            ctx.font = '12px "Cormorant Garamond", serif';
+            ctx.textAlign = 'center';
+            
+            const labels = [
+                { text: `${Math.round(values[0] * 100)}%`, angle: angles[0], offset: 25 },
+                { text: `${Math.round(values[1] * 100)}%`, angle: angles[1], offset: 25 },
+                { text: `${Math.round(values[2] * 100)}%`, angle: angles[2], offset: 25 },
+                { text: `${Math.round(values[3] * 100)}%`, angle: angles[3], offset: 25 }
+            ];
+
+            ctx.fillStyle = '#f8f0e3';
+            labels.forEach(label => {
+                const x = centerX + Math.cos(label.angle) * (maxRadius + label.offset);
+                const y = centerY + Math.sin(label.angle) * (maxRadius + label.offset);
+                ctx.fillText(label.text, x, y + 4);
+            });
+        }
 
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', () => {
