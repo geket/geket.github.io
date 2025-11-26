@@ -419,6 +419,79 @@
             gap: 20px;
         }
 
+        /* Combined Stats Card */
+        .combined-stat-card {
+            width: 100%;
+            max-width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        .combined-stat-content {
+            display: flex;
+            width: 100%;
+            gap: 0;
+        }
+
+        .stat-half {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .stat-half:first-child {
+            padding-left: 0;
+        }
+
+        .stat-half:last-child {
+            padding-right: 0;
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(255, 183, 197, 0.3), transparent);
+            margin: 0 10px;
+        }
+
+        /* Vibrating/Buzzing Effect */
+        .stat-value.vibrate {
+            position: relative;
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.25);
+            border-radius: 10px;
+            animation: subtlePulse 2s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(255, 183, 197, 0.15);
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 183, 197, 0.15);
+                border-color: rgba(255, 183, 197, 0.25);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 183, 197, 0.3), 0 0 30px rgba(255, 183, 197, 0.1);
+                border-color: rgba(255, 183, 197, 0.4);
+            }
+        }
+
+        .stat-value.vibrate::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, transparent, rgba(255, 183, 197, 0.1), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
         .stats-card {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.06), rgba(26, 26, 46, 0.5));
             border: 1px solid rgba(255, 183, 197, 0.12);
@@ -454,9 +527,18 @@
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.04), rgba(26, 26, 46, 0.6));
         }
 
+        .snake-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
         .snake-card img {
             width: 100%;
             max-width: 700px;
+            display: block;
+            margin: 0 auto;
         }
 
         .snake-setup {
@@ -473,6 +555,58 @@
         .snake-setup .small {
             font-size: 0.9rem;
             opacity: 0.6;
+        }
+
+        /* Expand Stars Button */
+        .expand-stars-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 10px;
+            color: var(--gold-accent);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-stars-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .expand-stars-btn.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .star-item.hidden {
+            display: none;
+        }
+
+        .star-item.show {
+            display: flex;
+            animation: fadeInStar 0.3s ease forwards;
+        }
+
+        @keyframes fadeInStar {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stat-fallback {
@@ -815,8 +949,20 @@
         /* Recent Stars Grid */
         .recent-stars-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .recent-stars-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .recent-stars-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .star-item {
@@ -891,7 +1037,21 @@
             }
 
             .recent-stars-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .combined-stat-content {
+                flex-direction: column;
+            }
+
+            .stat-divider {
+                width: 100%;
+                height: 1px;
+                margin: 20px 0;
+            }
+
+            .stat-half {
+                padding: 0;
             }
         }
 
@@ -1028,117 +1188,6 @@
 
         .haiku-container::after {
             right: 25%;
-        }
-
-        /* Next Steps Section */
-        .next-steps-section {
-            margin-top: 60px;
-        }
-
-        .steps-container {
-            background: linear-gradient(145deg, rgba(212, 175, 55, 0.05), rgba(26, 26, 46, 0.7));
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-        }
-
-        .steps-container h2 {
-            font-family: 'Noto Serif JP', serif;
-            font-size: 1.8rem;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 35px;
-            color: var(--gold-accent);
-            letter-spacing: 0.2em;
-        }
-
-        .step {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .step:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .step-number {
-            font-family: 'Noto Serif JP', serif;
-            font-size: 2.2rem;
-            font-weight: 200;
-            color: var(--gold-accent);
-            opacity: 0.6;
-            min-width: 50px;
-        }
-
-        .step-content h3 {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 10px;
-            color: var(--moon-glow);
-        }
-
-        .step-content p {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: rgba(248, 240, 227, 0.75);
-            margin-bottom: 10px;
-        }
-
-        .code-block {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 183, 197, 0.1);
-            border-radius: 10px;
-            padding: 18px;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            color: var(--petal-soft);
-            overflow-x: auto;
-            line-height: 1.6;
-        }
-
-        .code-block code {
-            color: var(--petal-pink);
-        }
-
-        .code-comment {
-            color: rgba(248, 240, 227, 0.4);
-        }
-
-        /* Stats Preview */
-        .stats-preview {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .stat-box {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 183, 197, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 183, 197, 0.1);
-        }
-
-        .stat-box .number {
-            font-size: 2rem;
-            font-weight: 300;
-            color: var(--petal-pink);
-            display: block;
-        }
-
-        .stat-box .label {
-            font-size: 0.8rem;
-            color: rgba(248, 240, 227, 0.6);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-top: 8px;
         }
 
         /* Footer */
@@ -1310,42 +1359,42 @@
         <section class="stats-section">
             <h2 class="section-title">統計 — Statistics</h2>
             <div class="github-stats-container compact">
-                <div class="stats-card custom-stat">
+                <div class="stats-card custom-stat combined-stat-card">
                     <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
-                    <div class="custom-stat-content">
-                        <div class="custom-stat-header">
-                            <span class="stat-icon">📊</span>
-                            <h3>GitHub Stats</h3>
+                    <div class="combined-stat-content">
+                        <div class="stat-half">
+                            <div class="custom-stat-header">
+                                <span class="stat-icon">📊</span>
+                                <h3>GitHub Stats</h3>
+                            </div>
+                            <div class="custom-stat-grid">
+                                <div class="custom-stat-item">
+                                    <span class="stat-value vibrate" id="stat-repos">--</span>
+                                    <span class="stat-label">Repos</span>
+                                </div>
+                                <div class="custom-stat-item">
+                                    <span class="stat-value vibrate" id="stat-followers">--</span>
+                                    <span class="stat-label">Followers</span>
+                                </div>
+                                <div class="custom-stat-item">
+                                    <span class="stat-value vibrate" id="stat-following">--</span>
+                                    <span class="stat-label">Following</span>
+                                </div>
+                                <div class="custom-stat-item">
+                                    <span class="stat-value vibrate" id="stat-stars">--</span>
+                                    <span class="stat-label">Total Stars</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="custom-stat-grid">
-                            <div class="custom-stat-item">
-                                <span class="stat-value" id="stat-repos">--</span>
-                                <span class="stat-label">Repos</span>
+                        <div class="stat-divider"></div>
+                        <div class="stat-half">
+                            <div class="custom-stat-header">
+                                <span class="stat-icon">💻</span>
+                                <h3>Top Languages</h3>
                             </div>
-                            <div class="custom-stat-item">
-                                <span class="stat-value" id="stat-followers">--</span>
-                                <span class="stat-label">Followers</span>
+                            <div class="language-bars" id="language-bars">
+                                <div class="lang-loading">Loading languages...</div>
                             </div>
-                            <div class="custom-stat-item">
-                                <span class="stat-value" id="stat-following">--</span>
-                                <span class="stat-label">Following</span>
-                            </div>
-                            <div class="custom-stat-item">
-                                <span class="stat-value" id="stat-stars">--</span>
-                                <span class="stat-label">Total Stars</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="stats-card custom-stat">
-                    <a href="https://github.com/geket?tab=repositories" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
-                    <div class="custom-stat-content">
-                        <div class="custom-stat-header">
-                            <span class="stat-icon">💻</span>
-                            <h3>Top Languages</h3>
-                        </div>
-                        <div class="language-bars" id="language-bars">
-                            <div class="lang-loading">Loading languages...</div>
                         </div>
                     </div>
                 </div>
@@ -1376,7 +1425,9 @@
                     </div>
                 </div>
                 <div class="activity-card full-width snake-card">
-                    <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
+                    <div class="snake-wrapper">
+                        <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
+                    </div>
                 </div>
             </div>
         </section>
@@ -1394,6 +1445,10 @@
                     <div class="recent-stars-grid" id="recent-stars">
                         <div class="lang-loading">Loading starred repos...</div>
                     </div>
+                    <button class="expand-stars-btn" id="expandStarsBtn" style="display: none;">
+                        <span class="expand-text">Show More</span>
+                        <span class="expand-icon">▼</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -1429,119 +1484,6 @@
                         <p>Love blooms in silence</p>
                     </div>
                     <span class="haiku-symbol">俳句</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Next Steps Section -->
-        <section class="next-steps-section">
-            <div class="steps-container">
-                <h2>次のステップ — Next Steps</h2>
-
-                <div class="step">
-                    <span class="step-number">一</span>
-                    <div class="step-content">
-                        <h3>Create Your GitHub Pages Repository</h3>
-                        <p>Create a new repository named <code>geket.github.io</code> on GitHub. This special naming enables GitHub Pages automatically.</p>
-                        <div class="code-block">
-                            <span class="code-comment"># Create the repo on github.com, then:</span><br><br>
-                            git clone https://github.com/geket/geket.github.io<br>
-                            cd geket.github.io<br><br>
-                            <span class="code-comment"># Save this HTML file as index.html in the folder</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <span class="step-number">二</span>
-                    <div class="step-content">
-                        <h3>Your Repos Auto-Load ✓</h3>
-                        <p>This page is already configured to fetch your repositories from <code>github.com/geket</code>. Once deployed, your 6 most recently updated repos will automatically appear in the cards above with live data including stars, forks, and languages.</p>
-                        <div class="code-block">
-                            <span class="code-comment">// Already integrated! Your username is set:</span><br><br>
-                            const username = 'geket';<br><br>
-                            <span class="code-comment">// The API fetches your repos automatically on page load</span><br>
-                            <span class="code-comment">// Cards link directly to each repository</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <span class="step-number">三</span>
-                    <div class="step-content">
-                        <h3>Statistics & Activity ✓</h3>
-                        <p>Everything is built in! The Statistics section shows your GitHub stats, top languages, and recent stars. The Activity section displays your contribution chart, recent activity feed, and the snake animation.</p>
-                        <div class="code-block">
-                            <span class="code-comment">// All powered by GitHub API:</span><br><br>
-                            📊 Stats: repos, followers, stars<br>
-                            💻 Top Languages with color bars<br>
-                            ⭐ Recent starred repositories<br>
-                            📈 Activity radar chart<br>
-                            🕐 Live activity feed<br>
-                            🐍 Contribution snake
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <span class="step-number">四</span>
-                    <div class="step-content">
-                        <h3>Set Up the Snake Animation 🐍</h3>
-                        <p>The contribution snake requires a GitHub Action. Create a repo named <code>geket</code> (same as your username), then add this workflow file:</p>
-                        <div class="code-block">
-                            <span class="code-comment"># Create: .github/workflows/snake.yml</span><br><br>
-                            name: Generate Snake<br><br>
-                            on:<br>
-                            &nbsp;&nbsp;schedule:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;- cron: "0 0 * * *"<br>
-                            &nbsp;&nbsp;workflow_dispatch:<br><br>
-                            jobs:<br>
-                            &nbsp;&nbsp;build:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;runs-on: ubuntu-latest<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;permissions:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents: write<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;steps:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: Platane/snk@v3<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;github_user_name: geket<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputs: |<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist/github-contribution-grid-snake-dark.svg?palette=github-dark<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: crazy-max/ghaction-github-pages@v3.1.0<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_branch: output<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build_dir: dist<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;env:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                        </div>
-                        <p style="margin-top: 20px; opacity: 0.8;"><strong>Note:</strong> Enable write permissions in Settings → Actions → General → Workflow permissions</p>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <span class="step-number">五</span>
-                    <div class="step-content">
-                        <h3>Deploy & Go Live</h3>
-                        <p>Everything is configured! Just push this file to your <code>geket.github.io</code> repository and your portfolio will be live with all the sakura magic.</p>
-                        <div class="code-block">
-                            git add index.html<br>
-                            git commit -m "🌸 sakura portfolio"<br>
-                            git push origin main
-                        </div>
-                        <div class="stats-preview">
-                            <div class="stat-box">
-                                <span class="number" id="repoCount">✦</span>
-                                <span class="label">Repositories</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="number" id="followerCount">✦</span>
-                                <span class="label">Followers</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="number" id="contributionCount">✦</span>
-                                <span class="label">Following</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1882,14 +1824,16 @@
                 // Stats will show placeholder values
             });
 
-        // Fetch starred repos
-        fetch(`https://api.github.com/users/${username}/starred?per_page=5&sort=created`)
+        // Fetch starred repos (21 total, show 9 initially)
+        fetch(`https://api.github.com/users/${username}/starred?per_page=21&sort=created`)
             .then(res => res.json())
             .then(starred => {
                 if (starred && starred.length > 0 && !starred.message) {
                     const starsContainer = document.getElementById('recent-stars');
-                    starsContainer.innerHTML = starred.map(repo => `
-                        <div class="star-item">
+                    const expandBtn = document.getElementById('expandStarsBtn');
+                    
+                    starsContainer.innerHTML = starred.map((repo, index) => `
+                        <div class="star-item ${index >= 9 ? 'hidden' : ''}">
                             <span class="star-icon">⭐</span>
                             <div>
                                 <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.full_name}</a>
@@ -1897,10 +1841,43 @@
                             </div>
                         </div>
                     `).join('');
+
+                    // Show expand button if more than 9 stars
+                    if (starred.length > 9) {
+                        expandBtn.style.display = 'flex';
+                        
+                        expandBtn.addEventListener('click', () => {
+                            const hiddenItems = starsContainer.querySelectorAll('.star-item.hidden');
+                            const visibleItems = starsContainer.querySelectorAll('.star-item:not(.hidden)');
+                            
+                            if (hiddenItems.length > 0) {
+                                // Expand
+                                hiddenItems.forEach((item, i) => {
+                                    setTimeout(() => {
+                                        item.classList.remove('hidden');
+                                        item.classList.add('show');
+                                    }, i * 50);
+                                });
+                                expandBtn.querySelector('.expand-text').textContent = 'Show Less';
+                                expandBtn.classList.add('expanded');
+                            } else {
+                                // Collapse
+                                const allItems = starsContainer.querySelectorAll('.star-item');
+                                allItems.forEach((item, index) => {
+                                    if (index >= 9) {
+                                        item.classList.add('hidden');
+                                        item.classList.remove('show');
+                                    }
+                                });
+                                expandBtn.querySelector('.expand-text').textContent = 'Show More';
+                                expandBtn.classList.remove('expanded');
+                            }
+                        });
+                    }
                 }
             })
             .catch(err => {
-                document.getElementById('recent-stars').innerHTML = '<p style="opacity:0.6">Stars will load when deployed</p>';
+                document.getElementById('recent-stars').innerHTML = '<p style="opacity:0.6; font-size:0.85rem;">Stars will load when deployed</p>';
             });
 
         // Fetch activity feed
