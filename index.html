@@ -500,6 +500,119 @@
             opacity: 1;
         }
 
+        /* Custom Stats Cards */
+        .custom-stat {
+            min-width: 280px;
+        }
+
+        .custom-stat-content {
+            width: 100%;
+        }
+
+        .custom-stat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 183, 197, 0.15);
+        }
+
+        .custom-stat-header .stat-icon {
+            font-size: 1.8rem;
+        }
+
+        .custom-stat-header h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--petal-pink);
+            margin: 0;
+        }
+
+        .custom-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .custom-stat-item {
+            text-align: center;
+        }
+
+        .custom-stat-item .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--moon-glow);
+            margin-bottom: 5px;
+        }
+
+        .custom-stat-item .stat-label {
+            font-size: 0.85rem;
+            color: var(--petal-soft);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Language Bars */
+        .language-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lang-loading {
+            color: var(--petal-soft);
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .lang-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .lang-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lang-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--moon-glow);
+            font-size: 0.95rem;
+        }
+
+        .lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .lang-percent {
+            color: var(--petal-soft);
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .lang-bar-bg {
+            height: 8px;
+            background: rgba(255, 183, 197, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .lang-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
         @media (max-width: 900px) {
             .github-stats-container {
                 grid-template-columns: 1fr;
@@ -507,6 +620,15 @@
             
             .stats-card.full-width {
                 grid-column: auto;
+            }
+
+            .custom-stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .custom-stat-item .stat-value {
+                font-size: 1.6rem;
             }
         }
 
@@ -925,14 +1047,42 @@
         <section class="stats-section">
             <h2 class="section-title">貢献 — Contributions</h2>
             <div class="github-stats-container">
-                <div class="stats-card">
-                    <img src="https://github-readme-stats.vercel.app/api?username=geket&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1a1a2e&title_color=ffb7c5&text_color=f8f0e3&icon_color=ffd1dc&ring_color=ffb7c5" alt="GitHub Stats" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>📊</span><p>GitHub Stats</p><a href=\'https://github.com/geket\' target=\'_blank\'>View Profile →</a></div>'" />
+                <div class="stats-card custom-stat">
+                    <div class="custom-stat-content">
+                        <div class="custom-stat-header">
+                            <span class="stat-icon">📊</span>
+                            <h3>GitHub Stats</h3>
+                        </div>
+                        <div class="custom-stat-grid">
+                            <div class="custom-stat-item">
+                                <span class="stat-value" id="stat-repos">--</span>
+                                <span class="stat-label">Repos</span>
+                            </div>
+                            <div class="custom-stat-item">
+                                <span class="stat-value" id="stat-followers">--</span>
+                                <span class="stat-label">Followers</span>
+                            </div>
+                            <div class="custom-stat-item">
+                                <span class="stat-value" id="stat-following">--</span>
+                                <span class="stat-label">Following</span>
+                            </div>
+                            <div class="custom-stat-item">
+                                <span class="stat-value" id="stat-stars">--</span>
+                                <span class="stat-label">Total Stars</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stats-card">
-                    <img src="https://streak-stats.demolab.com?user=geket&theme=tokyonight&hide_border=true&background=1a1a2e&ring=ffb7c5&fire=ffd1dc&currStreakLabel=f8f0e3&sideLabels=f8f0e3&currStreakNum=ffb7c5&sideNums=ffd1dc&dates=f8f0e380" alt="GitHub Streak" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>🔥</span><p>Contribution Streak</p><a href=\'https://github.com/geket\' target=\'_blank\'>View Profile →</a></div>'" />
-                </div>
-                <div class="stats-card full-width">
-                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=geket&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1a2e&title_color=ffb7c5&text_color=f8f0e3" alt="Top Languages" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>💻</span><p>Top Languages</p><a href=\'https://github.com/geket?tab=repositories\' target=\'_blank\'>View Repos →</a></div>'" />
+                <div class="stats-card custom-stat">
+                    <div class="custom-stat-content">
+                        <div class="custom-stat-header">
+                            <span class="stat-icon">💻</span>
+                            <h3>Top Languages</h3>
+                        </div>
+                        <div class="language-bars" id="language-bars">
+                            <div class="lang-loading">Loading languages...</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="stats-card full-width snake-card">
                     <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
@@ -1011,13 +1161,14 @@
                 <div class="step">
                     <span class="step-number">三</span>
                     <div class="step-content">
-                        <h3>Contribution Graphs Added ✓</h3>
-                        <p>Your GitHub stats are now displayed above! The graphs pull live data showing your contribution streak, top languages, and overall GitHub activity — all styled to match the sakura theme.</p>
+                        <h3>Custom Stats Built-In ✓</h3>
+                        <p>Your GitHub stats are now powered by the GitHub API directly — no external services needed! The stats section shows your repos, followers, total stars, and top languages with beautiful animated bars.</p>
                         <div class="code-block">
-                            <span class="code-comment">// Stats included:</span><br><br>
-                            • GitHub Stats (commits, PRs, issues, stars)<br>
-                            • Contribution Streak (current & longest)<br>
-                            • Top Languages (by repo usage)
+                            <span class="code-comment">// Stats pulled from GitHub API:</span><br><br>
+                            • Repository count<br>
+                            • Followers & Following<br>
+                            • Total stars across all repos<br>
+                            • Top 5 languages with color-coded bars
                         </div>
                     </div>
                 </div>
@@ -1325,13 +1476,42 @@
         // ========== GITHUB API ==========
         const username = 'geket';
 
-        // Fetch repositories
-        fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
+        // Language colors (GitHub's colors)
+        const langColors = {
+            JavaScript: '#f1e05a',
+            TypeScript: '#3178c6',
+            Python: '#3572A5',
+            Java: '#b07219',
+            'C++': '#f34b7d',
+            C: '#555555',
+            'C#': '#178600',
+            Ruby: '#701516',
+            Go: '#00ADD8',
+            Rust: '#dea584',
+            PHP: '#4F5D95',
+            Swift: '#F05138',
+            Kotlin: '#A97BFF',
+            Dart: '#00B4AB',
+            HTML: '#e34c26',
+            CSS: '#563d7c',
+            SCSS: '#c6538c',
+            Vue: '#41b883',
+            Shell: '#89e051',
+            Lua: '#000080',
+            R: '#198CE7',
+            Jupyter: '#DA5B0B',
+            Default: '#ffb7c5'
+        };
+
+        // Fetch repositories and calculate stats
+        fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`)
             .then(res => res.json())
             .then(repos => {
                 if (repos && repos.length > 0 && !repos.message) {
+                    // Update portfolio grid
                     const grid = document.querySelector('.portfolio-grid');
-                    grid.innerHTML = repos.map(repo => `
+                    const topRepos = repos.slice(0, 6);
+                    grid.innerHTML = topRepos.map(repo => `
                         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-card-link">
                             <div class="project-card">
                                 <h3>${repo.name}</h3>
@@ -1344,11 +1524,50 @@
                             </div>
                         </a>
                     `).join('');
+
+                    // Calculate total stars
+                    const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+                    document.getElementById('stat-stars').textContent = totalStars;
+
+                    // Calculate language stats
+                    const langCount = {};
+                    repos.forEach(repo => {
+                        if (repo.language) {
+                            langCount[repo.language] = (langCount[repo.language] || 0) + 1;
+                        }
+                    });
+
+                    // Sort and get top 5 languages
+                    const sortedLangs = Object.entries(langCount)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 5);
+
+                    const totalLangRepos = sortedLangs.reduce((sum, [, count]) => sum + count, 0);
+
+                    // Render language bars
+                    const langBarsContainer = document.getElementById('language-bars');
+                    langBarsContainer.innerHTML = sortedLangs.map(([lang, count]) => {
+                        const percent = Math.round((count / totalLangRepos) * 100);
+                        const color = langColors[lang] || langColors.Default;
+                        return `
+                            <div class="lang-item">
+                                <div class="lang-info">
+                                    <span class="lang-name">
+                                        <span class="lang-dot" style="background: ${color}"></span>
+                                        ${lang}
+                                    </span>
+                                    <span class="lang-percent">${percent}%</span>
+                                </div>
+                                <div class="lang-bar-bg">
+                                    <div class="lang-bar-fill" style="width: ${percent}%; background: ${color}"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
                 }
             })
             .catch(err => {
-                // Graceful fallback - keep the placeholder cards
-                console.log('Note: GitHub API requires deployment to work. Deploy to yourusername.github.io to see live data.');
+                console.log('Note: GitHub API requires deployment to work. Deploy to geket.github.io to see live data.');
             });
 
         // Fetch user stats
@@ -1359,6 +1578,11 @@
                     document.getElementById('repoCount').textContent = user.public_repos;
                     document.getElementById('followerCount').textContent = user.followers;
                     document.getElementById('contributionCount').textContent = user.following;
+                    
+                    // Also update the custom stats
+                    document.getElementById('stat-repos').textContent = user.public_repos;
+                    document.getElementById('stat-followers').textContent = user.followers;
+                    document.getElementById('stat-following').textContent = user.following;
                 }
             })
             .catch(err => {
