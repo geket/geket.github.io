@@ -700,6 +700,33 @@
             transform: rotate(180deg);
         }
 
+        .expand-activity-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.25);
+            border-radius: 10px;
+            color: var(--petal-pink);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-activity-btn:hover {
+            background: rgba(255, 183, 197, 0.2);
+            border-color: rgba(255, 183, 197, 0.4);
+        }
+
+        .expand-activity-btn.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
         .expand-icon {
             transition: transform 0.3s ease;
         }
@@ -1015,8 +1042,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 240px;
-            overflow-y: auto;
         }
 
         .activity-feed::-webkit-scrollbar {
@@ -1041,6 +1066,15 @@
             background: rgba(255, 183, 197, 0.05);
             border-radius: 8px;
             border-left: 2px solid var(--petal-pink);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .activity-item.hidden {
+            display: none;
+        }
+
+        .activity-item.show {
+            animation: fadeIn 0.3s ease forwards;
         }
 
         .activity-item .activity-icon {
@@ -1132,7 +1166,7 @@
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
             .recent-stars-grid {
                 grid-template-columns: 1fr;
             }
@@ -1393,13 +1427,19 @@
         .video-container {
             position: relative;
             width: 100%;
-            max-width: 640px;
+            max-width: 900px;
             margin: 0 auto;
             padding-bottom: 56.25%; /* 16:9 aspect ratio */
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4),
                         0 0 30px rgba(255, 183, 197, 0.1);
+        }
+
+        @media (min-width: 1200px) {
+            .video-container {
+                max-width: 1000px;
+            }
         }
 
         .video-container iframe {
@@ -1455,6 +1495,15 @@
 
             .section-title-jp {
                 font-size: 1.6rem;
+                /* Disable flickering on mobile */
+                animation: none;
+                filter: none;
+                -webkit-filter: none;
+                background-size: 100% 100%;
+            }
+            
+            .section-title-jp::before {
+                display: none;
             }
 
             .section-title-en {
@@ -1676,6 +1725,10 @@
                     <div class="activity-feed" id="activity-feed">
                         <div class="lang-loading">Loading activity...</div>
                     </div>
+                    <button class="expand-activity-btn" id="expandActivityBtn" style="display: none;">
+                        <span>Show More</span>
+                        <span class="expand-icon">▼</span>
+                    </button>
                 </div>
                 <div class="activity-card full-width snake-card">
                     <div class="snake-wrapper">
@@ -2096,8 +2149,12 @@
                 // Stats will show placeholder values
             });
 
-        // Fetch starred repos (21 total, show 9 initially)
-        fetch(`https://api.github.com/users/${username}/starred?per_page=21&sort=created`)
+        // Fetch starred repos (responsive: mobile=16, desktop=21)
+        const isMobile = window.innerWidth <= 768;
+        const starsPerPage = isMobile ? 16 : 21;
+        const initialVisible = isMobile ? 6 : 9;
+        
+        fetch(`https://api.github.com/users/${username}/starred?per_page=${starsPerPage}&sort=created`)
             .then(res => res.json())
             .then(starred => {
                 if (starred && starred.length > 0 && !starred.message) {
@@ -2105,7 +2162,7 @@
                     const expandBtn = document.getElementById('expandStarsBtn');
                     
                     starsContainer.innerHTML = starred.map((repo, index) => `
-                        <div class="star-item ${index >= 9 ? 'hidden' : ''}">
+                        <div class="star-item ${index >= initialVisible ? 'hidden' : ''}">
                             <span class="star-icon">⭐</span>
                             <div>
                                 <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.full_name}</a>
@@ -2114,8 +2171,8 @@
                         </div>
                     `).join('');
 
-                    // Show expand button if more than 9 stars
-                    if (starred.length > 9) {
+                    // Show expand button if more than initial visible stars
+                    if (starred.length > initialVisible) {
                         expandBtn.style.display = 'flex';
                         
                         expandBtn.addEventListener('click', () => {
@@ -2136,7 +2193,7 @@
                                 // Collapse
                                 const allItems = starsContainer.querySelectorAll('.star-item');
                                 allItems.forEach((item, index) => {
-                                    if (index >= 9) {
+                                    if (index >= initialVisible) {
                                         item.classList.add('hidden');
                                         item.classList.remove('show');
                                     }
@@ -2153,11 +2210,12 @@
             });
 
         // Fetch activity feed
-        fetch(`https://api.github.com/users/${username}/events/public?per_page=8`)
+        fetch(`https://api.github.com/users/${username}/events/public?per_page=15`)
             .then(res => res.json())
             .then(events => {
                 if (events && events.length > 0 && !events.message) {
                     const activityContainer = document.getElementById('activity-feed');
+                    const expandBtn = document.getElementById('expandActivityBtn');
                     
                     const activityIcons = {
                         'PushEvent': '📤',
@@ -2216,8 +2274,8 @@
                         return new Date(date).toLocaleDateString();
                     };
 
-                    activityContainer.innerHTML = events.slice(0, 5).map(event => `
-                        <div class="activity-item">
+                    activityContainer.innerHTML = events.map((event, index) => `
+                        <div class="activity-item ${index >= 4 ? 'hidden' : ''}">
                             <span class="activity-icon">${activityIcons[event.type] || '📌'}</span>
                             <div class="activity-content">
                                 <p class="activity-text">${formatEvent(event)}</p>
@@ -2225,6 +2283,39 @@
                             </div>
                         </div>
                     `).join('');
+
+                    // Show expand button if more than 4 activities
+                    if (events.length > 4) {
+                        expandBtn.style.display = 'flex';
+                        
+                        expandBtn.addEventListener('click', () => {
+                            const hiddenItems = activityContainer.querySelectorAll('.activity-item.hidden');
+                            const visibleItems = activityContainer.querySelectorAll('.activity-item:not(.hidden)');
+                            
+                            if (hiddenItems.length > 0) {
+                                // Expand
+                                hiddenItems.forEach((item, i) => {
+                                    setTimeout(() => {
+                                        item.classList.remove('hidden');
+                                        item.classList.add('show');
+                                    }, i * 50);
+                                });
+                                expandBtn.querySelector('span:first-child').textContent = 'Show Less';
+                                expandBtn.classList.add('expanded');
+                            } else {
+                                // Collapse
+                                const allItems = activityContainer.querySelectorAll('.activity-item');
+                                allItems.forEach((item, index) => {
+                                    if (index >= 4) {
+                                        item.classList.add('hidden');
+                                        item.classList.remove('show');
+                                    }
+                                });
+                                expandBtn.querySelector('span:first-child').textContent = 'Show More';
+                                expandBtn.classList.remove('expanded');
+                            }
+                        });
+                    }
 
                     // Calculate activity breakdown for pentagon chart
                     const activityCounts = {
