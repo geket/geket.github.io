@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Portfolio | 桜</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --petal-pink: #ffb7c5;
+            --petal-soft: #ffd1dc;
+            --petal-deep: #e891a0;
+            --bark-brown: #4a3728;
+            --night-indigo: #1a1a2e;
+            --twilight: #16213e;
+            --moon-glow: #f8f0e3;
+            --gold-accent: #d4af37;
+            --mist: rgba(255, 183, 197, 0.1);
+            --cloud-1: rgba(255, 220, 230, 0.08);
+            --cloud-2: rgba(200, 180, 220, 0.06);
+            --cloud-3: rgba(255, 200, 210, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(180deg, 
+                var(--night-indigo) 0%, 
+                #2d1f3d 30%,
+                #3d2a4a 50%,
+                #4a3555 70%,
+                var(--twilight) 100%);
+            color: var(--moon-glow);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========== ANIMATED CLOUDS ========== */
+        .cloud-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0;
+            animation: floatCloud linear infinite;
+        }
+
+        .cloud-layer-1 .cloud {
+            background: radial-gradient(ellipse, var(--cloud-1), transparent 70%);
+        }
+
+        .cloud-layer-2 .cloud {
+            background: radial-gradient(ellipse, var(--cloud-2), transparent 70%);
+        }
+
+        .cloud-layer-3 .cloud {
+            background: radial-gradient(ellipse, var(--cloud-3), transparent 70%);
+        }
+
+        @keyframes floatCloud {
+            0% {
+                transform: translateX(-100%) translateY(0);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100%)) translateY(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Wispy cloud shapes */
+        .cloud-wisp {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(255, 200, 220, 0.04), transparent);
+            height: 2px;
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: wispFloat linear infinite;
+        }
+
+        @keyframes wispFloat {
+            0% {
+                transform: translateX(-100%) scaleX(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateX(100vw) scaleX(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Moon glow */
+        .moon {
+            position: fixed;
+            top: 80px;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, 
+                rgba(255, 250, 240, 0.9) 0%,
+                rgba(255, 245, 230, 0.6) 30%,
+                rgba(255, 220, 200, 0.2) 60%,
+                transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: moonGlow 8s ease-in-out infinite;
+            transition: transform 0.3s ease-out;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, 
+                rgba(255, 183, 197, 0.1) 0%,
+                transparent 50%);
+            animation: moonHalo 12s ease-in-out infinite;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes moonHalo {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* ========== SAKURA PETALS ========== */
+        .petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background: radial-gradient(ellipse at 30% 30%, 
+                var(--petal-soft), 
+                var(--petal-pink) 50%, 
+                var(--petal-deep));
+            border-radius: 150% 0 150% 0;
+            opacity: 0;
+            box-shadow: 
+                0 0 10px rgba(255, 183, 197, 0.4),
+                inset 0 0 5px rgba(255, 255, 255, 0.3);
+            transform-style: preserve-3d;
+        }
+
+        .petal::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: inherit;
+            transform: rotate(90deg);
+            opacity: 0.8;
+        }
+
+        .petal::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 60%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+            border-radius: 50%;
+            top: 10%;
+            left: 20%;
+            transform: rotate(-30deg);
+        }
+
+        /* ========== TREE SILHOUETTES ========== */
+        .tree-silhouette {
+            position: fixed;
+            bottom: 0;
+            right: -50px;
+            width: 400px;
+            height: 90vh;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+            color: var(--petal-deep);
+        }
+
+        .tree-left {
+            left: -100px;
+            right: auto;
+            transform: scaleX(-1);
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 100px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-kanji {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 5rem;
+            font-weight: 200;
+            color: var(--petal-pink);
+            text-shadow: 
+                0 0 60px rgba(255, 183, 197, 0.5),
+                0 0 120px rgba(255, 183, 197, 0.3);
+            letter-spacing: 0.3em;
+            margin-bottom: 20px;
+            animation: kanjiGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes kanjiGlow {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 60px rgba(255, 183, 197, 0.5),
+                    0 0 120px rgba(255, 183, 197, 0.3);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 80px rgba(255, 183, 197, 0.7),
+                    0 0 160px rgba(255, 183, 197, 0.4);
+            }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--moon-glow), var(--petal-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--petal-soft);
+            opacity: 0.8;
+            letter-spacing: 0.2em;
+        }
+
+        .divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--petal-pink), transparent);
+            margin: 40px auto;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-section {
+            margin-bottom: 120px;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--petal-soft);
+            letter-spacing: 0.3em;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.08), rgba(26, 26, 46, 0.6));
+            border: 1px solid rgba(255, 183, 197, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--petal-deep), var(--petal-pink), var(--petal-soft));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 183, 197, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3),
+                        0 0 40px rgba(255, 183, 197, 0.1);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card h3 {
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: var(--moon-glow);
+        }
+
+        .project-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(248, 240, 227, 0.7);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .tag {
+            font-size: 0.85rem;
+            padding: 6px 16px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.2);
+            border-radius: 20px;
+            color: var(--petal-soft);
+            letter-spacing: 0.05em;
+        }
+
+        /* Poetry Section */
+        .poetry-section {
+            margin: 120px 0;
+            position: relative;
+        }
+
+        .poetry-container {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.05), rgba(26, 26, 46, 0.8));
+            border: 1px solid rgba(255, 183, 197, 0.1);
+            border-radius: 30px;
+            padding: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poetry-container::before,
+        .poetry-container::after {
+            content: '桜';
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15rem;
+            position: absolute;
+            color: rgba(255, 183, 197, 0.03);
+            pointer-events: none;
+        }
+
+        .poetry-container::before {
+            top: -50px;
+            left: -30px;
+        }
+
+        .poetry-container::after {
+            bottom: -80px;
+            right: -30px;
+        }
+
+        .poetry-text {
+            font-size: 1.35rem;
+            line-height: 2.4;
+            text-align: center;
+            color: var(--moon-glow);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .poetry-text p {
+            margin-bottom: 0.5em;
+            opacity: 0;
+            animation: fadeInPoem 1s ease-out forwards;
+        }
+
+        @keyframes fadeInPoem {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Haiku Section */
+        .haiku-container {
+            margin-top: 60px;
+            padding-top: 50px;
+            border-top: 1px solid rgba(255, 183, 197, 0.15);
+            position: relative;
+            text-align: center;
+        }
+
+        .haiku-text {
+            display: inline-block;
+            position: relative;
+        }
+
+        .haiku-text p {
+            font-size: 1.6rem;
+            font-weight: 300;
+            line-height: 2.2;
+            color: var(--petal-pink);
+            letter-spacing: 0.15em;
+            margin-bottom: 0.3em;
+            text-shadow: 0 0 30px rgba(255, 183, 197, 0.4);
+            opacity: 0;
+            animation: fadeInHaiku 1.2s ease-out forwards;
+        }
+
+        .haiku-text p:nth-child(1) { animation-delay: 0.5s; }
+        .haiku-text p:nth-child(2) { animation-delay: 1s; }
+        .haiku-text p:nth-child(3) { animation-delay: 1.5s; }
+
+        @keyframes fadeInHaiku {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .haiku-symbol {
+            display: block;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.1rem;
+            font-weight: 200;
+            color: rgba(255, 183, 197, 0.3);
+            margin-top: 30px;
+            letter-spacing: 0.5em;
+            opacity: 0;
+            animation: fadeInHaiku 1s ease-out 2s forwards;
+        }
+
+        .haiku-container::before,
+        .haiku-container::after {
+            content: '✿';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: rgba(255, 183, 197, 0.2);
+            opacity: 0;
+            animation: fadeInHaiku 1s ease-out 2.2s forwards;
+        }
+
+        .haiku-container::before {
+            left: 25%;
+        }
+
+        .haiku-container::after {
+            right: 25%;
+        }
+
+        /* Next Steps Section */
+        .next-steps-section {
+            margin-top: 120px;
+        }
+
+        .steps-container {
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.05), rgba(26, 26, 46, 0.7));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 30px;
+            padding: 60px;
+        }
+
+        .steps-container h2 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--gold-accent);
+            letter-spacing: 0.2em;
+        }
+
+        .step {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 3rem;
+            font-weight: 200;
+            color: var(--gold-accent);
+            opacity: 0.6;
+            min-width: 60px;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: var(--moon-glow);
+        }
+
+        .step-content p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: rgba(248, 240, 227, 0.75);
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 183, 197, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--petal-soft);
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        .code-block code {
+            color: var(--petal-pink);
+        }
+
+        .code-comment {
+            color: rgba(248, 240, 227, 0.4);
+        }
+
+        /* Stats Preview */
+        .stats-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 183, 197, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 183, 197, 0.1);
+        }
+
+        .stat-box .number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--petal-pink);
+            display: block;
+        }
+
+        .stat-box .label {
+            font-size: 0.95rem;
+            color: rgba(248, 240, 227, 0.6);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 80px 40px;
+            border-top: 1px solid rgba(255, 183, 197, 0.1);
+            margin-top: 100px;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            color: rgba(248, 240, 227, 0.5);
+            letter-spacing: 0.15em;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            color: var(--petal-soft);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s, transform 0.3s;
+            opacity: 0.7;
+        }
+
+        .social-links a:hover {
+            color: var(--petal-pink);
+            transform: translateY(-3px);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                padding: 40px 20px;
+            }
+
+            .logo-kanji {
+                font-size: 3rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+                letter-spacing: 0.2em;
+            }
+
+            .poetry-container {
+                padding: 40px 25px;
+            }
+
+            .poetry-text {
+                font-size: 1.1rem;
+                line-height: 2;
+            }
+
+            .haiku-text p {
+                font-size: 1.3rem;
+            }
+
+            .haiku-container::before,
+            .haiku-container::after {
+                display: none;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stats-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .tree-silhouette {
+                display: none;
+            }
+
+            .moon {
+                width: 80px;
+                height: 80px;
+                top: 40px;
+                right: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Moon -->
+    <div class="moon"></div>
+
+    <!-- Animated Clouds -->
+    <div class="cloud-container">
+        <div class="cloud-layer-1" id="cloudLayer1"></div>
+        <div class="cloud-layer-2" id="cloudLayer2"></div>
+        <div class="cloud-layer-3" id="cloudLayer3"></div>
+        <div class="wisp-layer" id="wispLayer"></div>
+    </div>
+
+    <!-- Falling Petals -->
+    <div class="petal-container" id="petalContainer"></div>
+
+    <!-- Tree Silhouettes -->
+    <svg class="tree-silhouette" viewBox="0 0 200 500" fill="currentColor">
+        <path d="M100,500 L100,300 Q80,280 60,260 Q40,240 50,200 Q30,180 40,140 Q20,120 35,80 Q25,50 50,30 Q40,10 70,5 Q90,0 110,10 Q140,5 155,30 Q175,20 170,60 Q190,80 175,110 Q195,140 175,170 Q190,200 170,230 Q185,260 160,280 Q140,300 100,300 L100,500" opacity="0.3"/>
+        <ellipse cx="100" cy="100" rx="90" ry="70" opacity="0.2"/>
+        <ellipse cx="60" cy="150" rx="50" ry="40" opacity="0.15"/>
+        <ellipse cx="140" cy="140" rx="55" ry="45" opacity="0.15"/>
+        <ellipse cx="100" cy="60" rx="60" ry="45" opacity="0.18"/>
+    </svg>
+
+    <svg class="tree-silhouette tree-left" viewBox="0 0 200 500" fill="currentColor">
+        <path d="M100,500 L100,320 Q75,300 55,270 Q35,250 45,210 Q25,190 40,150 Q25,120 45,90 Q35,60 60,40 Q55,20 80,15 Q100,5 120,15 Q145,10 155,40 Q175,35 170,70 Q185,100 170,130 Q190,160 170,190 Q185,220 165,250 Q180,280 155,300 Q130,320 100,320 L100,500" opacity="0.3"/>
+        <ellipse cx="100" cy="110" rx="85" ry="65" opacity="0.2"/>
+        <ellipse cx="55" cy="160" rx="45" ry="35" opacity="0.15"/>
+        <ellipse cx="145" cy="150" rx="50" ry="40" opacity="0.15"/>
+    </svg>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-kanji">桜</div>
+            <h1>Code Portfolio</h1>
+            <p class="subtitle">Where code blooms like cherry blossoms</p>
+            <div class="divider"></div>
+        </header>
+
+        <!-- Portfolio Section -->
+        <section class="portfolio-section">
+            <h2 class="section-title">作品 — Works</h2>
+            <div class="portfolio-grid">
+                <div class="project-card">
+                    <h3>Your Project Name</h3>
+                    <p>A brief description of your amazing project goes here. Describe what it does and why it matters.</p>
+                    <div class="project-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Another Creation</h3>
+                    <p>Describe another beautiful piece of work from your portfolio. Let it shine.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Machine Learning</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Open Source Contribution</h3>
+                    <p>Your contributions to the community. Every line of code is a petal in the digital garden.</p>
+                    <div class="project-tags">
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Open Source</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Poetry Section -->
+        <section class="poetry-section">
+            <div class="poetry-container">
+                <div class="poetry-text">
+                    <p>Embracing the goddess energy within yourselves</p>
+                    <p>Will bring all of you to a new understanding and valuing of life</p>
+                    <p>A vision that inspires you to live and love on planet earth</p>
+                    <p>Like a priceless jewel</p>
+                    <p>Buried in dark layers of soil and stone</p>
+                    <p>Earth radiates her brilliant beauty</p>
+                    <p>Into the caverns of space and time</p>
+                    <p>Perhaps you are aware of those who watch over your home</p>
+                    <p>And experience it as a place to visit and play with reality</p>
+                    <p>You are becoming aware of yourself as a gamemaster</p>
+                    <p>Imagine Earth restored to her regal beauty</p>
+                    <p>Stately trees seem to brush the deep blue sky</p>
+                    <p>Clouds billow to form majestic peaks</p>
+                    <p>The songs of birds fill the air</p>
+                    <p>Creating symphony upon symphony</p>
+                    <p>The goddess is calling for an honoring of what she allows to be created</p>
+                    <p>Through the core-mystery of the blood</p>
+                    <p>Those who own her planet are learning about love</p>
+                </div>
+                
+                <div class="haiku-container">
+                    <div class="haiku-text">
+                        <p>Petals drift and fall</p>
+                        <p>Earth dreams beneath the moonlight</p>
+                        <p>Love blooms in silence</p>
+                    </div>
+                    <span class="haiku-symbol">俳句</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Steps Section -->
+        <section class="next-steps-section">
+            <div class="steps-container">
+                <h2>次のステップ — Next Steps</h2>
+
+                <div class="step">
+                    <span class="step-number">一</span>
+                    <div class="step-content">
+                        <h3>Create Your GitHub Pages Repository</h3>
+                        <p>Create a new repository named <code>yourusername.github.io</code>. This special naming convention tells GitHub to serve it as your personal website.</p>
+                        <div class="code-block">
+                            <span class="code-comment"># Clone your new repository</span><br>
+                            git clone https://github.com/yourusername/yourusername.github.io<br><br>
+                            <span class="code-comment"># Add this HTML file as index.html</span><br>
+                            cp index.html yourusername.github.io/<br>
+                            cd yourusername.github.io<br>
+                            git add . && git commit -m "Initial portfolio" && git push
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">二</span>
+                    <div class="step-content">
+                        <h3>Fetch Your Repositories Automatically</h3>
+                        <p>Use the GitHub API to dynamically display your repositories. Add this script to automatically populate your portfolio with your latest work:</p>
+                        <div class="code-block">
+                            <span class="code-comment">// Add this script before closing &lt;/body&gt; tag</span><br><br>
+                            const username = 'YOUR_GITHUB_USERNAME';<br><br>
+                            fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)<br>
+                            &nbsp;&nbsp;.then(res => res.json())<br>
+                            &nbsp;&nbsp;.then(repos => {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;const grid = document.querySelector('.portfolio-grid');<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;grid.innerHTML = repos.map(repo => `<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="project-card"&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;${repo.name}&lt;/h3&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;${repo.description || 'No description'}&lt;/p&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="project-tags"&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${repo.language ? `&lt;span class="tag"&gt;${repo.language}&lt;/span&gt;` : ''}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="tag"&gt;⭐ ${repo.stargazers_count}&lt;/span&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;`).join('');<br>
+                            &nbsp;&nbsp;});
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">三</span>
+                    <div class="step-content">
+                        <h3>Display Your Contribution Graph</h3>
+                        <p>Show your GitHub activity with a contribution graph. You can use GitHub's built-in contribution chart or third-party services:</p>
+                        <div class="code-block">
+                            <span class="code-comment">&lt;!-- Option 1: GitHub Readme Stats (add to your HTML) --&gt;</span><br><br>
+                            &lt;img src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=radical&hide_border=true&bg_color=00000000" /&gt;<br><br>
+                            <span class="code-comment">&lt;!-- Option 2: GitHub Contribution Snake Animation --&gt;</span><br>
+                            &lt;img src="https://github.com/YOUR_USERNAME/YOUR_USERNAME/blob/output/github-contribution-grid-snake.svg" /&gt;<br><br>
+                            <span class="code-comment">&lt;!-- Option 3: Streak Stats --&gt;</span><br>
+                            &lt;img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_USERNAME&theme=radical&hide_border=true" /&gt;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">四</span>
+                    <div class="step-content">
+                        <h3>Show Recent Activity</h3>
+                        <p>Display your recent GitHub activity feed using the Events API:</p>
+                        <div class="code-block">
+                            <span class="code-comment">// Fetch recent activity</span><br><br>
+                            fetch(`https://api.github.com/users/${username}/events/public?per_page=5`)<br>
+                            &nbsp;&nbsp;.then(res => res.json())<br>
+                            &nbsp;&nbsp;.then(events => {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;const activity = events.map(e => {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const date = new Date(e.created_at).toLocaleDateString();<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(e.type) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'PushEvent':<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `Pushed to ${e.repo.name} on ${date}`;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'CreateEvent':<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `Created ${e.payload.ref_type} in ${e.repo.name}`;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'PullRequestEvent':<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `${e.payload.action} PR in ${e.repo.name}`;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `${e.type} in ${e.repo.name}`;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;console.log(activity);<br>
+                            &nbsp;&nbsp;});
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">五</span>
+                    <div class="step-content">
+                        <h3>Customize & Deploy</h3>
+                        <p>Replace placeholder content with your information, customize colors in the CSS variables, and push to GitHub. Your site will be live at <code>https://yourusername.github.io</code> within minutes.</p>
+                        <div class="stats-preview">
+                            <div class="stat-box">
+                                <span class="number" id="repoCount">--</span>
+                                <span class="label">Repositories</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="number" id="followerCount">--</span>
+                                <span class="label">Followers</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="number" id="contributionCount">--</span>
+                                <span class="label">This Year</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Crafted with 桜 spirit</p>
+            <div class="social-links">
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Twitter</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ========== CLOUD ANIMATION ==========
+        function createCloud(layer, config) {
+            const cloud = document.createElement('div');
+            cloud.className = 'cloud';
+            
+            const width = config.minWidth + Math.random() * (config.maxWidth - config.minWidth);
+            const height = width * (0.3 + Math.random() * 0.4);
+            const top = config.minTop + Math.random() * (config.maxTop - config.minTop);
+            const duration = config.minDuration + Math.random() * (config.maxDuration - config.minDuration);
+            const delay = Math.random() * config.maxDelay;
+            
+            cloud.style.width = width + 'px';
+            cloud.style.height = height + 'px';
+            cloud.style.top = top + '%';
+            cloud.style.animationDuration = duration + 's';
+            cloud.style.animationDelay = delay + 's';
+            
+            layer.appendChild(cloud);
+            
+            // Remove and recreate after animation
+            setTimeout(() => {
+                cloud.remove();
+                createCloud(layer, config);
+            }, (duration + delay) * 1000);
+        }
+
+        function createWisp(layer) {
+            const wisp = document.createElement('div');
+            wisp.className = 'cloud-wisp';
+            
+            const width = 100 + Math.random() * 300;
+            const top = 5 + Math.random() * 40;
+            const duration = 40 + Math.random() * 60;
+            const delay = Math.random() * 30;
+            
+            wisp.style.width = width + 'px';
+            wisp.style.top = top + '%';
+            wisp.style.animationDuration = duration + 's';
+            wisp.style.animationDelay = delay + 's';
+            
+            layer.appendChild(wisp);
+            
+            setTimeout(() => {
+                wisp.remove();
+                createWisp(layer);
+            }, (duration + delay) * 1000);
+        }
+
+        function initClouds() {
+            const layer1 = document.getElementById('cloudLayer1');
+            const layer2 = document.getElementById('cloudLayer2');
+            const layer3 = document.getElementById('cloudLayer3');
+            const wispLayer = document.getElementById('wispLayer');
+            
+            // Layer 1: Large, slow clouds (background)
+            const config1 = {
+                minWidth: 300, maxWidth: 600,
+                minTop: 5, maxTop: 30,
+                minDuration: 80, maxDuration: 120,
+                maxDelay: 20
+            };
+            
+            // Layer 2: Medium clouds
+            const config2 = {
+                minWidth: 200, maxWidth: 400,
+                minTop: 10, maxTop: 40,
+                minDuration: 60, maxDuration: 90,
+                maxDelay: 15
+            };
+            
+            // Layer 3: Smaller, faster clouds (foreground)
+            const config3 = {
+                minWidth: 100, maxWidth: 250,
+                minTop: 15, maxTop: 50,
+                minDuration: 45, maxDuration: 70,
+                maxDelay: 10
+            };
+            
+            // Create initial clouds
+            for (let i = 0; i < 3; i++) createCloud(layer1, config1);
+            for (let i = 0; i < 4; i++) createCloud(layer2, config2);
+            for (let i = 0; i < 5; i++) createCloud(layer3, config3);
+            
+            // Create wisps
+            for (let i = 0; i < 8; i++) createWisp(wispLayer);
+        }
+
+        // ========== SAKURA PETAL ANIMATION ==========
+        function createPetal() {
+            const container = document.getElementById('petalContainer');
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            // Random properties - spread across entire screen width
+            const startX = -50 + Math.random() * (window.innerWidth + 100);
+            const size = 8 + Math.random() * 14;
+            const duration = 10 + Math.random() * 15;
+            const delay = Math.random() * 0.5;
+            const drift = (Math.random() - 0.3) * 400; // Drift amount
+            
+            petal.style.left = startX + 'px';
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            
+            // Complex 3D falling animation with rotation and drift
+            const keyframes = [
+                { 
+                    transform: 'translateY(-20px) translateX(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)', 
+                    opacity: 0 
+                },
+                { 
+                    transform: `translateY(${window.innerHeight * 0.15}px) translateX(${drift * 0.15}px) rotateX(72deg) rotateY(36deg) rotateZ(144deg) scale(0.95)`, 
+                    opacity: 1,
+                    offset: 0.08
+                },
+                { 
+                    transform: `translateY(${window.innerHeight * 0.35}px) translateX(${drift * 0.35}px) rotateX(180deg) rotateY(90deg) rotateZ(360deg) scale(0.9)`, 
+                    opacity: 0.95,
+                    offset: 0.35
+                },
+                { 
+                    transform: `translateY(${window.innerHeight * 0.55}px) translateX(${drift * 0.55}px) rotateX(288deg) rotateY(144deg) rotateZ(540deg) scale(0.8)`, 
+                    opacity: 0.9,
+                    offset: 0.55
+                },
+                { 
+                    transform: `translateY(${window.innerHeight * 0.75}px) translateX(${drift * 0.75}px) rotateX(396deg) rotateY(198deg) rotateZ(648deg) scale(0.7)`, 
+                    opacity: 0.8,
+                    offset: 0.75
+                },
+                { 
+                    transform: `translateY(${window.innerHeight + 50}px) translateX(${drift}px) rotateX(504deg) rotateY(252deg) rotateZ(720deg) scale(0.5)`, 
+                    opacity: 0 
+                }
+            ];
+            
+            const petalAnimation = petal.animate(keyframes, {
+                duration: duration * 1000,
+                delay: delay * 1000,
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                fill: 'forwards'
+            });
+            
+            // Add gentle horizontal swaying
+            const swayAmount = 15 + Math.random() * 35;
+            const swayKeyframes = [
+                { transform: 'translateX(0)' },
+                { transform: `translateX(${swayAmount}px)` },
+                { transform: `translateX(${-swayAmount * 0.7}px)` },
+                { transform: `translateX(${swayAmount * 0.5}px)` },
+                { transform: `translateX(${-swayAmount * 0.3}px)` },
+                { transform: 'translateX(0)' }
+            ];
+            
+            petal.animate(swayKeyframes, {
+                duration: (2 + Math.random() * 3) * 1000,
+                iterations: Infinity,
+                easing: 'ease-in-out',
+                composite: 'add'
+            });
+            
+            container.appendChild(petal);
+            
+            // Remove petal after animation completes
+            setTimeout(() => {
+                petal.remove();
+            }, (duration + delay + 0.5) * 1000);
+        }
+
+        function startPetals() {
+            // Initial burst of petals across the screen
+            for (let i = 0; i < 40; i++) {
+                setTimeout(createPetal, i * 100);
+            }
+            
+            // Continuous steady stream
+            setInterval(createPetal, 250);
+            
+            // Occasional wind gusts - bursts of extra petals
+            setInterval(() => {
+                const gustSize = 10 + Math.floor(Math.random() * 10);
+                for (let i = 0; i < gustSize; i++) {
+                    setTimeout(createPetal, i * 50);
+                }
+            }, 6000);
+        }
+
+        // ========== POETRY ANIMATION ==========
+        function animatePoetry() {
+            const lines = document.querySelectorAll('.poetry-text p');
+            lines.forEach((line, index) => {
+                line.style.animationDelay = `${index * 0.15}s`;
+            });
+        }
+
+        // ========== PARALLAX EFFECT ==========
+        function initParallax() {
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth - 0.5;
+                const mouseY = e.clientY / window.innerHeight - 0.5;
+                
+                const moon = document.querySelector('.moon');
+                if (moon) {
+                    moon.style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
+                }
+            });
+        }
+
+        // ========== INITIALIZE ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initClouds();
+            startPetals();
+            animatePoetry();
+            initParallax();
+        });
+    </script>
+</body>
+</html>
