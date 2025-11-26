@@ -333,6 +333,11 @@
             gap: 40px;
         }
 
+        .project-card-link {
+            text-decoration: none;
+            display: block;
+        }
+
         .project-card {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.08), rgba(26, 26, 46, 0.6));
             border: 1px solid rgba(255, 183, 197, 0.15);
@@ -342,6 +347,7 @@
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .project-card::before {
@@ -778,31 +784,33 @@
         <section class="portfolio-section">
             <h2 class="section-title">作品 — Works</h2>
             <div class="portfolio-grid">
-                <div class="project-card">
-                    <h3>Your Project Name</h3>
-                    <p>A brief description of your amazing project goes here. Describe what it does and why it matters.</p>
-                    <div class="project-tags">
-                        <span class="tag">JavaScript</span>
-                        <span class="tag">React</span>
-                        <span class="tag">Node.js</span>
+                <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="project-card-link">
+                    <div class="project-card">
+                        <h3>🌸 Your Repositories</h3>
+                        <p>Your GitHub repos will appear here automatically once deployed to GitHub Pages.</p>
+                        <div class="project-tags">
+                            <span class="tag">Deploy to activate</span>
+                        </div>
                     </div>
-                </div>
-                <div class="project-card">
-                    <h3>Another Creation</h3>
-                    <p>Describe another beautiful piece of work from your portfolio. Let it shine.</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Machine Learning</span>
+                </a>
+                <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="project-card-link">
+                    <div class="project-card">
+                        <h3>🌙 Live Data</h3>
+                        <p>Stars, forks, and languages will be pulled directly from your GitHub profile.</p>
+                        <div class="project-tags">
+                            <span class="tag">Auto-updating</span>
+                        </div>
                     </div>
-                </div>
-                <div class="project-card">
-                    <h3>Open Source Contribution</h3>
-                    <p>Your contributions to the community. Every line of code is a petal in the digital garden.</p>
-                    <div class="project-tags">
-                        <span class="tag">TypeScript</span>
-                        <span class="tag">Open Source</span>
+                </a>
+                <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="project-card-link">
+                    <div class="project-card">
+                        <h3>✨ Click to Visit</h3>
+                        <p>Each card will link directly to its repository on GitHub.</p>
+                        <div class="project-tags">
+                            <span class="tag">github.com/geket</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -865,26 +873,13 @@
                 <div class="step">
                     <span class="step-number">二</span>
                     <div class="step-content">
-                        <h3>Fetch Your Repositories Automatically</h3>
-                        <p>Use the GitHub API to dynamically display your repositories. Add this script to automatically populate your portfolio with your latest work:</p>
+                        <h3>Your Repos Auto-Load ✓</h3>
+                        <p>This page is already configured to fetch your repositories from <code>github.com/geket</code>. Once deployed, your 6 most recently updated repos will automatically appear in the cards above with live data including stars, forks, and languages.</p>
                         <div class="code-block">
-                            <span class="code-comment">// Add this script before closing &lt;/body&gt; tag</span><br><br>
-                            const username = 'YOUR_GITHUB_USERNAME';<br><br>
-                            fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)<br>
-                            &nbsp;&nbsp;.then(res => res.json())<br>
-                            &nbsp;&nbsp;.then(repos => {<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;const grid = document.querySelector('.portfolio-grid');<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;grid.innerHTML = repos.map(repo => `<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="project-card"&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;${repo.name}&lt;/h3&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;${repo.description || 'No description'}&lt;/p&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="project-tags"&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${repo.language ? `&lt;span class="tag"&gt;${repo.language}&lt;/span&gt;` : ''}<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="tag"&gt;⭐ ${repo.stargazers_count}&lt;/span&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;`).join('');<br>
-                            &nbsp;&nbsp;});
+                            <span class="code-comment">// Already integrated! Your username is set:</span><br><br>
+                            const username = 'geket';<br><br>
+                            <span class="code-comment">// The API fetches your repos automatically on page load</span><br>
+                            <span class="code-comment">// Cards link directly to each repository</span>
                         </div>
                     </div>
                 </div>
@@ -941,16 +936,16 @@
                         <p>Replace placeholder content with your information, customize colors in the CSS variables, and push to GitHub. Your site will be live at <code>https://yourusername.github.io</code> within minutes.</p>
                         <div class="stats-preview">
                             <div class="stat-box">
-                                <span class="number" id="repoCount">--</span>
+                                <span class="number" id="repoCount">✦</span>
                                 <span class="label">Repositories</span>
                             </div>
                             <div class="stat-box">
-                                <span class="number" id="followerCount">--</span>
+                                <span class="number" id="followerCount">✦</span>
                                 <span class="label">Followers</span>
                             </div>
                             <div class="stat-box">
-                                <span class="number" id="contributionCount">--</span>
-                                <span class="label">This Year</span>
+                                <span class="number" id="contributionCount">✦</span>
+                                <span class="label">Following</span>
                             </div>
                         </div>
                     </div>
@@ -962,7 +957,7 @@
         <footer class="footer">
             <p>Crafted with 桜 spirit</p>
             <div class="social-links">
-                <a href="#">GitHub</a>
+                <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="#">LinkedIn</a>
                 <a href="#">Twitter</a>
             </div>
@@ -1177,6 +1172,49 @@
                 }
             });
         }
+
+        // ========== GITHUB API ==========
+        const username = 'geket';
+
+        // Fetch repositories
+        fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
+            .then(res => res.json())
+            .then(repos => {
+                if (repos && repos.length > 0 && !repos.message) {
+                    const grid = document.querySelector('.portfolio-grid');
+                    grid.innerHTML = repos.map(repo => `
+                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="project-card-link">
+                            <div class="project-card">
+                                <h3>${repo.name}</h3>
+                                <p>${repo.description || 'A beautiful creation awaiting description...'}</p>
+                                <div class="project-tags">
+                                    ${repo.language ? `<span class="tag">${repo.language}</span>` : ''}
+                                    <span class="tag">⭐ ${repo.stargazers_count}</span>
+                                    ${repo.forks_count > 0 ? `<span class="tag">🍴 ${repo.forks_count}</span>` : ''}
+                                </div>
+                            </div>
+                        </a>
+                    `).join('');
+                }
+            })
+            .catch(err => {
+                // Graceful fallback - keep the placeholder cards
+                console.log('Note: GitHub API requires deployment to work. Deploy to yourusername.github.io to see live data.');
+            });
+
+        // Fetch user stats
+        fetch(`https://api.github.com/users/${username}`)
+            .then(res => res.json())
+            .then(user => {
+                if (user && !user.message) {
+                    document.getElementById('repoCount').textContent = user.public_repos;
+                    document.getElementById('followerCount').textContent = user.followers;
+                    document.getElementById('contributionCount').textContent = user.following;
+                }
+            })
+            .catch(err => {
+                // Stats will show placeholder values
+            });
 
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', () => {
