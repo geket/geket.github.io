@@ -366,13 +366,62 @@
         }
 
         .section-title {
-            font-family: 'Noto Serif JP', serif;
-            font-size: 1.5rem;
-            font-weight: 300;
             text-align: center;
             margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-jp {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            background: linear-gradient(135deg, 
+                #ffb7c5 0%, 
+                #ff9eb5 25%, 
+                #ffd4dc 50%, 
+                #ff9eb5 75%, 
+                #ffb7c5 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255, 183, 197, 0.6))
+                    drop-shadow(0 0 20px rgba(255, 183, 197, 0.4))
+                    drop-shadow(0 0 40px rgba(255, 183, 197, 0.2));
+            animation: sakuraShimmer 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .section-title-jp::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='%23ffd4dc' fill-opacity='0.3' d='M30 5c2 8-3 12-3 12s8-2 12 3c-8 2-12-3-12-3s2 8-3 12c-2-8 3-12 3-12s-8 2-12-3c8-2 12 3 12 3s-2-8 3-12z'/%3E%3Cpath fill='%23ffb7c5' fill-opacity='0.2' d='M45 35c1 4-1.5 6-1.5 6s4-1 6 1.5c-4 1-6-1.5-6-1.5s1 4-1.5 6c-1-4 1.5-6 1.5-6s-4 1-6-1.5c4-1 6 1.5 6 1.5s-1-4 1.5-6z'/%3E%3Cpath fill='%23ffc4d0' fill-opacity='0.25' d='M12 42c1 4-1.5 6-1.5 6s4-1 6 1.5c-4 1-6-1.5-6-1.5s1 4-1.5 6c-1-4 1.5-6 1.5-6s-4 1-6-1.5c4-1 6 1.5 6 1.5s-1-4 1.5-6z'/%3E%3C/svg%3E") repeat;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        @keyframes sakuraShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .section-title-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 300;
             color: var(--petal-soft);
-            letter-spacing: 0.3em;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            opacity: 0.7;
         }
 
         .portfolio-grid {
@@ -580,6 +629,11 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            /* iOS performance optimization */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .snake-card img {
@@ -587,6 +641,19 @@
             max-width: 700px;
             display: block;
             margin: 0 auto;
+            /* iOS SVG rendering optimization */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* iOS-specific fixes for SVG animations */
+        @supports (-webkit-touch-callout: none) {
+            .snake-card img {
+                image-rendering: -webkit-optimize-contrast;
+            }
         }
 
         .snake-setup {
@@ -1323,16 +1390,6 @@
             margin: 80px 0 60px;
         }
 
-        .aesthetic-memories-section h2 {
-            text-align: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 300;
-            color: var(--petal-pink);
-            margin-bottom: 30px;
-            letter-spacing: 0.15em;
-        }
-
         .video-container {
             position: relative;
             width: 100%;
@@ -1353,16 +1410,6 @@
             height: 100%;
             border: none;
             border-radius: 15px;
-        }
-
-        .aesthetic-memories-jp {
-            text-align: center;
-            font-family: 'Noto Serif JP', serif;
-            font-size: 1.3rem;
-            color: var(--petal-soft);
-            opacity: 0.7;
-            margin-top: 20px;
-            letter-spacing: 0.2em;
         }
 
         /* Footer */
@@ -1404,6 +1451,15 @@
         @media (max-width: 768px) {
             .content {
                 padding: 30px 15px;
+            }
+
+            .section-title-jp {
+                font-size: 1.6rem;
+            }
+
+            .section-title-en {
+                font-size: 0.9rem;
+                letter-spacing: 0.3em;
             }
 
             .logo-kanji {
@@ -1505,7 +1561,10 @@
 
         <!-- Portfolio Section -->
         <section class="portfolio-section">
-            <h2 class="section-title">作品 — Works</h2>
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="作品">作品</span>
+                <span class="section-title-en">Works</span>
+            </h2>
             <div class="portfolio-grid">
                 <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="project-card-link">
                     <div class="project-card">
@@ -1539,7 +1598,10 @@
 
         <!-- GitHub Stats Section -->
         <section class="stats-section">
-            <h2 class="section-title">統計 — Statistics</h2>
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="統計">統計</span>
+                <span class="section-title-en">Statistics</span>
+            </h2>
             <div class="github-stats-container compact">
                 <div class="stats-card custom-stat combined-stat-card">
                     <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
@@ -1591,7 +1653,10 @@
 
         <!-- Activity Section -->
         <section class="activity-section">
-            <h2 class="section-title">活動 — Activity</h2>
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="活動">活動</span>
+                <span class="section-title-en">Activity</span>
+            </h2>
             <div class="activity-container compact">
                 <div class="activity-card activity-chart-card">
                     <div class="custom-stat-header">
@@ -1622,7 +1687,10 @@
 
         <!-- Gilded Section (Recent Stars) -->
         <section class="gilded-section">
-            <h2 class="section-title">金箔 — Gilded</h2>
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="金箔">金箔</span>
+                <span class="section-title-en">Gilded</span>
+            </h2>
             <div class="gilded-container">
                 <div class="gilded-card">
                     <a href="https://github.com/geket?tab=stars" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
@@ -1678,7 +1746,10 @@
 
         <!-- Aesthetic Memories Section -->
         <section class="aesthetic-memories-section">
-            <h2>✿ Aesthetic Memories ✿</h2>
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="美的な思い出">美的な思い出</span>
+                <span class="section-title-en">Aesthetic Memories</span>
+            </h2>
             <div class="video-container">
                 <iframe 
                     src="https://www.youtube.com/embed/10TOhu3uhUU" 
@@ -1687,7 +1758,6 @@
                     allowfullscreen>
                 </iframe>
             </div>
-            <p class="aesthetic-memories-jp">美的な思い出</p>
         </section>
 
         <!-- Footer -->
