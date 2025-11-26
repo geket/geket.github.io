@@ -1919,20 +1919,25 @@
                 this.y = y ?? -20;
                 this.size = 8 + Math.random() * 12;
                 
-                // Velocity
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = 0.8 + Math.random() * 1.2;
+                // Base velocity (what it returns to)
+                this.baseVx = (Math.random() - 0.5) * 0.3;
+                this.baseVy = 0.3 + Math.random() * 0.4; // Slower fall
+                
+                // Current velocity
+                this.vx = this.baseVx;
+                this.vy = this.baseVy;
                 
                 // Rotation (3D simulation)
                 this.rotation = Math.random() * Math.PI * 2;
-                this.rotationSpeed = (Math.random() - 0.5) * 0.08;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.04;
+                this.baseRotationSpeed = this.rotationSpeed;
                 this.tilt = Math.random() * Math.PI * 2;
-                this.tiltSpeed = (Math.random() - 0.5) * 0.03;
+                this.tiltSpeed = (Math.random() - 0.5) * 0.02;
                 
                 // Wobble (sine wave horizontal movement)
                 this.wobblePhase = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = 0.02 + Math.random() * 0.02;
-                this.wobbleAmp = 0.3 + Math.random() * 0.5;
+                this.wobbleSpeed = 0.015 + Math.random() * 0.015;
+                this.wobbleAmp = 0.2 + Math.random() * 0.3;
                 
                 // Color variation
                 const hue = 340 + Math.random() * 20; // Pink range
@@ -1947,29 +1952,32 @@
             }
             
             update() {
-                // Gravity and drift
-                this.vy += 0.002; // Slight acceleration
-                this.vy = Math.min(this.vy, 2.5); // Terminal velocity
+                // Gentle gravity
+                this.vy += 0.001;
+                this.vy = Math.min(this.vy, 1.2); // Lower terminal velocity
                 
                 // Wobble
                 this.wobblePhase += this.wobbleSpeed;
-                this.vx += Math.sin(this.wobblePhase) * this.wobbleAmp * 0.02;
+                this.vx += Math.sin(this.wobblePhase) * this.wobbleAmp * 0.01;
                 
-                // Air resistance on horizontal
-                this.vx *= 0.99;
+                // Gradually return to base velocities (creates the "temporary nudge" effect)
+                this.vx += (this.baseVx - this.vx) * 0.02;
+                this.vy += (this.baseVy - this.vy) * 0.015;
+                this.rotationSpeed += (this.baseRotationSpeed - this.rotationSpeed) * 0.03;
                 
-                // Mouse interaction
+                // Mouse interaction - gentle nudge
                 const dx = this.x - mouse.x;
                 const dy = this.y - mouse.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                const interactRadius = 120;
+                const interactRadius = 80;
                 
                 if (dist < interactRadius && dist > 0) {
                     const force = (interactRadius - dist) / interactRadius;
                     const angle = Math.atan2(dy, dx);
-                    this.vx += Math.cos(angle) * force * 2;
-                    this.vy += Math.sin(angle) * force * 1.5;
-                    this.rotationSpeed += force * 0.1;
+                    // Very gentle push - just a nudge
+                    this.vx += Math.cos(angle) * force * 0.15;
+                    this.vy += Math.sin(angle) * force * 0.1;
+                    this.rotationSpeed += force * 0.01;
                 }
                 
                 // Apply velocity
