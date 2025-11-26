@@ -403,6 +403,83 @@
             letter-spacing: 0.05em;
         }
 
+        /* GitHub Stats Section */
+        .stats-section {
+            margin: 120px 0;
+        }
+
+        .github-stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .stats-card {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.06), rgba(26, 26, 46, 0.5));
+            border: 1px solid rgba(255, 183, 197, 0.12);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 183, 197, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+                        0 0 30px rgba(255, 183, 197, 0.08);
+        }
+
+        .stats-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .stats-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .snake-card {
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.04), rgba(26, 26, 46, 0.6));
+        }
+
+        .snake-card img {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .snake-setup {
+            text-align: center;
+            padding: 40px;
+            color: var(--petal-soft);
+        }
+
+        .snake-setup p {
+            margin: 10px 0;
+            font-size: 1.3rem;
+        }
+
+        .snake-setup .small {
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 900px) {
+            .github-stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-card.full-width {
+                grid-column: auto;
+            }
+        }
+
         /* Poetry Section */
         .poetry-section {
             margin: 120px 0;
@@ -814,6 +891,25 @@
             </div>
         </section>
 
+        <!-- GitHub Stats Section -->
+        <section class="stats-section">
+            <h2 class="section-title">貢献 — Contributions</h2>
+            <div class="github-stats-container">
+                <div class="stats-card">
+                    <img src="https://github-readme-stats.vercel.app/api?username=geket&show_icons=true&theme=radical&hide_border=true&bg_color=00000000&title_color=ffb7c5&text_color=f8f0e3&icon_color=ffd1dc" alt="GitHub Stats" />
+                </div>
+                <div class="stats-card">
+                    <img src="https://github-readme-streak-stats.herokuapp.com/?user=geket&theme=radical&hide_border=true&background=00000000&ring=ffb7c5&fire=ffd1dc&currStreakLabel=f8f0e3&sideLabels=f8f0e3&currStreakNum=ffb7c5&sideNums=ffd1dc&dates=f8f0e380" alt="GitHub Streak" />
+                </div>
+                <div class="stats-card full-width">
+                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=geket&layout=compact&theme=radical&hide_border=true&bg_color=00000000&title_color=ffb7c5&text_color=f8f0e3" alt="Top Languages" />
+                </div>
+                <div class="stats-card full-width snake-card">
+                    <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
+                </div>
+            </div>
+        </section>
+
         <!-- Poetry Section -->
         <section class="poetry-section">
             <div class="poetry-container">
@@ -858,14 +954,12 @@
                     <span class="step-number">一</span>
                     <div class="step-content">
                         <h3>Create Your GitHub Pages Repository</h3>
-                        <p>Create a new repository named <code>yourusername.github.io</code>. This special naming convention tells GitHub to serve it as your personal website.</p>
+                        <p>Create a new repository named <code>geket.github.io</code> on GitHub. This special naming enables GitHub Pages automatically.</p>
                         <div class="code-block">
-                            <span class="code-comment"># Clone your new repository</span><br>
-                            git clone https://github.com/yourusername/yourusername.github.io<br><br>
-                            <span class="code-comment"># Add this HTML file as index.html</span><br>
-                            cp index.html yourusername.github.io/<br>
-                            cd yourusername.github.io<br>
-                            git add . && git commit -m "Initial portfolio" && git push
+                            <span class="code-comment"># Create the repo on github.com, then:</span><br><br>
+                            git clone https://github.com/geket/geket.github.io<br>
+                            cd geket.github.io<br><br>
+                            <span class="code-comment"># Save this HTML file as index.html in the folder</span>
                         </div>
                     </div>
                 </div>
@@ -887,15 +981,13 @@
                 <div class="step">
                     <span class="step-number">三</span>
                     <div class="step-content">
-                        <h3>Display Your Contribution Graph</h3>
-                        <p>Show your GitHub activity with a contribution graph. You can use GitHub's built-in contribution chart or third-party services:</p>
+                        <h3>Contribution Graphs Added ✓</h3>
+                        <p>Your GitHub stats are now displayed above! The graphs pull live data showing your contribution streak, top languages, and overall GitHub activity — all styled to match the sakura theme.</p>
                         <div class="code-block">
-                            <span class="code-comment">&lt;!-- Option 1: GitHub Readme Stats (add to your HTML) --&gt;</span><br><br>
-                            &lt;img src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=radical&hide_border=true&bg_color=00000000" /&gt;<br><br>
-                            <span class="code-comment">&lt;!-- Option 2: GitHub Contribution Snake Animation --&gt;</span><br>
-                            &lt;img src="https://github.com/YOUR_USERNAME/YOUR_USERNAME/blob/output/github-contribution-grid-snake.svg" /&gt;<br><br>
-                            <span class="code-comment">&lt;!-- Option 3: Streak Stats --&gt;</span><br>
-                            &lt;img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_USERNAME&theme=radical&hide_border=true" /&gt;
+                            <span class="code-comment">// Stats included:</span><br><br>
+                            • GitHub Stats (commits, PRs, issues, stars)<br>
+                            • Contribution Streak (current & longest)<br>
+                            • Top Languages (by repo usage)
                         </div>
                     </div>
                 </div>
@@ -903,37 +995,64 @@
                 <div class="step">
                     <span class="step-number">四</span>
                     <div class="step-content">
-                        <h3>Show Recent Activity</h3>
-                        <p>Display your recent GitHub activity feed using the Events API:</p>
+                        <h3>Set Up the Snake Animation 🐍</h3>
+                        <p>The contribution snake requires a GitHub Action. Create a repo named <code>geket</code> (same as your username), then add this workflow file:</p>
                         <div class="code-block">
-                            <span class="code-comment">// Fetch recent activity</span><br><br>
-                            fetch(`https://api.github.com/users/${username}/events/public?per_page=5`)<br>
-                            &nbsp;&nbsp;.then(res => res.json())<br>
-                            &nbsp;&nbsp;.then(events => {<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;const activity = events.map(e => {<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const date = new Date(e.created_at).toLocaleDateString();<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(e.type) {<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'PushEvent':<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `Pushed to ${e.repo.name} on ${date}`;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'CreateEvent':<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `Created ${e.payload.ref_type} in ${e.repo.name}`;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 'PullRequestEvent':<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `${e.payload.action} PR in ${e.repo.name}`;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return `${e.type} in ${e.repo.name}`;<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;console.log(activity);<br>
-                            &nbsp;&nbsp;});
+                            <span class="code-comment"># Create: .github/workflows/snake.yml</span><br><br>
+                            name: Generate Snake<br><br>
+                            on:<br>
+                            &nbsp;&nbsp;schedule:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;- cron: "0 0 * * *"<br>
+                            &nbsp;&nbsp;workflow_dispatch:<br><br>
+                            jobs:<br>
+                            &nbsp;&nbsp;build:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;runs-on: ubuntu-latest<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;permissions:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contents: write<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;steps:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: Platane/snk@v3<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;github_user_name: geket<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputs: |<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist/github-contribution-grid-snake-dark.svg?palette=github-dark<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: crazy-max/ghaction-github-pages@v3.1.0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_branch: output<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build_dir: dist<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;env:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                         </div>
+                        <p style="margin-top: 20px; opacity: 0.8;"><strong>Note:</strong> Also enable write permissions in Settings → Actions → General → Workflow permissions</p>
                     </div>
                 </div>
 
                 <div class="step">
                     <span class="step-number">五</span>
                     <div class="step-content">
-                        <h3>Customize & Deploy</h3>
-                        <p>Replace placeholder content with your information, customize colors in the CSS variables, and push to GitHub. Your site will be live at <code>https://yourusername.github.io</code> within minutes.</p>
+                        <h3>Optional: Add Activity Feed</h3>
+                        <p>Want to show your recent GitHub activity? Add this script to display a live feed of your pushes, PRs, and more:</p>
+                        <div class="code-block">
+                            <span class="code-comment">// Add to the script section to show recent activity</span><br><br>
+                            fetch(`https://api.github.com/users/geket/events/public?per_page=5`)<br>
+                            &nbsp;&nbsp;.then(res => res.json())<br>
+                            &nbsp;&nbsp;.then(events => {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// Process and display your activity<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;console.log(events);<br>
+                            &nbsp;&nbsp;});
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">六</span>
+                    <div class="step-content">
+                        <h3>Deploy & Go Live</h3>
+                        <p>Everything is configured! Just push this file to your <code>geket.github.io</code> repository and your portfolio will be live with all the sakura magic.</p>
+                        <div class="code-block">
+                            git add index.html<br>
+                            git commit -m "🌸 sakura portfolio"<br>
+                            git push origin main
+                        </div>
                         <div class="stats-preview">
                             <div class="stat-box">
                                 <span class="number" id="repoCount">✦</span>
