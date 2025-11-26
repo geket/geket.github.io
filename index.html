@@ -165,7 +165,7 @@
         }
 
         /* ========== SAKURA PETALS ========== */
-        .petal-container {
+        .petal-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -173,44 +173,6 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
-            overflow: hidden;
-        }
-
-        .petal {
-            position: absolute;
-            background: radial-gradient(ellipse at 30% 30%, 
-                var(--petal-soft), 
-                var(--petal-pink) 50%, 
-                var(--petal-deep));
-            border-radius: 150% 0 150% 0;
-            opacity: 0;
-            box-shadow: 
-                0 0 10px rgba(255, 183, 197, 0.4),
-                inset 0 0 5px rgba(255, 255, 255, 0.3);
-            transform-style: preserve-3d;
-        }
-
-        .petal::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            border-radius: inherit;
-            transform: rotate(90deg);
-            opacity: 0.8;
-        }
-
-        .petal::after {
-            content: '';
-            position: absolute;
-            width: 30%;
-            height: 60%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
-            border-radius: 50%;
-            top: 10%;
-            left: 20%;
-            transform: rotate(-30deg);
         }
 
         /* ========== TREE SILHOUETTES ========== */
@@ -1573,7 +1535,7 @@
     </div>
 
     <!-- Falling Petals -->
-    <div class="petal-container" id="petalContainer"></div>
+    <canvas class="petal-canvas" id="petalCanvas"></canvas>
 
     <!-- Tree Silhouettes -->
     <svg class="tree-silhouette" viewBox="0 0 200 500" fill="currentColor">
@@ -1912,105 +1874,243 @@
             for (let i = 0; i < 8; i++) createWisp(wispLayer);
         }
 
-        // ========== SAKURA PETAL ANIMATION ==========
-        function createPetal() {
-            const container = document.getElementById('petalContainer');
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            
-            // Random properties - spread across entire screen width
-            const startX = -50 + Math.random() * (window.innerWidth + 100);
-            const size = 8 + Math.random() * 14;
-            const duration = 10 + Math.random() * 15;
-            const delay = Math.random() * 0.5;
-            const drift = (Math.random() - 0.3) * 400; // Drift amount
-            
-            petal.style.left = startX + 'px';
-            petal.style.width = size + 'px';
-            petal.style.height = size + 'px';
-            
-            // Complex 3D falling animation with rotation and drift
-            const keyframes = [
-                { 
-                    transform: 'translateY(-20px) translateX(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)', 
-                    opacity: 0 
-                },
-                { 
-                    transform: `translateY(${window.innerHeight * 0.15}px) translateX(${drift * 0.15}px) rotateX(72deg) rotateY(36deg) rotateZ(144deg) scale(0.95)`, 
-                    opacity: 1,
-                    offset: 0.08
-                },
-                { 
-                    transform: `translateY(${window.innerHeight * 0.35}px) translateX(${drift * 0.35}px) rotateX(180deg) rotateY(90deg) rotateZ(360deg) scale(0.9)`, 
-                    opacity: 0.95,
-                    offset: 0.35
-                },
-                { 
-                    transform: `translateY(${window.innerHeight * 0.55}px) translateX(${drift * 0.55}px) rotateX(288deg) rotateY(144deg) rotateZ(540deg) scale(0.8)`, 
-                    opacity: 0.9,
-                    offset: 0.55
-                },
-                { 
-                    transform: `translateY(${window.innerHeight * 0.75}px) translateX(${drift * 0.75}px) rotateX(396deg) rotateY(198deg) rotateZ(648deg) scale(0.7)`, 
-                    opacity: 0.8,
-                    offset: 0.75
-                },
-                { 
-                    transform: `translateY(${window.innerHeight + 50}px) translateX(${drift}px) rotateX(504deg) rotateY(252deg) rotateZ(720deg) scale(0.5)`, 
-                    opacity: 0 
-                }
-            ];
-            
-            const petalAnimation = petal.animate(keyframes, {
-                duration: duration * 1000,
-                delay: delay * 1000,
-                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-                fill: 'forwards'
-            });
-            
-            // Add gentle horizontal swaying
-            const swayAmount = 15 + Math.random() * 35;
-            const swayKeyframes = [
-                { transform: 'translateX(0)' },
-                { transform: `translateX(${swayAmount}px)` },
-                { transform: `translateX(${-swayAmount * 0.7}px)` },
-                { transform: `translateX(${swayAmount * 0.5}px)` },
-                { transform: `translateX(${-swayAmount * 0.3}px)` },
-                { transform: 'translateX(0)' }
-            ];
-            
-            petal.animate(swayKeyframes, {
-                duration: (2 + Math.random() * 3) * 1000,
-                iterations: Infinity,
-                easing: 'ease-in-out',
-                composite: 'add'
-            });
-            
-            container.appendChild(petal);
-            
-            // Remove petal after animation completes
-            setTimeout(() => {
-                petal.remove();
-            }, (duration + delay + 0.5) * 1000);
+        // ========== CANVAS SAKURA PETAL PHYSICS ==========
+        const petalCanvas = document.getElementById('petalCanvas');
+        const ctx = petalCanvas.getContext('2d');
+        
+        // High-DPI support
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            petalCanvas.width = window.innerWidth * dpr;
+            petalCanvas.height = window.innerHeight * dpr;
+            petalCanvas.style.width = window.innerWidth + 'px';
+            petalCanvas.style.height = window.innerHeight + 'px';
+            ctx.scale(dpr, dpr);
         }
-
-        function startPetals() {
-            // Initial burst of petals across the screen
-            for (let i = 0; i < 40; i++) {
-                setTimeout(createPetal, i * 100);
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Mouse tracking
+        const mouse = { x: -1000, y: -1000 };
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        document.addEventListener('mouseleave', () => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+        // Touch support
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        });
+        document.addEventListener('touchend', () => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+        
+        // Petal class with physics
+        class Petal {
+            constructor(x, y) {
+                this.x = x ?? Math.random() * window.innerWidth;
+                this.y = y ?? -20;
+                this.size = 8 + Math.random() * 12;
+                
+                // Velocity
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = 0.8 + Math.random() * 1.2;
+                
+                // Rotation (3D simulation)
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.08;
+                this.tilt = Math.random() * Math.PI * 2;
+                this.tiltSpeed = (Math.random() - 0.5) * 0.03;
+                
+                // Wobble (sine wave horizontal movement)
+                this.wobblePhase = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = 0.02 + Math.random() * 0.02;
+                this.wobbleAmp = 0.3 + Math.random() * 0.5;
+                
+                // Color variation
+                const hue = 340 + Math.random() * 20; // Pink range
+                const sat = 70 + Math.random() * 30;
+                const light = 75 + Math.random() * 15;
+                this.color = `hsla(${hue}, ${sat}%, ${light}%, 0.85)`;
+                this.colorInner = `hsla(${hue}, ${sat - 10}%, ${light + 10}%, 0.9)`;
+                
+                // Opacity for fade in/out
+                this.opacity = 0;
+                this.fadeIn = true;
             }
             
-            // Continuous steady stream
-            setInterval(createPetal, 250);
-            
-            // Occasional wind gusts - bursts of extra petals
-            setInterval(() => {
-                const gustSize = 10 + Math.floor(Math.random() * 10);
-                for (let i = 0; i < gustSize; i++) {
-                    setTimeout(createPetal, i * 50);
+            update() {
+                // Gravity and drift
+                this.vy += 0.002; // Slight acceleration
+                this.vy = Math.min(this.vy, 2.5); // Terminal velocity
+                
+                // Wobble
+                this.wobblePhase += this.wobbleSpeed;
+                this.vx += Math.sin(this.wobblePhase) * this.wobbleAmp * 0.02;
+                
+                // Air resistance on horizontal
+                this.vx *= 0.99;
+                
+                // Mouse interaction
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const interactRadius = 120;
+                
+                if (dist < interactRadius && dist > 0) {
+                    const force = (interactRadius - dist) / interactRadius;
+                    const angle = Math.atan2(dy, dx);
+                    this.vx += Math.cos(angle) * force * 2;
+                    this.vy += Math.sin(angle) * force * 1.5;
+                    this.rotationSpeed += force * 0.1;
                 }
-            }, 6000);
+                
+                // Apply velocity
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Rotation
+                this.rotation += this.rotationSpeed;
+                this.tilt += this.tiltSpeed;
+                
+                // Fade in
+                if (this.fadeIn) {
+                    this.opacity += 0.03;
+                    if (this.opacity >= 1) {
+                        this.opacity = 1;
+                        this.fadeIn = false;
+                    }
+                }
+                
+                // Fade out near bottom
+                if (this.y > window.innerHeight - 100) {
+                    this.opacity -= 0.02;
+                }
+                
+                // Wrap horizontally
+                if (this.x < -50) this.x = window.innerWidth + 50;
+                if (this.x > window.innerWidth + 50) this.x = -50;
+                
+                return this.y < window.innerHeight + 50 && this.opacity > 0;
+            }
+            
+            draw(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                // 3D tilt effect - scale based on tilt
+                const scaleX = 0.5 + Math.abs(Math.cos(this.tilt)) * 0.5;
+                const scaleY = 0.5 + Math.abs(Math.sin(this.tilt * 0.7)) * 0.5;
+                ctx.scale(scaleX, scaleY);
+                
+                ctx.globalAlpha = this.opacity;
+                
+                // Draw petal shape (5-petal sakura)
+                const s = this.size;
+                
+                // Main petal body
+                ctx.beginPath();
+                ctx.moveTo(0, -s * 0.3);
+                ctx.bezierCurveTo(s * 0.5, -s * 0.5, s * 0.6, s * 0.2, 0, s * 0.5);
+                ctx.bezierCurveTo(-s * 0.6, s * 0.2, -s * 0.5, -s * 0.5, 0, -s * 0.3);
+                
+                // Gradient fill
+                const gradient = ctx.createRadialGradient(
+                    -s * 0.2, -s * 0.2, 0,
+                    0, 0, s * 0.7
+                );
+                gradient.addColorStop(0, this.colorInner);
+                gradient.addColorStop(0.5, this.color);
+                gradient.addColorStop(1, 'rgba(233, 145, 160, 0.6)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Subtle highlight
+                ctx.beginPath();
+                ctx.ellipse(-s * 0.15, -s * 0.1, s * 0.15, s * 0.1, -0.5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fill();
+                
+                // Second petal (rotated)
+                ctx.rotate(Math.PI * 0.5 + Math.sin(this.tilt) * 0.3);
+                ctx.globalAlpha = this.opacity * 0.6;
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -s * 0.25);
+                ctx.bezierCurveTo(s * 0.4, -s * 0.4, s * 0.5, s * 0.15, 0, s * 0.4);
+                ctx.bezierCurveTo(-s * 0.5, s * 0.15, -s * 0.4, -s * 0.4, 0, -s * 0.25);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                ctx.restore();
+            }
         }
+        
+        // Petal management
+        const petals = [];
+        const maxPetals = 80;
+        
+        function spawnPetal(x, y) {
+            if (petals.length < maxPetals) {
+                petals.push(new Petal(x, y));
+            }
+        }
+        
+        // Initial burst
+        for (let i = 0; i < 50; i++) {
+            const petal = new Petal();
+            petal.y = Math.random() * window.innerHeight;
+            petal.opacity = 0.5 + Math.random() * 0.5;
+            petal.fadeIn = false;
+            petals.push(petal);
+        }
+        
+        // Continuous spawn
+        let spawnTimer = 0;
+        let gustTimer = 0;
+        
+        function animate() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            
+            // Spawn new petals
+            spawnTimer++;
+            if (spawnTimer > 15) { // Every ~250ms at 60fps
+                spawnPetal();
+                spawnTimer = 0;
+            }
+            
+            // Occasional gust
+            gustTimer++;
+            if (gustTimer > 360) { // Every ~6 seconds
+                const gustSize = 8 + Math.floor(Math.random() * 8);
+                for (let i = 0; i < gustSize; i++) {
+                    setTimeout(() => spawnPetal(), i * 50);
+                }
+                gustTimer = 0;
+            }
+            
+            // Update and draw petals
+            for (let i = petals.length - 1; i >= 0; i--) {
+                if (!petals[i].update()) {
+                    petals.splice(i, 1);
+                } else {
+                    petals[i].draw(ctx);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
 
         // ========== POETRY ANIMATION ==========
         function animatePoetry() {
@@ -2502,7 +2602,6 @@
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', () => {
             initClouds();
-            startPetals();
             animatePoetry();
             initParallax();
         });
