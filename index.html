@@ -236,15 +236,15 @@
         .content {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 80px 40px;
+            padding: 50px 30px;
         }
 
         /* Header */
         .header {
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 60px;
             animation: fadeInDown 1.5s ease-out;
         }
 
@@ -261,14 +261,14 @@
 
         .logo-kanji {
             font-family: 'Noto Serif JP', serif;
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 200;
             color: var(--petal-pink);
             text-shadow: 
                 0 0 60px rgba(255, 183, 197, 0.5),
                 0 0 120px rgba(255, 183, 197, 0.3);
             letter-spacing: 0.3em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: kanjiGlow 4s ease-in-out infinite;
         }
 
@@ -286,11 +286,11 @@
         }
 
         .header h1 {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: 300;
             letter-spacing: 0.4em;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             background: linear-gradient(135deg, var(--moon-glow), var(--petal-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -298,7 +298,7 @@
         }
 
         .header .subtitle {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-style: italic;
             color: var(--petal-soft);
             opacity: 0.8;
@@ -306,31 +306,31 @@
         }
 
         .divider {
-            width: 200px;
+            width: 150px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--petal-pink), transparent);
-            margin: 40px auto;
+            margin: 30px auto;
         }
 
         /* Portfolio Grid */
         .portfolio-section {
-            margin-bottom: 120px;
+            margin-bottom: 60px;
         }
 
         .section-title {
             font-family: 'Noto Serif JP', serif;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 300;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             color: var(--petal-soft);
             letter-spacing: 0.3em;
         }
 
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .project-card-link {
@@ -341,8 +341,8 @@
         .project-card {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.08), rgba(26, 26, 46, 0.6));
             border: 1px solid rgba(255, 183, 197, 0.15);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 16px;
+            padding: 25px;
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
@@ -356,17 +356,17 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, var(--petal-deep), var(--petal-pink), var(--petal-soft));
             opacity: 0;
             transition: opacity 0.4s;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-6px);
             border-color: rgba(255, 183, 197, 0.3);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3),
-                        0 0 40px rgba(255, 183, 197, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+                        0 0 30px rgba(255, 183, 197, 0.1);
         }
 
         .project-card:hover::before {
@@ -374,65 +374,70 @@
         }
 
         .project-card h3 {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 400;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--moon-glow);
         }
 
         .project-card p {
-            font-size: 1.1rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: rgba(248, 240, 227, 0.7);
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 25px;
+            gap: 8px;
+            margin-top: 15px;
         }
 
         .tag {
-            font-size: 0.85rem;
-            padding: 6px 16px;
+            font-size: 0.75rem;
+            padding: 4px 12px;
             background: rgba(255, 183, 197, 0.1);
             border: 1px solid rgba(255, 183, 197, 0.2);
-            border-radius: 20px;
+            border-radius: 15px;
             color: var(--petal-soft);
             letter-spacing: 0.05em;
         }
 
         /* GitHub Stats Section */
         .stats-section {
-            margin: 120px 0;
+            margin: 80px 0 60px;
         }
 
         .github-stats-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            gap: 25px;
             justify-items: center;
+        }
+
+        .github-stats-container.compact {
+            gap: 20px;
         }
 
         .stats-card {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.06), rgba(26, 26, 46, 0.5));
             border: 1px solid rgba(255, 183, 197, 0.12);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 20px;
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
         .stats-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             border-color: rgba(255, 183, 197, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
-                        0 0 30px rgba(255, 183, 197, 0.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2),
+                        0 0 20px rgba(255, 183, 197, 0.08);
         }
 
         .stats-card img {
@@ -445,53 +450,53 @@
         }
 
         .snake-card {
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.04), rgba(26, 26, 46, 0.6));
         }
 
         .snake-card img {
             width: 100%;
-            max-width: 800px;
+            max-width: 700px;
         }
 
         .snake-setup {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: var(--petal-soft);
         }
 
         .snake-setup p {
-            margin: 10px 0;
-            font-size: 1.3rem;
+            margin: 8px 0;
+            font-size: 1.1rem;
         }
 
         .snake-setup .small {
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0.6;
         }
 
         .stat-fallback {
             text-align: center;
-            padding: 40px 30px;
+            padding: 30px 20px;
             color: var(--petal-soft);
         }
 
         .stat-fallback .stat-icon {
-            font-size: 3rem;
+            font-size: 2.5rem;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .stat-fallback p {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
             color: var(--moon-glow);
         }
 
         .stat-fallback a {
             color: var(--petal-pink);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0.8;
             transition: opacity 0.3s;
         }
@@ -502,7 +507,7 @@
 
         /* Custom Stats Cards */
         .custom-stat {
-            min-width: 280px;
+            min-width: 260px;
         }
 
         .custom-stat-content {
@@ -512,18 +517,18 @@
         .custom-stat-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 183, 197, 0.15);
         }
 
         .custom-stat-header .stat-icon {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
         }
 
         .custom-stat-header h3 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 400;
             color: var(--petal-pink);
             margin: 0;
@@ -532,7 +537,7 @@
         .custom-stat-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 15px;
         }
 
         .custom-stat-item {
@@ -541,14 +546,14 @@
 
         .custom-stat-item .stat-value {
             display: block;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 300;
             color: var(--moon-glow);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .custom-stat-item .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--petal-soft);
             opacity: 0.7;
             text-transform: uppercase;
@@ -559,19 +564,20 @@
         .language-bars {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .lang-loading {
             color: var(--petal-soft);
             opacity: 0.6;
             font-style: italic;
+            font-size: 0.9rem;
         }
 
         .lang-item {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .lang-info {
@@ -583,52 +589,52 @@
         .lang-name {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--moon-glow);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .lang-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
         }
 
         .lang-percent {
             color: var(--petal-soft);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             opacity: 0.8;
         }
 
         .lang-bar-bg {
-            height: 8px;
+            height: 6px;
             background: rgba(255, 183, 197, 0.1);
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
         }
 
         .lang-bar-fill {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 1s ease-out;
         }
 
         /* Clickable Link Badge */
         .stat-link-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 32px;
-            height: 32px;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
             background: rgba(255, 183, 197, 0.15);
             border: 1px solid rgba(255, 183, 197, 0.3);
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--petal-pink);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             z-index: 5;
         }
@@ -637,94 +643,43 @@
             background: rgba(255, 183, 197, 0.3);
             border-color: var(--petal-pink);
             transform: translate(2px, -2px);
-            box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
+            box-shadow: 0 4px 12px rgba(255, 183, 197, 0.2);
         }
 
         .stats-card {
             position: relative;
         }
 
-        /* Recent Stars List */
-        .recent-stars-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .star-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px;
-            background: rgba(255, 183, 197, 0.05);
-            border-radius: 10px;
-            transition: background 0.3s;
-        }
-
-        .star-item:hover {
-            background: rgba(255, 183, 197, 0.1);
-        }
-
-        .star-item a {
-            color: var(--petal-pink);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
-        .star-item a:hover {
-            color: var(--petal-soft);
-        }
-
-        .star-item .star-desc {
-            color: var(--moon-glow);
-            opacity: 0.6;
-            font-size: 0.85rem;
-            margin-top: 4px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .star-icon {
-            color: #f1c40f;
-            font-size: 1rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .full-width-third {
-            grid-column: 1 / -1;
-        }
-
         /* Activity Section */
         .activity-section {
-            margin: 80px 0 120px;
+            margin: 60px 0;
         }
 
         .activity-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 20px;
+        }
+
+        .activity-container.compact {
+            gap: 20px;
         }
 
         .activity-card {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.06), rgba(26, 26, 46, 0.5));
             border: 1px solid rgba(255, 183, 197, 0.12);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 20px;
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
             position: relative;
         }
 
         .activity-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             border-color: rgba(255, 183, 197, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
-                        0 0 30px rgba(255, 183, 197, 0.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2),
+                        0 0 20px rgba(255, 183, 197, 0.08);
         }
 
         .activity-card.full-width {
@@ -743,41 +698,24 @@
             justify-content: center;
             align-items: center;
             flex: 1;
-            min-height: 280px;
+            min-height: 220px;
         }
 
         #activityChart {
             max-width: 100%;
         }
 
-        .chart-labels {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-        }
-
-        .chart-label {
-            position: absolute;
-            font-size: 0.8rem;
-            color: var(--petal-soft);
-            opacity: 0.8;
-            white-space: nowrap;
-        }
-
         /* Activity Feed */
         .activity-feed {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-height: 320px;
+            gap: 10px;
+            max-height: 240px;
             overflow-y: auto;
         }
 
         .activity-feed::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .activity-feed::-webkit-scrollbar-track {
@@ -793,15 +731,15 @@
         .activity-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 12px;
+            gap: 10px;
+            padding: 10px;
             background: rgba(255, 183, 197, 0.05);
-            border-radius: 10px;
-            border-left: 3px solid var(--petal-pink);
+            border-radius: 8px;
+            border-left: 2px solid var(--petal-pink);
         }
 
         .activity-item .activity-icon {
-            font-size: 1.2rem;
+            font-size: 1rem;
             flex-shrink: 0;
         }
 
@@ -811,8 +749,8 @@
 
         .activity-item .activity-text {
             color: var(--moon-glow);
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.4;
         }
 
         .activity-item .activity-text a {
@@ -827,18 +765,102 @@
         .activity-item .activity-time {
             color: var(--petal-soft);
             opacity: 0.5;
-            font-size: 0.8rem;
-            margin-top: 4px;
+            font-size: 0.75rem;
+            margin-top: 3px;
         }
 
-        @media (max-width: 900px) {
-            .activity-container {
-                grid-template-columns: 1fr;
-            }
+        /* Gilded Section */
+        .gilded-section {
+            margin: 60px 0;
+        }
 
-            .activity-card.full-width {
-                grid-column: auto;
-            }
+        .gilded-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .gilded-card {
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.06), rgba(26, 26, 46, 0.5));
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .gilded-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2),
+                        0 0 20px rgba(212, 175, 55, 0.08);
+        }
+
+        .gilded-card .custom-stat-header h3 {
+            color: var(--gold-accent);
+        }
+
+        .gilded-card .stat-link-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.3);
+            color: var(--gold-accent);
+        }
+
+        .gilded-card .stat-link-badge:hover {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: var(--gold-accent);
+        }
+
+        /* Recent Stars Grid */
+        .recent-stars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .star-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .star-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .star-item a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .star-item a:hover {
+            color: #f1c40f;
+        }
+
+        .star-item .star-desc {
+            color: var(--moon-glow);
+            opacity: 0.6;
+            font-size: 0.8rem;
+            margin-top: 3px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .star-icon {
+            color: #f1c40f;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         @media (max-width: 900px) {
@@ -853,11 +875,11 @@
 
             .custom-stat-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 12px;
             }
 
             .custom-stat-item .stat-value {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
             }
 
             .activity-container {
@@ -867,19 +889,23 @@
             .activity-card.full-width {
                 grid-column: auto;
             }
+
+            .recent-stars-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Poetry Section */
         .poetry-section {
-            margin: 120px 0;
+            margin: 60px 0;
             position: relative;
         }
 
         .poetry-container {
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.05), rgba(26, 26, 46, 0.8));
             border: 1px solid rgba(255, 183, 197, 0.1);
-            border-radius: 30px;
-            padding: 80px;
+            border-radius: 20px;
+            padding: 50px;
             position: relative;
             overflow: hidden;
         }
@@ -888,25 +914,25 @@
         .poetry-container::after {
             content: '桜';
             font-family: 'Noto Serif JP', serif;
-            font-size: 15rem;
+            font-size: 12rem;
             position: absolute;
             color: rgba(255, 183, 197, 0.03);
             pointer-events: none;
         }
 
         .poetry-container::before {
-            top: -50px;
-            left: -30px;
+            top: -40px;
+            left: -20px;
         }
 
         .poetry-container::after {
-            bottom: -80px;
-            right: -30px;
+            bottom: -60px;
+            right: -20px;
         }
 
         .poetry-text {
-            font-size: 1.35rem;
-            line-height: 2.4;
+            font-size: 1.15rem;
+            line-height: 2;
             text-align: center;
             color: var(--moon-glow);
             font-style: italic;
@@ -915,7 +941,7 @@
         }
 
         .poetry-text p {
-            margin-bottom: 0.5em;
+            margin-bottom: 0.3em;
             opacity: 0;
             animation: fadeInPoem 1s ease-out forwards;
         }
@@ -933,8 +959,8 @@
 
         /* Haiku Section */
         .haiku-container {
-            margin-top: 60px;
-            padding-top: 50px;
+            margin-top: 40px;
+            padding-top: 35px;
             border-top: 1px solid rgba(255, 183, 197, 0.15);
             position: relative;
             text-align: center;
@@ -946,12 +972,12 @@
         }
 
         .haiku-text p {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 300;
-            line-height: 2.2;
+            line-height: 2;
             color: var(--petal-pink);
             letter-spacing: 0.15em;
-            margin-bottom: 0.3em;
+            margin-bottom: 0.2em;
             text-shadow: 0 0 30px rgba(255, 183, 197, 0.4);
             opacity: 0;
             animation: fadeInHaiku 1.2s ease-out forwards;
@@ -975,10 +1001,10 @@
         .haiku-symbol {
             display: block;
             font-family: 'Noto Serif JP', serif;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 200;
             color: rgba(255, 183, 197, 0.3);
-            margin-top: 30px;
+            margin-top: 20px;
             letter-spacing: 0.5em;
             opacity: 0;
             animation: fadeInHaiku 1s ease-out 2s forwards;
@@ -990,7 +1016,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: rgba(255, 183, 197, 0.2);
             opacity: 0;
             animation: fadeInHaiku 1s ease-out 2.2s forwards;
@@ -1006,31 +1032,31 @@
 
         /* Next Steps Section */
         .next-steps-section {
-            margin-top: 120px;
+            margin-top: 60px;
         }
 
         .steps-container {
             background: linear-gradient(145deg, rgba(212, 175, 55, 0.05), rgba(26, 26, 46, 0.7));
             border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 30px;
-            padding: 60px;
+            border-radius: 20px;
+            padding: 40px;
         }
 
         .steps-container h2 {
             font-family: 'Noto Serif JP', serif;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 300;
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 35px;
             color: var(--gold-accent);
             letter-spacing: 0.2em;
         }
 
         .step {
             display: flex;
-            gap: 30px;
-            margin-bottom: 40px;
-            padding-bottom: 40px;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
             border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
 
@@ -1042,38 +1068,38 @@
 
         .step-number {
             font-family: 'Noto Serif JP', serif;
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: 200;
             color: var(--gold-accent);
             opacity: 0.6;
-            min-width: 60px;
+            min-width: 50px;
         }
 
         .step-content h3 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 400;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--moon-glow);
         }
 
         .step-content p {
-            font-size: 1.15rem;
-            line-height: 1.9;
+            font-size: 0.95rem;
+            line-height: 1.7;
             color: rgba(248, 240, 227, 0.75);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .code-block {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 183, 197, 0.1);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
             font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             color: var(--petal-soft);
             overflow-x: auto;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
         .code-block code {
@@ -1088,43 +1114,43 @@
         .stats-preview {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
+            gap: 20px;
+            margin-top: 25px;
         }
 
         .stat-box {
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             background: rgba(255, 183, 197, 0.05);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 183, 197, 0.1);
         }
 
         .stat-box .number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 300;
             color: var(--petal-pink);
             display: block;
         }
 
         .stat-box .label {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             color: rgba(248, 240, 227, 0.6);
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            padding: 80px 40px;
+            padding: 50px 40px;
             border-top: 1px solid rgba(255, 183, 197, 0.1);
-            margin-top: 100px;
+            margin-top: 60px;
         }
 
         .footer p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: rgba(248, 240, 227, 0.5);
             letter-spacing: 0.15em;
         }
@@ -1132,14 +1158,14 @@
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
+            gap: 25px;
+            margin-top: 20px;
         }
 
         .social-links a {
             color: var(--petal-soft);
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: color 0.3s, transform 0.3s;
             opacity: 0.7;
         }
@@ -1153,29 +1179,29 @@
         /* Responsive */
         @media (max-width: 768px) {
             .content {
-                padding: 40px 20px;
+                padding: 30px 15px;
             }
 
             .logo-kanji {
-                font-size: 3rem;
+                font-size: 2.5rem;
             }
 
             .header h1 {
-                font-size: 2rem;
-                letter-spacing: 0.2em;
+                font-size: 1.6rem;
+                letter-spacing: 0.15em;
             }
 
             .poetry-container {
-                padding: 40px 25px;
+                padding: 30px 20px;
             }
 
             .poetry-text {
-                font-size: 1.1rem;
-                line-height: 2;
+                font-size: 0.95rem;
+                line-height: 1.8;
             }
 
             .haiku-text p {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
             }
 
             .haiku-container::before,
@@ -1185,7 +1211,7 @@
 
             .step {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
             }
 
             .stats-preview {
@@ -1197,9 +1223,9 @@
             }
 
             .moon {
-                width: 80px;
-                height: 80px;
-                top: 40px;
+                width: 70px;
+                height: 70px;
+                top: 30px;
                 right: 10%;
             }
         }
@@ -1283,7 +1309,7 @@
         <!-- GitHub Stats Section -->
         <section class="stats-section">
             <h2 class="section-title">統計 — Statistics</h2>
-            <div class="github-stats-container">
+            <div class="github-stats-container compact">
                 <div class="stats-card custom-stat">
                     <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
                     <div class="custom-stat-content">
@@ -1323,38 +1349,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="stats-card custom-stat full-width-third">
-                    <a href="https://github.com/geket?tab=stars" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
-                    <div class="custom-stat-content">
-                        <div class="custom-stat-header">
-                            <span class="stat-icon">⭐</span>
-                            <h3>Recent Stars</h3>
-                        </div>
-                        <div class="recent-stars-list" id="recent-stars">
-                            <div class="lang-loading">Loading starred repos...</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
         <!-- Activity Section -->
         <section class="activity-section">
             <h2 class="section-title">活動 — Activity</h2>
-            <div class="activity-container">
+            <div class="activity-container compact">
                 <div class="activity-card activity-chart-card">
                     <div class="custom-stat-header">
                         <span class="stat-icon">📈</span>
                         <h3>Activity Overview</h3>
                     </div>
                     <div class="activity-chart-wrapper">
-                        <canvas id="activityChart" width="280" height="280"></canvas>
-                        <div class="chart-labels">
-                            <span class="chart-label" style="top: 5%; left: 50%; transform: translateX(-50%);">Commits</span>
-                            <span class="chart-label" style="top: 50%; right: 0; transform: translateY(-50%);">Code Review</span>
-                            <span class="chart-label" style="bottom: 15%; right: 10%;">Issues</span>
-                            <span class="chart-label" style="bottom: 15%; left: 10%;">Pull Requests</span>
-                        </div>
+                        <canvas id="activityChart" width="240" height="240"></canvas>
                     </div>
                 </div>
                 <div class="activity-card recent-activity-card">
@@ -1369,6 +1377,23 @@
                 </div>
                 <div class="activity-card full-width snake-card">
                     <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Gilded Section (Recent Stars) -->
+        <section class="gilded-section">
+            <h2 class="section-title">金箔 — Gilded</h2>
+            <div class="gilded-container">
+                <div class="gilded-card">
+                    <a href="https://github.com/geket?tab=stars" target="_blank" rel="noopener noreferrer" class="stat-link-badge">↗</a>
+                    <div class="custom-stat-header">
+                        <span class="stat-icon">⭐</span>
+                        <h3>Recent Stars</h3>
+                    </div>
+                    <div class="recent-stars-grid" id="recent-stars">
+                        <div class="lang-loading">Loading starred repos...</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1905,12 +1930,12 @@
                         
                         switch(event.type) {
                             case 'PushEvent':
-                                const commits = event.payload.commits?.length || 0;
+                                const commits = event.payload.commits?.length || event.payload.size || 1;
                                 return `Pushed ${commits} commit${commits !== 1 ? 's' : ''} to <a href="${repoUrl}" target="_blank">${repoName}</a>`;
                             case 'PullRequestEvent':
-                                return `${event.payload.action} a pull request in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                                return `${event.payload.action.charAt(0).toUpperCase() + event.payload.action.slice(1)} PR in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
                             case 'IssuesEvent':
-                                return `${event.payload.action} an issue in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                                return `${event.payload.action.charAt(0).toUpperCase() + event.payload.action.slice(1)} issue in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
                             case 'CreateEvent':
                                 return `Created ${event.payload.ref_type} in <a href="${repoUrl}" target="_blank">${repoName}</a>`;
                             case 'WatchEvent':
@@ -1942,7 +1967,7 @@
                         return new Date(date).toLocaleDateString();
                     };
 
-                    activityContainer.innerHTML = events.slice(0, 6).map(event => `
+                    activityContainer.innerHTML = events.slice(0, 5).map(event => `
                         <div class="activity-item">
                             <span class="activity-icon">${activityIcons[event.type] || '📌'}</span>
                             <div class="activity-content">
@@ -1952,18 +1977,19 @@
                         </div>
                     `).join('');
 
-                    // Calculate activity breakdown for chart
+                    // Calculate activity breakdown for pentagon chart
                     const activityCounts = {
                         commits: 0,
                         codeReview: 0,
                         issues: 0,
-                        pullRequests: 0
+                        pullRequests: 0,
+                        privateContrib: 6 // Default estimate for private contributions
                     };
 
                     events.forEach(event => {
                         switch(event.type) {
                             case 'PushEvent':
-                                activityCounts.commits += event.payload.commits?.length || 1;
+                                activityCounts.commits += event.payload.commits?.length || event.payload.size || 1;
                                 break;
                             case 'PullRequestReviewEvent':
                             case 'PullRequestReviewCommentEvent':
@@ -1983,11 +2009,11 @@
                 }
             })
             .catch(err => {
-                document.getElementById('activity-feed').innerHTML = '<p style="opacity:0.6">Activity will load when deployed</p>';
-                drawActivityChart({ commits: 47, codeReview: 33, issues: 4, pullRequests: 16 });
+                document.getElementById('activity-feed').innerHTML = '<p style="opacity:0.6; font-size:0.85rem;">Activity will load when deployed</p>';
+                drawActivityChart({ commits: 15, codeReview: 5, issues: 1, pullRequests: 2, privateContrib: 6 });
             });
 
-        // Draw Activity Chart (Radar/Diamond style like GitHub)
+        // Draw Activity Chart (Pentagon style like GitHub)
         function drawActivityChart(data) {
             const canvas = document.getElementById('activityChart');
             if (!canvas) return;
@@ -1995,42 +2021,50 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const maxRadius = Math.min(centerX, centerY) - 40;
+            const maxRadius = Math.min(centerX, centerY) - 45;
 
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Calculate total and percentages
-            const total = data.commits + data.codeReview + data.issues + data.pullRequests;
+            // Calculate total and percentages (5 axes for pentagon)
+            const total = data.commits + data.codeReview + data.issues + data.pullRequests + data.privateContrib;
             const values = [
-                total > 0 ? data.commits / total : 0.25,
-                total > 0 ? data.codeReview / total : 0.25,
-                total > 0 ? data.issues / total : 0.25,
-                total > 0 ? data.pullRequests / total : 0.25
+                total > 0 ? data.commits / total : 0.2,
+                total > 0 ? data.codeReview / total : 0.2,
+                total > 0 ? data.issues / total : 0.2,
+                total > 0 ? data.pullRequests / total : 0.2,
+                total > 0 ? data.privateContrib / total : 0.2
             ];
 
-            // Points for diamond shape (top, right, bottom, left)
-            const angles = [-Math.PI/2, 0, Math.PI/2, Math.PI];
+            // Labels for pentagon points
+            const labels = ['Commits', 'Code Review', 'Issues', 'Pull Requests', 'Private'];
+
+            // Points for pentagon shape (5 points, starting from top)
+            const numPoints = 5;
+            const angles = [];
+            for (let i = 0; i < numPoints; i++) {
+                angles.push(-Math.PI / 2 + (2 * Math.PI * i) / numPoints);
+            }
             
-            // Draw grid lines
+            // Draw grid lines (pentagon shapes at different radii)
             ctx.strokeStyle = 'rgba(255, 183, 197, 0.1)';
             ctx.lineWidth = 1;
             
-            for (let i = 0.25; i <= 1; i += 0.25) {
+            for (let r = 0.25; r <= 1; r += 0.25) {
                 ctx.beginPath();
-                for (let j = 0; j < 4; j++) {
-                    const x = centerX + Math.cos(angles[j]) * maxRadius * i;
-                    const y = centerY + Math.sin(angles[j]) * maxRadius * i;
-                    if (j === 0) ctx.moveTo(x, y);
+                for (let i = 0; i < numPoints; i++) {
+                    const x = centerX + Math.cos(angles[i]) * maxRadius * r;
+                    const y = centerY + Math.sin(angles[i]) * maxRadius * r;
+                    if (i === 0) ctx.moveTo(x, y);
                     else ctx.lineTo(x, y);
                 }
                 ctx.closePath();
                 ctx.stroke();
             }
 
-            // Draw axis lines
+            // Draw axis lines from center to each vertex
             ctx.strokeStyle = 'rgba(255, 183, 197, 0.15)';
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < numPoints; i++) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(
@@ -2042,11 +2076,11 @@
 
             // Draw data shape
             ctx.beginPath();
-            const minScale = 0.15; // Minimum visibility
-            for (let i = 0; i < 4; i++) {
+            const minScale = 0.12;
+            for (let i = 0; i < numPoints; i++) {
                 const scale = minScale + values[i] * (1 - minScale);
-                const x = centerX + Math.cos(angles[i]) * maxRadius * scale;
-                const y = centerY + Math.sin(angles[i]) * maxRadius * scale;
+                const x = centerX + Math.cos(angles[i]) * maxRadius * Math.min(scale * 2, 1);
+                const y = centerY + Math.sin(angles[i]) * maxRadius * Math.min(scale * 2, 1);
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
@@ -2054,45 +2088,53 @@
 
             // Fill with gradient
             const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
-            gradient.addColorStop(0, 'rgba(100, 200, 150, 0.4)');
-            gradient.addColorStop(1, 'rgba(100, 200, 150, 0.1)');
+            gradient.addColorStop(0, 'rgba(100, 200, 150, 0.5)');
+            gradient.addColorStop(1, 'rgba(100, 200, 150, 0.15)');
             ctx.fillStyle = gradient;
             ctx.fill();
 
             // Stroke outline
-            ctx.strokeStyle = 'rgba(100, 200, 150, 0.8)';
+            ctx.strokeStyle = 'rgba(100, 200, 150, 0.9)';
             ctx.lineWidth = 2;
             ctx.stroke();
 
             // Draw data points
             ctx.fillStyle = 'rgba(100, 200, 150, 1)';
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < numPoints; i++) {
                 const scale = minScale + values[i] * (1 - minScale);
-                const x = centerX + Math.cos(angles[i]) * maxRadius * scale;
-                const y = centerY + Math.sin(angles[i]) * maxRadius * scale;
+                const x = centerX + Math.cos(angles[i]) * maxRadius * Math.min(scale * 2, 1);
+                const y = centerY + Math.sin(angles[i]) * maxRadius * Math.min(scale * 2, 1);
                 ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
                 ctx.fill();
             }
 
-            // Draw percentage labels
-            ctx.fillStyle = 'var(--moon-glow)';
-            ctx.font = '12px "Cormorant Garamond", serif';
+            // Draw labels and percentage
+            ctx.font = '11px "Cormorant Garamond", serif';
             ctx.textAlign = 'center';
+            ctx.fillStyle = '#f8f0e3';
             
-            const labels = [
-                { text: `${Math.round(values[0] * 100)}%`, angle: angles[0], offset: 25 },
-                { text: `${Math.round(values[1] * 100)}%`, angle: angles[1], offset: 25 },
-                { text: `${Math.round(values[2] * 100)}%`, angle: angles[2], offset: 25 },
-                { text: `${Math.round(values[3] * 100)}%`, angle: angles[3], offset: 25 }
+            const labelOffsets = [
+                { dx: 0, dy: -12 },   // Commits (top)
+                { dx: 15, dy: 0 },    // Code Review (top right)
+                { dx: 10, dy: 10 },   // Issues (bottom right)
+                { dx: -10, dy: 10 },  // Pull Requests (bottom left)
+                { dx: -15, dy: 0 }    // Private (top left)
             ];
 
-            ctx.fillStyle = '#f8f0e3';
-            labels.forEach(label => {
-                const x = centerX + Math.cos(label.angle) * (maxRadius + label.offset);
-                const y = centerY + Math.sin(label.angle) * (maxRadius + label.offset);
-                ctx.fillText(label.text, x, y + 4);
-            });
+            for (let i = 0; i < numPoints; i++) {
+                const labelRadius = maxRadius + 25;
+                const x = centerX + Math.cos(angles[i]) * labelRadius + labelOffsets[i].dx;
+                const y = centerY + Math.sin(angles[i]) * labelRadius + labelOffsets[i].dy;
+                
+                // Draw label
+                ctx.fillStyle = 'rgba(255, 183, 197, 0.7)';
+                ctx.fillText(labels[i], x, y);
+                
+                // Draw percentage below
+                ctx.fillStyle = '#f8f0e3';
+                ctx.fillText(`${Math.round(values[i] * 100)}%`, x, y + 12);
+            }
         }
 
         // ========== INITIALIZE ==========
