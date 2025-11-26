@@ -470,6 +470,36 @@
             opacity: 0.6;
         }
 
+        .stat-fallback {
+            text-align: center;
+            padding: 40px 30px;
+            color: var(--petal-soft);
+        }
+
+        .stat-fallback .stat-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .stat-fallback p {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--moon-glow);
+        }
+
+        .stat-fallback a {
+            color: var(--petal-pink);
+            text-decoration: none;
+            font-size: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .stat-fallback a:hover {
+            opacity: 1;
+        }
+
         @media (max-width: 900px) {
             .github-stats-container {
                 grid-template-columns: 1fr;
@@ -896,13 +926,13 @@
             <h2 class="section-title">貢献 — Contributions</h2>
             <div class="github-stats-container">
                 <div class="stats-card">
-                    <img src="https://github-readme-stats.vercel.app/api?username=geket&show_icons=true&theme=radical&hide_border=true&bg_color=00000000&title_color=ffb7c5&text_color=f8f0e3&icon_color=ffd1dc" alt="GitHub Stats" />
+                    <img src="https://github-readme-stats.vercel.app/api?username=geket&show_icons=true&theme=tokyonight&hide_border=true&bg_color=1a1a2e&title_color=ffb7c5&text_color=f8f0e3&icon_color=ffd1dc&ring_color=ffb7c5" alt="GitHub Stats" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>📊</span><p>GitHub Stats</p><a href=\'https://github.com/geket\' target=\'_blank\'>View Profile →</a></div>'" />
                 </div>
                 <div class="stats-card">
-                    <img src="https://github-readme-streak-stats.herokuapp.com/?user=geket&theme=radical&hide_border=true&background=00000000&ring=ffb7c5&fire=ffd1dc&currStreakLabel=f8f0e3&sideLabels=f8f0e3&currStreakNum=ffb7c5&sideNums=ffd1dc&dates=f8f0e380" alt="GitHub Streak" />
+                    <img src="https://streak-stats.demolab.com?user=geket&theme=tokyonight&hide_border=true&background=1a1a2e&ring=ffb7c5&fire=ffd1dc&currStreakLabel=f8f0e3&sideLabels=f8f0e3&currStreakNum=ffb7c5&sideNums=ffd1dc&dates=f8f0e380" alt="GitHub Streak" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>🔥</span><p>Contribution Streak</p><a href=\'https://github.com/geket\' target=\'_blank\'>View Profile →</a></div>'" />
                 </div>
                 <div class="stats-card full-width">
-                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=geket&layout=compact&theme=radical&hide_border=true&bg_color=00000000&title_color=ffb7c5&text_color=f8f0e3" alt="Top Languages" />
+                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=geket&layout=compact&theme=tokyonight&hide_border=true&bg_color=1a1a2e&title_color=ffb7c5&text_color=f8f0e3" alt="Top Languages" onerror="this.parentElement.innerHTML='<div class=\'stat-fallback\'><span class=\'stat-icon\'>💻</span><p>Top Languages</p><a href=\'https://github.com/geket?tab=repositories\' target=\'_blank\'>View Repos →</a></div>'" />
                 </div>
                 <div class="stats-card full-width snake-card">
                     <img src="https://raw.githubusercontent.com/geket/geket/output/github-contribution-grid-snake-dark.svg" alt="GitHub Contribution Snake" onerror="this.parentElement.innerHTML='<div class=\'snake-setup\'><p>🐍 Snake animation needs setup!</p><p class=\'small\'>See instructions below</p></div>'" />
