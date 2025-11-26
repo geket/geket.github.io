@@ -242,6 +242,53 @@
         }
 
         /* Header */
+        .hero-image-section {
+            margin-bottom: 30px;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+                        0 0 40px rgba(255, 183, 197, 0.1);
+        }
+
+        .hero-bg-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .hero-kanji-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Noto Serif JP', serif;
+            font-size: 18rem;
+            font-weight: 200;
+            color: var(--petal-pink);
+            text-shadow: 
+                0 0 80px rgba(255, 183, 197, 0.9),
+                0 0 160px rgba(255, 183, 197, 0.6),
+                0 0 240px rgba(255, 183, 197, 0.4),
+                0 6px 12px rgba(0, 0, 0, 0.6);
+            animation: kanjiGlow 4s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero-kanji-overlay {
+                font-size: 12rem;
+            }
+        }
+
         .header {
             text-align: center;
             margin-bottom: 60px;
@@ -692,6 +739,62 @@
             opacity: 0.7;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+        }
+
+        /* Cross Grid Layout for Stats */
+        .stats-cross-grid {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .stats-cross-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+
+        .cross-stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-label-top {
+            font-size: 0.7rem;
+            color: var(--petal-soft);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .stat-label-bottom {
+            font-size: 0.7rem;
+            color: var(--petal-soft);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 8px;
+        }
+
+        .cross-divider-horizontal {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 183, 197, 0.4), transparent);
+        }
+
+        .cross-divider-vertical {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(255, 183, 197, 0.4), transparent);
+            transform: translateX(-50%);
         }
 
         /* Language Bars */
@@ -1313,9 +1416,16 @@
 
     <!-- Main Content -->
     <div class="content">
+        <!-- Hero Section with Image -->
+        <div class="hero-image-section">
+            <div class="hero-image-container">
+                <img src="data:image/jpeg;base64,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" alt="Hero Background" class="hero-bg-img" />
+                <div class="hero-kanji-overlay">桜</div>
+            </div>
+        </div>
+
         <!-- Header -->
         <header class="header">
-            <div class="logo-kanji">桜</div>
             <h1>Code Portfolio</h1>
             <p class="subtitle">Where code blooms like cherry blossoms</p>
             <div class="divider"></div>
@@ -1367,23 +1477,29 @@
                                 <span class="stat-icon">📊</span>
                                 <h3>GitHub Stats</h3>
                             </div>
-                            <div class="custom-stat-grid">
-                                <div class="custom-stat-item">
-                                    <span class="stat-value vibrate" id="stat-repos">--</span>
-                                    <span class="stat-label">Repos</span>
+                            <div class="stats-cross-grid">
+                                <div class="stats-cross-row top-row">
+                                    <div class="cross-stat-item">
+                                        <span class="stat-label-top">REPOS</span>
+                                        <span class="stat-value vibrate" id="stat-repos">12</span>
+                                    </div>
+                                    <div class="cross-stat-item">
+                                        <span class="stat-label-top">FOLLOWERS</span>
+                                        <span class="stat-value vibrate" id="stat-followers">8</span>
+                                    </div>
                                 </div>
-                                <div class="custom-stat-item">
-                                    <span class="stat-value vibrate" id="stat-followers">--</span>
-                                    <span class="stat-label">Followers</span>
+                                <div class="cross-divider-horizontal"></div>
+                                <div class="stats-cross-row bottom-row">
+                                    <div class="cross-stat-item">
+                                        <span class="stat-value vibrate" id="stat-following">15</span>
+                                        <span class="stat-label-bottom">FOLLOWING</span>
+                                    </div>
+                                    <div class="cross-stat-item">
+                                        <span class="stat-value vibrate" id="stat-stars">6</span>
+                                        <span class="stat-label-bottom">TOTAL STARS</span>
+                                    </div>
                                 </div>
-                                <div class="custom-stat-item">
-                                    <span class="stat-value vibrate" id="stat-following">--</span>
-                                    <span class="stat-label">Following</span>
-                                </div>
-                                <div class="custom-stat-item">
-                                    <span class="stat-value vibrate" id="stat-stars">--</span>
-                                    <span class="stat-label">Total Stars</span>
-                                </div>
+                                <div class="cross-divider-vertical"></div>
                             </div>
                         </div>
                         <div class="stat-divider"></div>
@@ -1411,7 +1527,7 @@
                         <h3>Activity Overview</h3>
                     </div>
                     <div class="activity-chart-wrapper">
-                        <canvas id="activityChart" width="240" height="240"></canvas>
+                        <canvas id="activityChart" width="340" height="340"></canvas>
                     </div>
                 </div>
                 <div class="activity-card recent-activity-card">
@@ -1998,7 +2114,7 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const maxRadius = Math.min(centerX, centerY) - 45;
+            const maxRadius = Math.min(centerX, centerY) - 70; // More padding for labels
 
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -2012,9 +2128,6 @@
                 total > 0 ? data.pullRequests / total : 0.2,
                 total > 0 ? data.privateContrib / total : 0.2
             ];
-
-            // Labels for pentagon points
-            const labels = ['Commits', 'Code Review', 'Issues', 'Pull Requests', 'Private'];
 
             // Points for pentagon shape (5 points, starting from top)
             const numPoints = 5;
@@ -2086,29 +2199,33 @@
                 ctx.fill();
             }
 
-            // Draw labels and percentage
+            // Draw labels and percentage with proper alignment
             ctx.font = '11px "Cormorant Garamond", serif';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#f8f0e3';
             
-            const labelOffsets = [
-                { dx: 0, dy: -12 },   // Commits (top)
-                { dx: 15, dy: 0 },    // Code Review (top right)
-                { dx: 10, dy: 10 },   // Issues (bottom right)
-                { dx: -10, dy: 10 },  // Pull Requests (bottom left)
-                { dx: -15, dy: 0 }    // Private (top left)
+            // Label configurations with adjusted positions for better visibility
+            const labelConfigs = [
+                { label: 'Commits', align: 'center', dx: 0, dy: -10 },           // Top
+                { label: 'Code Review', align: 'left', dx: 10, dy: 0 },          // Top right
+                { label: 'Issues', align: 'left', dx: 8, dy: 8 },                // Bottom right
+                { label: 'Pull Requests', align: 'right', dx: -8, dy: 8 },       // Bottom left
+                { label: 'Private', align: 'right', dx: -10, dy: 0 }             // Top left
             ];
 
             for (let i = 0; i < numPoints; i++) {
                 const labelRadius = maxRadius + 25;
-                const x = centerX + Math.cos(angles[i]) * labelRadius + labelOffsets[i].dx;
-                const y = centerY + Math.sin(angles[i]) * labelRadius + labelOffsets[i].dy;
+                const baseX = centerX + Math.cos(angles[i]) * labelRadius;
+                const baseY = centerY + Math.sin(angles[i]) * labelRadius;
+                const x = baseX + labelConfigs[i].dx;
+                const y = baseY + labelConfigs[i].dy;
+                
+                // Set text alignment
+                ctx.textAlign = labelConfigs[i].align;
                 
                 // Draw label
-                ctx.fillStyle = 'rgba(255, 183, 197, 0.7)';
-                ctx.fillText(labels[i], x, y);
+                ctx.fillStyle = 'rgba(255, 183, 197, 0.9)';
+                ctx.fillText(labelConfigs[i].label, x, y);
                 
-                // Draw percentage below
+                // Draw percentage below (same alignment)
                 ctx.fillStyle = '#f8f0e3';
                 ctx.fillText(`${Math.round(values[i] * 100)}%`, x, y + 12);
             }
