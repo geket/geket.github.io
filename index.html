@@ -249,7 +249,7 @@
         .hero-image-container {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 267px;
             margin: 0 auto;
             border-radius: 20px;
             overflow: hidden;
@@ -270,7 +270,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Noto Serif JP', serif;
-            font-size: 18rem;
+            font-size: 12rem;
             font-weight: 200;
             color: var(--petal-pink);
             text-shadow: 
@@ -285,7 +285,7 @@
 
         @media (max-width: 768px) {
             .hero-kanji-overlay {
-                font-size: 12rem;
+                font-size: 8rem;
             }
         }
 
@@ -1293,6 +1293,43 @@
             right: 25%;
         }
 
+        /* Aesthetic Memories Section */
+        .aesthetic-memories-section {
+            margin: 80px 0 60px;
+        }
+
+        .aesthetic-memories-section h2 {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--petal-pink);
+            margin-bottom: 30px;
+            letter-spacing: 0.15em;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4),
+                        0 0 30px rgba(255, 183, 197, 0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -1485,13 +1522,13 @@
                                     </div>
                                     <div class="cross-stat-item">
                                         <span class="stat-label-top">FOLLOWERS</span>
-                                        <span class="stat-value vibrate" id="stat-followers">8</span>
+                                        <span class="stat-value vibrate" id="stat-followers">14</span>
                                     </div>
                                 </div>
                                 <div class="cross-divider-horizontal"></div>
                                 <div class="stats-cross-row bottom-row">
                                     <div class="cross-stat-item">
-                                        <span class="stat-value vibrate" id="stat-following">15</span>
+                                        <span class="stat-value vibrate" id="stat-following">32</span>
                                         <span class="stat-label-bottom">FOLLOWING</span>
                                     </div>
                                     <div class="cross-stat-item">
@@ -1601,6 +1638,19 @@
                     </div>
                     <span class="haiku-symbol">俳句</span>
                 </div>
+            </div>
+        </section>
+
+        <!-- Aesthetic Memories Section -->
+        <section class="aesthetic-memories-section">
+            <h2>✿ Aesthetic Memories ✿</h2>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/10TOhu3uhUU" 
+                    title="Aesthetic Memories"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
             </div>
         </section>
 
