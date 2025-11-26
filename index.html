@@ -124,44 +124,411 @@
         }
 
         /* Moon glow */
-        .moon {
+        .celestial {
             position: fixed;
             top: 80px;
             right: 15%;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, 
-                rgba(255, 250, 240, 0.9) 0%,
-                rgba(255, 245, 230, 0.6) 30%,
-                rgba(255, 220, 200, 0.2) 60%,
-                transparent 70%);
-            border-radius: 50%;
+            width: 80px;
+            height: 80px;
             z-index: 0;
-            animation: moonGlow 8s ease-in-out infinite;
             transition: transform 0.3s ease-out;
+            overflow: visible;
         }
 
-        .moon::before {
+        /* ===== MOON WITH PHASES ===== */
+        .moon-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .moon-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                #fdfcf9 0%, 
+                #f5f0e6 30%, 
+                #e8e0d0 70%, 
+                #d4caba 100%);
+            box-shadow: 
+                inset -8px -5px 15px rgba(0, 0, 0, 0.15),
+                inset 5px 5px 10px rgba(255, 255, 255, 0.5),
+                0 0 40px rgba(255, 250, 230, 0.6),
+                0 0 80px rgba(255, 245, 220, 0.3);
+            overflow: hidden;
+        }
+
+        /* Moon craters */
+        .moon-body::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(180, 170, 155, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 20%;
+            left: 25%;
+        }
+
+        .moon-body::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle, rgba(180, 170, 155, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 55%;
+        }
+
+        .moon-crater-small {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, rgba(180, 170, 155, 0.35) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 65%;
+            left: 30%;
+        }
+
+        /* Moon phase shadow overlay */
+        .moon-phase {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #1a1a2e;
+            opacity: 0.95;
+            transition: clip-path 0.5s ease;
+        }
+
+        /* Moon glow */
+        .moon-glow {
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
             background: radial-gradient(circle, 
-                rgba(255, 183, 197, 0.1) 0%,
-                transparent 50%);
-            animation: moonHalo 12s ease-in-out infinite;
+                rgba(255, 250, 240, 0.15) 0%,
+                rgba(255, 230, 210, 0.08) 40%,
+                transparent 70%);
+            animation: moonGlowPulse 8s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        @keyframes moonGlow {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        @keyframes moonGlowPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
-        @keyframes moonHalo {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
-            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        /* ===== SUN ===== */
+        .sun-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .sun-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, 
+                #fff9e6 0%, 
+                #ffeb80 20%, 
+                #ffd700 50%, 
+                #ffb700 80%, 
+                #ff9500 100%);
+            box-shadow: 
+                inset -5px -5px 20px rgba(255, 150, 0, 0.4),
+                inset 5px 5px 15px rgba(255, 255, 200, 0.6),
+                0 0 60px rgba(255, 200, 50, 0.8),
+                0 0 120px rgba(255, 180, 0, 0.4);
+            animation: sunPulse 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 
+                    inset -5px -5px 20px rgba(255, 150, 0, 0.4),
+                    inset 5px 5px 15px rgba(255, 255, 200, 0.6),
+                    0 0 60px rgba(255, 200, 50, 0.8),
+                    0 0 120px rgba(255, 180, 0, 0.4);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 
+                    inset -5px -5px 20px rgba(255, 150, 0, 0.4),
+                    inset 5px 5px 15px rgba(255, 255, 200, 0.6),
+                    0 0 80px rgba(255, 200, 50, 0.9),
+                    0 0 150px rgba(255, 180, 0, 0.5);
+            }
+        }
+
+        /* Sun rays - Kris Blade Style */
+        .sun-rays {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            animation: sunRaysSpin 90s linear infinite;
+        }
+
+        .kris-blade {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            width: 12px;
+            height: 40px;
+            transform-origin: center bottom;
+            margin-left: -6px;
+            transform: rotate(var(--ray-rotation, 0deg)) translateY(var(--ray-translate, -40px));
+            animation: bladeShimmer 2s ease-in-out infinite;
+            overflow: visible;
+        }
+
+        .kris-blade svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            filter: drop-shadow(0 0 4px rgba(255, 200, 50, 0.8)) drop-shadow(0 0 8px rgba(255, 150, 0, 0.5));
+        }
+
+        /* Stagger blade animations for 12 blades */
+        .kris-blade:nth-child(1) { animation-delay: 0s; }
+        .kris-blade:nth-child(2) { animation-delay: 0.15s; }
+        .kris-blade:nth-child(3) { animation-delay: 0.3s; }
+        .kris-blade:nth-child(4) { animation-delay: 0.45s; }
+        .kris-blade:nth-child(5) { animation-delay: 0.6s; }
+        .kris-blade:nth-child(6) { animation-delay: 0.75s; }
+        .kris-blade:nth-child(7) { animation-delay: 0.9s; }
+        .kris-blade:nth-child(8) { animation-delay: 1.05s; }
+        .kris-blade:nth-child(9) { animation-delay: 1.2s; }
+        .kris-blade:nth-child(10) { animation-delay: 1.35s; }
+        .kris-blade:nth-child(11) { animation-delay: 1.5s; }
+        .kris-blade:nth-child(12) { animation-delay: 1.65s; }
+
+        @keyframes bladeShimmer {
+            0%, 100% {
+                opacity: 0.85;
+                filter: drop-shadow(0 0 4px rgba(255, 200, 50, 0.8));
+            }
+            50% {
+                opacity: 1;
+                filter: drop-shadow(0 0 8px rgba(255, 220, 100, 1));
+            }
+        }
+
+        /* Flame Particles Container with Gooey Filter */
+        .flame-particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            overflow: visible;
+            pointer-events: none;
+            filter: url(#flameGooey);
+        }
+
+        .flame-particle {
+            position: absolute;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(ellipse at 30% 30%, 
+                rgba(255, 255, 220, 1) 0%,
+                rgba(255, 220, 100, 0.9) 30%,
+                rgba(255, 150, 50, 0.7) 60%,
+                rgba(255, 100, 0, 0.4) 100%);
+            animation: flameFloat var(--flame-duration, 2s) ease-out infinite;
+            animation-delay: var(--flame-delay, 0s);
+            opacity: 0;
+            box-shadow: inset 0 0 4px rgba(255, 255, 200, 0.8);
+        }
+
+        .flame-particle.ember {
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 255, 240, 1) 0%,
+                rgba(255, 200, 80, 0.9) 50%,
+                rgba(255, 120, 0, 0.5) 100%);
+            animation: emberFloat var(--flame-duration, 1.5s) ease-out infinite;
+            box-shadow: 0 0 6px rgba(255, 180, 50, 0.8);
+        }
+
+        .flame-particle.spark {
+            border-radius: 50%;
+            background: #fffaf0;
+            box-shadow: 
+                0 0 3px rgba(255, 255, 255, 1),
+                0 0 6px rgba(255, 200, 50, 0.9);
+            animation: sparkFloat var(--flame-duration, 1s) ease-out infinite;
+        }
+
+        .flame-particle.wisp {
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            background: linear-gradient(to top,
+                rgba(255, 180, 50, 0.85) 0%,
+                rgba(255, 120, 0, 0.5) 50%,
+                transparent 100%);
+            animation: wispFloat var(--flame-duration, 2s) ease-out infinite;
+        }
+
+        /* New scatter particles - small and erratic */
+        .flame-particle.scatter {
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 255, 200, 1) 0%,
+                rgba(255, 180, 80, 0.8) 60%,
+                rgba(255, 100, 0, 0.3) 100%);
+            animation: scatterFloat var(--flame-duration, 1.2s) cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+            box-shadow: 0 0 3px rgba(255, 200, 100, 0.9);
+        }
+
+        /* Mingle particles - orbit and merge */
+        .flame-particle.mingle {
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(255, 240, 180, 1) 0%,
+                rgba(255, 200, 100, 0.85) 50%,
+                rgba(255, 140, 50, 0.5) 100%);
+            animation: mingleFloat var(--flame-duration, 2.5s) ease-in-out infinite;
+            box-shadow: inset 0 0 3px rgba(255, 255, 220, 0.9);
+        }
+
+        @keyframes flameFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scale(0.5);
+                opacity: 0;
+            }
+            15% { opacity: 1; }
+            50% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 20px) * 0.5), calc(var(--start-y, 0) + var(--end-y, -60px) * 0.5)) scale(1.15);
+                opacity: 0.95;
+            }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 20px)), calc(var(--start-y, 0) + var(--end-y, -60px))) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes emberFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scale(0.6);
+                opacity: 0;
+            }
+            15% { opacity: 1; }
+            60% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 15px) * 0.7), calc(var(--start-y, 0) + var(--end-y, -40px) * 0.7)) scale(1.1);
+                opacity: 0.85;
+            }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 15px)), calc(var(--start-y, 0) + var(--end-y, -40px))) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scale(1);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 25px)), calc(var(--start-y, 0) + var(--end-y, -50px))) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes wispFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scaleX(0.5) scaleY(0.4);
+                opacity: 0;
+            }
+            15% { opacity: 0.8; }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 20px)), calc(var(--start-y, 0) + var(--end-y, -60px))) scaleX(0.3) scaleY(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Scatter - erratic zigzag movement */
+        @keyframes scatterFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scale(0.3);
+                opacity: 0;
+            }
+            10% { 
+                opacity: 1;
+                transform: translate(calc(var(--start-x, 0) + var(--scatter-x1, 5px)), calc(var(--start-y, 0) + var(--scatter-y1, -10px))) scale(0.8);
+            }
+            35% {
+                transform: translate(calc(var(--start-x, 0) + var(--scatter-x2, -8px)), calc(var(--start-y, 0) + var(--scatter-y2, -25px))) scale(1);
+            }
+            60% {
+                transform: translate(calc(var(--start-x, 0) + var(--scatter-x3, 10px)), calc(var(--start-y, 0) + var(--scatter-y3, -40px))) scale(0.7);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 15px)), calc(var(--start-y, 0) + var(--end-y, -55px))) scale(0.1);
+                opacity: 0;
+            }
+        }
+
+        /* Mingle - wobble toward others then drift */
+        @keyframes mingleFloat {
+            0% {
+                transform: translate(var(--start-x, 0), var(--start-y, 0)) scale(0.4);
+                opacity: 0;
+            }
+            12% { 
+                opacity: 1;
+            }
+            30% {
+                transform: translate(calc(var(--start-x, 0) + var(--mingle-x, -5px)), calc(var(--start-y, 0) + var(--mingle-y, -8px))) scale(1.2);
+                opacity: 1;
+            }
+            55% {
+                transform: translate(calc(var(--start-x, 0) + var(--mingle-x, -5px) * 0.3), calc(var(--start-y, 0) + var(--end-y, -30px) * 0.6)) scale(1.1);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(calc(var(--start-x, 0) + var(--end-x, 10px)), calc(var(--start-y, 0) + var(--end-y, -50px))) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sunRaysSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sun corona */
+        .sun-corona {
+            position: absolute;
+            top: -40%;
+            left: -40%;
+            width: 180%;
+            height: 180%;
+            background: radial-gradient(circle, 
+                rgba(255, 240, 150, 0.2) 0%,
+                rgba(255, 200, 50, 0.1) 40%,
+                transparent 70%);
+            animation: coronaPulse 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes coronaPulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
 
         /* ========== SAKURA PETALS ========== */
@@ -225,6 +592,7 @@
             height: auto;
             display: block;
             filter: brightness(0.9) contrast(1.1);
+            animation: imageReconstruct 2s ease-out forwards;
         }
 
         .hero-kanji-overlay {
@@ -241,9 +609,81 @@
                 0 0 160px rgba(255, 183, 197, 0.6),
                 0 0 240px rgba(255, 183, 197, 0.4),
                 0 6px 12px rgba(0, 0, 0, 0.6);
-            animation: kanjiGlow 4s ease-in-out infinite;
+            animation: kanjiGlow 4s ease-in-out infinite, kanjiReconstruct 2s ease-out forwards;
             z-index: 2;
             pointer-events: none;
+        }
+
+        @keyframes imageReconstruct {
+            0% {
+                filter: brightness(0.9) contrast(1.1) blur(15px) saturate(0);
+                clip-path: inset(0 0 100% 0);
+            }
+            10% {
+                clip-path: inset(0 0 80% 0);
+                filter: brightness(1.2) contrast(1.5) blur(10px) saturate(0.3);
+            }
+            20% {
+                clip-path: inset(0 0 60% 0);
+                filter: brightness(0.8) contrast(1.3) blur(8px) saturate(0.5);
+            }
+            30% {
+                clip-path: inset(0 0 40% 0);
+                filter: brightness(1.1) contrast(1.2) blur(5px) saturate(0.7);
+            }
+            50% {
+                clip-path: inset(0 0 20% 0);
+                filter: brightness(0.95) contrast(1.15) blur(3px) saturate(0.85);
+            }
+            70% {
+                clip-path: inset(0 0 5% 0);
+                filter: brightness(0.92) contrast(1.12) blur(1px) saturate(0.95);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+                filter: brightness(0.9) contrast(1.1) blur(0) saturate(1);
+            }
+        }
+
+        @keyframes kanjiReconstruct {
+            0% {
+                opacity: 0;
+                filter: blur(20px);
+                transform: translate(-50%, -50%) scale(0.8);
+                text-shadow: 
+                    0 0 100px rgba(255, 183, 197, 1),
+                    0 0 200px rgba(255, 183, 197, 0.8);
+            }
+            20% {
+                opacity: 0.3;
+                filter: blur(15px);
+                transform: translate(-50%, -50%) scale(0.9) skewX(5deg);
+            }
+            40% {
+                opacity: 0.5;
+                filter: blur(10px);
+                transform: translate(-50%, -50%) scale(0.95) skewX(-3deg);
+            }
+            60% {
+                opacity: 0.7;
+                filter: blur(5px);
+                transform: translate(-50%, -50%) scale(0.98) skewX(1deg);
+            }
+            80% {
+                opacity: 0.9;
+                filter: blur(2px);
+                transform: translate(-50%, -50%) scale(0.99);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: translate(-50%, -50%) scale(1);
+                text-shadow: 
+                    0 0 80px rgba(255, 183, 197, 0.9),
+                    0 0 160px rgba(255, 183, 197, 0.6),
+                    0 0 240px rgba(255, 183, 197, 0.4),
+                    0 6px 12px rgba(0, 0, 0, 0.6);
+            }
         }
 
         @media (max-width: 768px) {
@@ -320,6 +760,28 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--petal-pink), transparent);
             margin: 30px auto;
+            transform: scaleX(0);
+            animation: dividerExpand 1.5s ease-out 0.8s forwards, dividerPulse 3s ease-in-out 2.5s infinite;
+        }
+
+        @keyframes dividerExpand {
+            0% {
+                transform: scaleX(0);
+            }
+            100% {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes dividerPulse {
+            0%, 100% {
+                opacity: 0.6;
+                box-shadow: 0 0 0px transparent;
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 8px var(--petal-pink), 0 0 15px rgba(255, 183, 197, 0.3);
+            }
         }
 
         /* Portfolio Grid */
@@ -1513,18 +1975,51 @@
                 display: none;
             }
 
-            .moon {
-                width: 70px;
-                height: 70px;
+            .celestial {
+                width: 50px;
+                height: 50px;
                 top: 30px;
                 right: 10%;
+            }
+
+            .moon-body::before {
+                width: 10px;
+                height: 10px;
+            }
+
+            .moon-body::after {
+                width: 14px;
+                height: 14px;
+            }
+
+            .moon-crater-small {
+                width: 6px;
+                height: 6px;
+            }
+
+            .sun-ray {
+                width: 2px;
+            }
+
+            .kris-blade {
+                width: 10px;
+                height: 32px;
+                margin-left: -5px;
+            }
+
+            .kris-blade svg {
+                shape-rendering: optimizeSpeed;
+            }
+
+            .flame-particle {
+                transform: scale(0.7);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Moon -->
-    <div class="moon"></div>
+    <!-- Celestial Body (Moon/Sun based on time) -->
+    <div class="celestial" id="celestialBody"></div>
 
     <!-- Animated Clouds -->
     <div class="cloud-container">
@@ -2129,14 +2624,334 @@
         }
 
         // ========== PARALLAX EFFECT ==========
+        // ========== CELESTIAL BODY (SUN/MOON) ==========
+        function initCelestialBody() {
+            const celestial = document.getElementById('celestialBody');
+            const hour = new Date().getHours();
+            
+            // Day: 6 AM to 6 PM, Night: 6 PM to 6 AM
+            const isDay = hour >= 6 && hour < 18; // Day: 6 AM to 6 PM
+            
+            if (isDay) {
+                // Create sun structure with enhanced gooey flame filter
+                celestial.innerHTML = `
+                    <svg width="0" height="0" style="position:absolute">
+                        <defs>
+                            <!-- Enhanced gooey metaball effect - more blobby merging -->
+                            <filter id="flameGooey" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
+                                <feColorMatrix in="blur" type="matrix" 
+                                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -12" result="gooey"/>
+                                <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+                            </filter>
+                            <!-- Blade wobble heat shimmer -->
+                            <filter id="bladeWobble" x="-20%" y="-20%" width="140%" height="140%">
+                                <feTurbulence type="turbulence" baseFrequency="0.04 0.12" numOctaves="2" result="wobble" seed="3">
+                                    <animate attributeName="baseFrequency" values="0.04 0.12;0.06 0.16;0.04 0.12" dur="2s" repeatCount="indefinite"/>
+                                </feTurbulence>
+                                <feDisplacementMap in="SourceGraphic" in2="wobble" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+                            </filter>
+                        </defs>
+                    </svg>
+                    <div class="sun-container">
+                        <div class="flame-particles" id="flameParticles"></div>
+                        <div class="sun-corona"></div>
+                        <div class="sun-rays" id="sunRays"></div>
+                        <div class="sun-body"></div>
+                    </div>
+                `;
+                
+                // Create kris blade rays - smaller with wobble
+                const raysContainer = document.getElementById('sunRays');
+                const bladeCount = 12;
+                
+                for (let i = 0; i < bladeCount; i++) {
+                    const blade = document.createElement('div');
+                    blade.className = 'kris-blade';
+                    blade.style.setProperty('--ray-rotation', `${i * (360 / bladeCount)}deg`);
+                    blade.style.setProperty('--ray-translate', '-40px');
+                    
+                    // Kris blade with 7 wave joints
+                    const waves = 7;
+                    const bladeHeight = 35;
+                    const bladeWidth = 10;
+                    const amplitude = 1.5;
+                    
+                    // Build serpentine blade path
+                    let pathD = `M ${bladeWidth/2} ${bladeHeight}`;
+                    
+                    // Left edge with 7 waves
+                    const segments = 28;
+                    for (let s = 0; s <= segments; s++) {
+                        const progress = s / segments;
+                        const y = bladeHeight * (1 - progress);
+                        const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
+                        const x = bladeWidth/2 - 1.5 - waveOffset;
+                        pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+                    }
+                    
+                    // Tip
+                    pathD += ` L ${bladeWidth/2} -3`;
+                    
+                    // Right edge (mirrored)
+                    for (let s = segments; s >= 0; s--) {
+                        const progress = s / segments;
+                        const y = bladeHeight * (1 - progress);
+                        const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
+                        const x = bladeWidth/2 + 1.5 + waveOffset;
+                        pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+                    }
+                    
+                    pathD += ' Z';
+                    
+                    // SVG with wobble filter
+                    blade.innerHTML = `
+                        <svg viewBox="0 0 ${bladeWidth} ${bladeHeight + 6}" preserveAspectRatio="none" style="filter: url(#bladeWobble);">
+                            <defs>
+                                <linearGradient id="bg${i}" x1="0%" y1="100%" x2="0%" y2="0%">
+                                    <stop offset="0%" stop-color="#ffd700"/>
+                                    <stop offset="40%" stop-color="#ffb000"/>
+                                    <stop offset="70%" stop-color="#ff8c00"/>
+                                    <stop offset="100%" stop-color="#ff4500" stop-opacity="0.3"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="${pathD}" fill="url(#bg${i})" transform="translate(0, 3)"/>
+                        </svg>
+                    `;
+                    
+                    raysContainer.appendChild(blade);
+                }
+                
+                // Create flame particles with enhanced gooey effect
+                const flameContainer = document.getElementById('flameParticles');
+                const particleCount = 45;
+                let particleIndex = 0;
+                
+                function createFlameParticle(forceAngle = null, forceType = null) {
+                    const particle = document.createElement('div');
+                    
+                    // Random type: flame, ember, spark, wisp, scatter, or mingle
+                    const rand = forceType !== null ? -1 : Math.random();
+                    const type = forceType || (
+                        rand < 0.25 ? 'flame' :
+                        rand < 0.40 ? 'ember' :
+                        rand < 0.52 ? 'spark' :
+                        rand < 0.65 ? 'wisp' :
+                        rand < 0.82 ? 'scatter' : 'mingle'
+                    );
+                    
+                    if (type === 'flame') {
+                        // Main flames - larger teardrop shapes
+                        particle.className = 'flame-particle';
+                        particle.style.width = (8 + Math.random() * 10) + 'px';
+                        particle.style.height = (12 + Math.random() * 14) + 'px';
+                    } else if (type === 'ember') {
+                        // Embers - medium glowing orbs
+                        particle.className = 'flame-particle ember';
+                        const size = 5 + Math.random() * 7;
+                        particle.style.width = size + 'px';
+                        particle.style.height = size + 'px';
+                    } else if (type === 'spark') {
+                        // Sparks - bright tiny dots
+                        particle.className = 'flame-particle spark';
+                        const size = 2 + Math.random() * 3;
+                        particle.style.width = size + 'px';
+                        particle.style.height = size + 'px';
+                    } else if (type === 'wisp') {
+                        // Wisps - elongated ethereal flames
+                        particle.className = 'flame-particle wisp';
+                        particle.style.width = (6 + Math.random() * 8) + 'px';
+                        particle.style.height = (16 + Math.random() * 20) + 'px';
+                    } else if (type === 'scatter') {
+                        // Scatter - small erratic particles
+                        particle.className = 'flame-particle scatter';
+                        const size = 3 + Math.random() * 4;
+                        particle.style.width = size + 'px';
+                        particle.style.height = size + 'px';
+                        // Erratic zigzag waypoints
+                        particle.style.setProperty('--scatter-x1', (Math.random() * 16 - 8) + 'px');
+                        particle.style.setProperty('--scatter-y1', (-5 - Math.random() * 12) + 'px');
+                        particle.style.setProperty('--scatter-x2', (Math.random() * 20 - 10) + 'px');
+                        particle.style.setProperty('--scatter-y2', (-18 - Math.random() * 15) + 'px');
+                        particle.style.setProperty('--scatter-x3', (Math.random() * 18 - 9) + 'px');
+                        particle.style.setProperty('--scatter-y3', (-30 - Math.random() * 15) + 'px');
+                    } else {
+                        // Mingle - particles that gravitate toward others
+                        particle.className = 'flame-particle mingle';
+                        const size = 5 + Math.random() * 6;
+                        particle.style.width = size + 'px';
+                        particle.style.height = size + 'px';
+                        // Movement toward center/other particles
+                        particle.style.setProperty('--mingle-x', (Math.random() * 12 - 6) + 'px');
+                        particle.style.setProperty('--mingle-y', (Math.random() * 10 - 5) + 'px');
+                    }
+                    
+                    // Use golden angle for even distribution, or forced angle
+                    const goldenAngle = 137.508 * (Math.PI / 180);
+                    const baseAngle = forceAngle !== null ? forceAngle : (particleIndex * goldenAngle);
+                    const angle = baseAngle + (Math.random() - 0.5) * 0.6;
+                    particleIndex++;
+                    
+                    // Vary distance in layers
+                    const layer = Math.floor(Math.random() * 4);
+                    const baseDistance = [36, 46, 56, 68][layer];
+                    const distance = baseDistance + (Math.random() - 0.5) * 10;
+                    
+                    const startX = Math.cos(angle) * distance;
+                    const startY = Math.sin(angle) * distance;
+                    
+                    // Drift direction (outward + upward bias)
+                    const driftAngle = angle + (Math.random() - 0.5) * 0.7;
+                    const driftDistance = 25 + Math.random() * 35;
+                    const endX = Math.cos(driftAngle) * (distance + driftDistance);
+                    const endY = Math.sin(driftAngle) * (distance + driftDistance) - 20 - Math.random() * 30;
+                    
+                    particle.style.setProperty('--start-x', startX + 'px');
+                    particle.style.setProperty('--start-y', startY + 'px');
+                    particle.style.setProperty('--drift-x', (endX - startX) / 2 + 'px');
+                    particle.style.setProperty('--drift-y', (endY - startY) / 2 + 'px');
+                    particle.style.setProperty('--end-x', (endX - startX) + 'px');
+                    particle.style.setProperty('--end-y', (endY - startY) + 'px');
+                    particle.style.setProperty('--rotation', (Math.random() * 60 - 30) + 'deg');
+                    particle.style.setProperty('--flame-duration', (1.5 + Math.random() * 1.5) + 's');
+                    particle.style.setProperty('--flame-delay', (Math.random() * 0.5) + 's');
+                    
+                    return particle;
+                }
+                
+                // Initial particles - evenly distributed around the sun
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = (i / particleCount) * Math.PI * 2;
+                    flameContainer.appendChild(createFlameParticle(angle));
+                }
+                // Second wave with offset for fuller coverage
+                for (let i = 0; i < 20; i++) {
+                    const angle = ((i + 0.5) / 20) * Math.PI * 2;
+                    flameContainer.appendChild(createFlameParticle(angle));
+                }
+                // Third wave - scatter particles for erratic movement
+                for (let i = 0; i < 12; i++) {
+                    const angle = ((i + 0.25) / 12) * Math.PI * 2;
+                    flameContainer.appendChild(createFlameParticle(angle, 'scatter'));
+                }
+                // Fourth wave - mingle particles that gravitate
+                for (let i = 0; i < 10; i++) {
+                    const angle = ((i + 0.75) / 10) * Math.PI * 2;
+                    flameContainer.appendChild(createFlameParticle(angle, 'mingle'));
+                }
+                
+                // Continuously regenerate particles with variety
+                setInterval(() => {
+                    const toAdd = Math.floor(Math.random() * 4) + 3;
+                    for (let i = 0; i < toAdd; i++) {
+                        if (flameContainer.children.length < particleCount + 45) {
+                            // Occasionally force scatter or mingle types
+                            const forceType = Math.random() < 0.3 ? (Math.random() < 0.5 ? 'scatter' : 'mingle') : null;
+                            flameContainer.appendChild(createFlameParticle(null, forceType));
+                        }
+                    }
+                    // Remove old particles
+                    while (flameContainer.children.length > particleCount + 50) {
+                        flameContainer.removeChild(flameContainer.firstChild);
+                    }
+                }, 250);
+            } else {
+                // Calculate moon phase (synodic month = 29.53 days)
+                const moonPhase = getMoonPhase();
+                const phaseClipPath = getMoonPhaseClipPath(moonPhase);
+                
+                // Create moon structure with phase
+                celestial.innerHTML = `
+                    <div class="moon-container">
+                        <div class="moon-glow"></div>
+                        <div class="moon-body">
+                            <div class="moon-crater-small"></div>
+                        </div>
+                        <div class="moon-phase" style="clip-path: ${phaseClipPath}"></div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Calculate current moon phase (0 = new moon, 0.5 = full moon, 1 = new moon)
+        function getMoonPhase() {
+            const now = new Date();
+            // Known new moon: January 11, 2024 11:57 UTC
+            const knownNewMoon = new Date('2024-01-11T11:57:00Z');
+            const synodicMonth = 29.53058867; // days
+            
+            const daysSinceNewMoon = (now - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = (daysSinceNewMoon % synodicMonth) / synodicMonth;
+            
+            return phase;
+        }
+        
+        // Generate clip-path for moon phase
+        // Phase: 0 = new moon (dark), 0.25 = first quarter, 0.5 = full moon, 0.75 = last quarter
+        function getMoonPhaseClipPath(phase) {
+            // For the shadow overlay:
+            // - New moon (0): full shadow covering entire moon
+            // - Waxing (0-0.5): shadow recedes from right to left
+            // - Full moon (0.5): no shadow
+            // - Waning (0.5-1): shadow grows from right to left
+            
+            if (phase < 0.01 || phase > 0.99) {
+                // New moon - full shadow
+                return 'ellipse(50% 50% at 50% 50%)';
+            }
+            
+            if (phase > 0.49 && phase < 0.51) {
+                // Full moon - no shadow
+                return 'ellipse(0% 0% at 50% 50%)';
+            }
+            
+            // Calculate the terminator position
+            // Using ellipse clip-path to simulate spherical shadow
+            
+            if (phase < 0.5) {
+                // Waxing: shadow on left, shrinking
+                // At phase 0: shadow covers 100% from left
+                // At phase 0.25: shadow covers 50% from left (first quarter)
+                // At phase 0.5: shadow covers 0%
+                const shadowWidth = 50 - (phase * 100);
+                const curveAmount = Math.abs(phase - 0.25) * 100;
+                
+                if (phase < 0.25) {
+                    // Waxing crescent - elliptical shadow on left
+                    const ellipseWidth = 50 + (0.25 - phase) * 100;
+                    return `ellipse(${ellipseWidth}% 50% at ${100 - phase * 200}% 50%)`;
+                } else {
+                    // Waxing gibbous - shadow retreating from left
+                    const coverPoint = 50 - (phase - 0.25) * 200;
+                    return `inset(0 ${100 - coverPoint}% 0 0)`;
+                }
+            } else {
+                // Waning: shadow on right, growing
+                // At phase 0.5: shadow covers 0%
+                // At phase 0.75: shadow covers 50% from right (last quarter)
+                // At phase 1: shadow covers 100%
+                const adjustedPhase = phase - 0.5;
+                
+                if (phase < 0.75) {
+                    // Waning gibbous - shadow growing from right
+                    const coverPoint = adjustedPhase * 200;
+                    return `inset(0 0 0 ${100 - coverPoint}%)`;
+                } else {
+                    // Waning crescent - elliptical shadow on right
+                    const ellipseWidth = 50 + (phase - 0.75) * 100;
+                    return `ellipse(${ellipseWidth}% 50% at ${(phase - 0.5) * 200}% 50%)`;
+                }
+            }
+        }
+
         function initParallax() {
             document.addEventListener('mousemove', (e) => {
                 const mouseX = e.clientX / window.innerWidth - 0.5;
                 const mouseY = e.clientY / window.innerHeight - 0.5;
                 
-                const moon = document.querySelector('.moon');
-                if (moon) {
-                    moon.style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
+                const celestial = document.getElementById('celestialBody');
+                if (celestial) {
+                    celestial.style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
                 }
             });
         }
@@ -2612,6 +3427,7 @@
             initClouds();
             animatePoetry();
             initParallax();
+            initCelestialBody();
         });
     </script>
 </body>
