@@ -1334,6 +1334,19 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-item.hidden {
+            display: none;
+        }
+
+        .lang-item.expandable {
+            cursor: pointer;
+        }
+
+        .lang-item.expandable:hover .lang-name {
+            color: var(--petal-pink);
         }
 
         .lang-info {
@@ -1348,6 +1361,17 @@
             gap: 6px;
             color: var(--moon-glow);
             font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+
+        .lang-expand-icon {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .lang-item.expanded .lang-expand-icon {
+            transform: rotate(90deg);
         }
 
         .lang-dot {
@@ -1373,6 +1397,493 @@
             height: 100%;
             border-radius: 3px;
             transition: width 1s ease-out;
+        }
+
+        /* Language sub-details */
+        .lang-details {
+            display: none;
+            margin-left: 14px;
+            margin-top: 8px;
+            padding: 10px;
+            background: rgba(139, 90, 139, 0.1);
+            border-radius: 8px;
+            border-left: 2px solid var(--petal-pink);
+        }
+
+        .lang-item.expanded .lang-details {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 0.75rem;
+        }
+
+        .lang-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--moon-glow);
+        }
+
+        .lang-stat-value {
+            color: var(--petal-pink);
+            font-weight: 600;
+        }
+
+        .lang-commits {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .lang-commits-title {
+            font-size: 0.7rem;
+            color: var(--petal-soft);
+            opacity: 0.8;
+            margin-bottom: 2px;
+        }
+
+        .lang-commit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            transition: background 0.2s ease;
+        }
+
+        .lang-commit-item:hover {
+            background: rgba(255, 183, 197, 0.1);
+        }
+
+        .commit-icon {
+            color: var(--petal-pink);
+            font-size: 0.65rem;
+            margin-top: 2px;
+        }
+
+        .commit-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .commit-msg {
+            color: var(--moon-glow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .commit-meta {
+            display: flex;
+            gap: 8px;
+            color: var(--petal-soft);
+            opacity: 0.7;
+            font-size: 0.65rem;
+            margin-top: 2px;
+        }
+
+        .commit-repo {
+            color: var(--petal-pink);
+        }
+
+        /* Expand languages button */
+        .lang-expand-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.2);
+            border-radius: 20px;
+            color: var(--petal-pink);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-expand-btn:hover {
+            background: rgba(255, 183, 197, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lang-expand-btn .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .lang-expand-btn.expanded .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Minecraft Easter Egg Game */
+        .minecraft-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .minecraft-overlay.active {
+            display: flex;
+        }
+
+        .minecraft-container {
+            position: relative;
+            border: 4px solid #5a3d2b;
+            box-shadow: 0 0 40px rgba(255, 183, 197, 0.3);
+        }
+
+        .minecraft-canvas {
+            display: block;
+            image-rendering: pixelated;
+            cursor: crosshair;
+        }
+        
+        /* Fullscreen styles */
+        .minecraft-game:fullscreen,
+        .minecraft-game:-webkit-full-screen {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            background: #000;
+        }
+        
+        .minecraft-game:fullscreen .minecraft-canvas,
+        .minecraft-game:-webkit-full-screen .minecraft-canvas {
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+
+        .minecraft-ui {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .hotbar-slot {
+            width: 40px;
+            height: 40px;
+            background: rgba(139, 139, 139, 0.5);
+            border: 2px solid #373737;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .hotbar-slot.selected {
+            border-color: #fff;
+            background: rgba(200, 200, 200, 0.6);
+        }
+
+        .hotbar-slot:hover {
+            background: rgba(180, 180, 180, 0.6);
+        }
+
+        .minecraft-instructions {
+            color: #fff;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 15px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .minecraft-title {
+            color: var(--petal-pink);
+            font-family: monospace;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0 #5a3d2b;
+        }
+
+        .minecraft-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 100, 100, 0.8);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .minecraft-close:hover {
+            background: rgba(255, 50, 50, 1);
+        }
+
+        /* Click to play overlay */
+        .click-to-play {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: monospace;
+            color: #fff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .click-to-play.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .click-to-play-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .click-to-play-hint {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Pause Menu */
+        .pause-menu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+        }
+
+        .pause-menu.active {
+            display: flex;
+        }
+
+        .pause-title {
+            color: var(--petal-pink);
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 0 #5a3d2b;
+        }
+
+        .pause-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 280px;
+        }
+
+        .pause-btn {
+            padding: 12px 20px;
+            font-family: monospace;
+            font-size: 16px;
+            border: 2px solid #555;
+            background: rgba(60, 60, 60, 0.9);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .pause-btn:hover:not(.disabled) {
+            background: rgba(100, 100, 100, 0.9);
+            border-color: var(--petal-pink);
+        }
+
+        .pause-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .pause-btn.disabled::after {
+            content: '✕';
+            position: absolute;
+            right: 10px;
+            color: #888;
+        }
+
+        .pause-btn.resume {
+            background: rgba(100, 180, 100, 0.8);
+            border-color: #6a6;
+        }
+
+        .pause-btn.resume:hover {
+            background: rgba(120, 200, 120, 0.9);
+        }
+
+        .pause-btn.quit {
+            background: rgba(180, 80, 80, 0.8);
+            border-color: #a66;
+        }
+
+        .pause-btn.quit:hover {
+            background: rgba(200, 100, 100, 0.9);
+        }
+
+        .pause-btn.fullscreen {
+            background: rgba(80, 120, 180, 0.8);
+            border-color: #68a;
+        }
+
+        .pause-btn.fullscreen:hover {
+            background: rgba(100, 140, 200, 0.9);
+        }
+
+        /* Sub-menus */
+        .pause-submenu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .pause-submenu.active {
+            display: flex;
+        }
+
+        .submenu-title {
+            color: var(--petal-pink);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .submenu-content {
+            width: 100%;
+            background: rgba(40, 40, 40, 0.9);
+            border: 2px solid #555;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .stat-row, .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #444;
+            color: #ccc;
+        }
+
+        .stat-row:last-child, .option-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            color: var(--petal-pink);
+            font-weight: bold;
+        }
+
+        .option-slider {
+            width: 120px;
+            accent-color: var(--petal-pink);
+        }
+
+        .option-select {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 4px 8px;
+            font-family: monospace;
+        }
+
+        .option-toggle {
+            width: 50px;
+            height: 26px;
+            background: #444;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .option-toggle.on {
+            background: var(--petal-pink);
+        }
+
+        .option-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: left 0.3s;
+        }
+
+        .option-toggle.on::after {
+            left: 27px;
+        }
+
+        .back-btn {
+            padding: 10px 30px;
+            background: rgba(80, 80, 80, 0.9);
+            border: 2px solid #666;
+            color: #fff;
+            font-family: monospace;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: rgba(100, 100, 100, 0.9);
+        }
+
+        .hero-image-container {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image-container:hover {
+            transform: scale(1.02);
         }
 
         /* Clickable Link Badge */
@@ -2050,6 +2561,121 @@
 
     <!-- Main Content -->
     <div class="content">
+        <!-- Minecraft Easter Egg Game -->
+        <div class="minecraft-overlay" id="minecraftGame">
+            <div class="minecraft-title">🌸 SakuraCraft 🌸</div>
+            <div class="minecraft-container">
+                <button class="minecraft-close" id="closeMinecraft">✕ Close</button>
+                <canvas id="gameCanvas" class="minecraft-canvas" width="800" height="500"></canvas>
+                
+                <!-- Click to Play Overlay -->
+                <div class="click-to-play" id="clickToPlay" style="display: none;">
+                    <div class="click-to-play-text">🎮 Click to Play</div>
+                    <div class="click-to-play-hint">Hold right-click to look • Left-click to place</div>
+                </div>
+                
+                <!-- Pause Menu -->
+                <div class="pause-menu" id="pauseMenu">
+                    <!-- Main Menu -->
+                    <div class="pause-submenu active" id="menuMain">
+                        <div class="pause-title">⏸ Paused</div>
+                        <div class="pause-buttons">
+                            <button class="pause-btn resume" id="btnResume">Resume</button>
+                            <button class="pause-btn fullscreen" id="btnFullscreen">Fullscreen</button>
+                            <button class="pause-btn disabled" id="btnAccount">Sign In</button>
+                            <button class="pause-btn" id="btnStats">Stats</button>
+                            <button class="pause-btn" id="btnOptions">Options</button>
+                            <button class="pause-btn quit" id="btnQuit">Quit Game</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Menu -->
+                    <div class="pause-submenu" id="menuStats">
+                        <div class="submenu-title">📊 Statistics</div>
+                        <div class="submenu-content">
+                            <div class="stat-row">
+                                <span>Blocks Placed</span>
+                                <span class="stat-value" id="statPlaced">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Blocks Broken</span>
+                                <span class="stat-value" id="statBroken">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Distance Walked</span>
+                                <span class="stat-value" id="statDistance">0m</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Jumps</span>
+                                <span class="stat-value" id="statJumps">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Play Time</span>
+                                <span class="stat-value" id="statTime">0:00</span>
+                            </div>
+                        </div>
+                        <button class="back-btn" id="statsBack">← Back</button>
+                    </div>
+                    
+                    <!-- Options Menu -->
+                    <div class="pause-submenu" id="menuOptions">
+                        <div class="submenu-title">⚙️ Options</div>
+                        <div class="submenu-content">
+                            <div class="option-row">
+                                <span>Brightness</span>
+                                <input type="range" class="option-slider" id="optBrightness" min="50" max="150" value="100">
+                            </div>
+                            <div class="option-row">
+                                <span>Color Filter</span>
+                                <select class="option-select" id="optFilter">
+                                    <option value="none">Normal</option>
+                                    <option value="sepia">Sepia</option>
+                                    <option value="grayscale">Black & White</option>
+                                    <option value="trippy">Trippy Hyperbolic</option>
+                                </select>
+                            </div>
+                            <div class="option-row">
+                                <span>Render Distance</span>
+                                <select class="option-select" id="optRenderDist">
+                                    <option value="10">Near (Fast)</option>
+                                    <option value="15">Medium</option>
+                                    <option value="20" selected>Far</option>
+                                    <option value="30">Ultra</option>
+                                </select>
+                            </div>
+                            <div class="option-row">
+                                <span>Shadows</span>
+                                <div class="option-toggle" id="optShadows" data-on="false"></div>
+                            </div>
+                            <div class="option-row">
+                                <span>Enhanced Lighting</span>
+                                <div class="option-toggle on" id="optLighting" data-on="true"></div>
+                            </div>
+                            <div class="option-row">
+                                <span>Anti-Aliasing</span>
+                                <div class="option-toggle" id="optAA" data-on="false"></div>
+                            </div>
+                        </div>
+                        <button class="back-btn" id="optionsBack">← Back</button>
+                    </div>
+                </div>
+                
+                <div class="minecraft-ui" id="gameUI">
+                    <div class="hotbar-slot selected" data-block="grass">🌿</div>
+                    <div class="hotbar-slot" data-block="dirt">🟫</div>
+                    <div class="hotbar-slot" data-block="stone">🪨</div>
+                    <div class="hotbar-slot" data-block="wood">🪵</div>
+                    <div class="hotbar-slot" data-block="leaves">🌸</div>
+                    <div class="hotbar-slot" data-block="water">💧</div>
+                    <div class="hotbar-slot" data-block="sand">🏖️</div>
+                    <div class="hotbar-slot" data-block="brick">🧱</div>
+                </div>
+            </div>
+            <div class="minecraft-instructions">
+                WASD move | SPACE jump | Mouse to look | LEFT-CLICK place | RIGHT-CLICK break | 1-8 blocks | ESC menu
+            </div>
+        </div>
+
         <!-- Hero Section with Image -->
         <div class="hero-image-section">
             <div class="hero-image-container">
@@ -2151,6 +2777,10 @@
                             <div class="language-bars" id="language-bars">
                                 <div class="lang-loading">Loading languages...</div>
                             </div>
+                            <button class="lang-expand-btn" id="langExpandBtn" style="display: none;">
+                                <span>Show more</span>
+                                <span class="arrow">▼</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2630,7 +3260,7 @@
             const hour = new Date().getHours();
             
             // Day: 6 AM to 6 PM, Night: 6 PM to 6 AM
-            const isDay = hour >= 6 && hour < 18; // Day: 6 AM to 6 PM
+            const isDay = true; // TEMP: force sun for demo
             
             if (isDay) {
                 // Create sun structure with enhanced gooey flame filter
@@ -3014,39 +3644,159 @@
 
                     // Calculate language stats
                     const langCount = {};
+                    const langRepos = {}; // Track repos per language
                     repos.forEach(repo => {
                         if (repo.language) {
                             langCount[repo.language] = (langCount[repo.language] || 0) + 1;
+                            if (!langRepos[repo.language]) langRepos[repo.language] = [];
+                            langRepos[repo.language].push(repo);
                         }
                     });
 
-                    // Sort and get top 5 languages
+                    // Sort and get top 8 languages
                     const sortedLangs = Object.entries(langCount)
                         .sort((a, b) => b[1] - a[1])
-                        .slice(0, 5);
+                        .slice(0, 8);
 
                     const totalLangRepos = sortedLangs.reduce((sum, [, count]) => sum + count, 0);
 
-                    // Render language bars
+                    // Store language data globally for expand functionality
+                    window.langData = { sortedLangs, langRepos, totalLangRepos, langColors };
+
+                    // Render language bars (show 5 initially)
                     const langBarsContainer = document.getElementById('language-bars');
-                    langBarsContainer.innerHTML = sortedLangs.map(([lang, count]) => {
+                    const langExpandBtn = document.getElementById('langExpandBtn');
+                    
+                    langBarsContainer.innerHTML = sortedLangs.map(([lang, count], index) => {
                         const percent = Math.round((count / totalLangRepos) * 100);
                         const color = langColors[lang] || langColors.Default;
+                        const hiddenClass = index >= 5 ? 'hidden' : '';
                         return `
-                            <div class="lang-item">
+                            <div class="lang-item expandable ${hiddenClass}" data-lang="${lang}" data-index="${index}">
                                 <div class="lang-info">
                                     <span class="lang-name">
                                         <span class="lang-dot" style="background: ${color}"></span>
                                         ${lang}
+                                        <span class="lang-expand-icon">▶</span>
                                     </span>
-                                    <span class="lang-percent">${percent}%</span>
+                                    <span class="lang-percent">${percent}% (${count} repos)</span>
                                 </div>
                                 <div class="lang-bar-bg">
                                     <div class="lang-bar-fill" style="width: ${percent}%; background: ${color}"></div>
                                 </div>
+                                <div class="lang-details" id="lang-details-${index}">
+                                    <div class="lang-stats">
+                                        <div class="lang-stat">
+                                            <span>📁</span>
+                                            <span class="lang-stat-value">${count}</span>
+                                            <span>repositories</span>
+                                        </div>
+                                        <div class="lang-stat">
+                                            <span>📝</span>
+                                            <span class="lang-stat-value" id="lang-commits-${index}">...</span>
+                                            <span>total commits</span>
+                                        </div>
+                                    </div>
+                                    <div class="lang-commits">
+                                        <div class="lang-commits-title">Latest commits:</div>
+                                        <div id="lang-commit-list-${index}">
+                                            <div class="lang-commit-item">Loading commits...</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         `;
                     }).join('');
+
+                    // Show expand button if more than 5 languages
+                    if (sortedLangs.length > 5) {
+                        langExpandBtn.style.display = 'flex';
+                    }
+
+                    // Language expand button handler
+                    langExpandBtn.addEventListener('click', function() {
+                        const isExpanded = this.classList.toggle('expanded');
+                        const hiddenLangs = langBarsContainer.querySelectorAll('.lang-item[data-index]');
+                        hiddenLangs.forEach(item => {
+                            const idx = parseInt(item.dataset.index);
+                            if (idx >= 5) {
+                                item.classList.toggle('hidden', !isExpanded);
+                            }
+                        });
+                        this.querySelector('span:first-child').textContent = isExpanded ? 'Show less' : 'Show more';
+                    });
+
+                    // Language item click handler for sub-expand
+                    langBarsContainer.addEventListener('click', async function(e) {
+                        const langItem = e.target.closest('.lang-item');
+                        if (!langItem) return;
+                        
+                        const lang = langItem.dataset.lang;
+                        const index = langItem.dataset.index;
+                        const wasExpanded = langItem.classList.contains('expanded');
+                        
+                        // Close all other expanded items
+                        langBarsContainer.querySelectorAll('.lang-item.expanded').forEach(item => {
+                            if (item !== langItem) item.classList.remove('expanded');
+                        });
+                        
+                        langItem.classList.toggle('expanded');
+                        
+                        // Fetch commits if newly expanded
+                        if (!wasExpanded && langItem.classList.contains('expanded')) {
+                            const repos = window.langData.langRepos[lang] || [];
+                            let totalCommits = 0;
+                            let allCommits = [];
+                            
+                            // Fetch commits from top 3 repos of this language
+                            const topRepos = repos.slice(0, 3);
+                            for (const repo of topRepos) {
+                                try {
+                                    const commitsRes = await fetch(`https://api.github.com/repos/${username}/${repo.name}/commits?per_page=5`);
+                                    const commits = await commitsRes.json();
+                                    if (Array.isArray(commits)) {
+                                        totalCommits += commits.length;
+                                        allCommits.push(...commits.map(c => ({
+                                            msg: c.commit?.message?.split('\n')[0] || 'No message',
+                                            repo: repo.name,
+                                            date: c.commit?.author?.date || '',
+                                            sha: c.sha?.substring(0, 7) || ''
+                                        })));
+                                    }
+                                } catch (err) {
+                                    console.log('Could not fetch commits for', repo.name);
+                                }
+                            }
+                            
+                            // Estimate total commits (5 per repo average)
+                            const estimatedTotal = repos.length * 15;
+                            document.getElementById(`lang-commits-${index}`).textContent = `~${estimatedTotal}`;
+                            
+                            // Show latest 3 commits
+                            const commitList = document.getElementById(`lang-commit-list-${index}`);
+                            if (allCommits.length > 0) {
+                                const latestCommits = allCommits.slice(0, 3);
+                                commitList.innerHTML = latestCommits.map(c => {
+                                    const date = c.date ? new Date(c.date).toLocaleDateString() : '';
+                                    return `
+                                        <div class="lang-commit-item">
+                                            <span class="commit-icon">●</span>
+                                            <div class="commit-info">
+                                                <div class="commit-msg">${c.msg.substring(0, 50)}${c.msg.length > 50 ? '...' : ''}</div>
+                                                <div class="commit-meta">
+                                                    <span class="commit-repo">${c.repo}</span>
+                                                    <span>${c.sha}</span>
+                                                    <span>${date}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('');
+                            } else {
+                                commitList.innerHTML = '<div class="lang-commit-item">No commits found</div>';
+                            }
+                        }
+                    });
                 }
             })
             .catch(err => {
@@ -3421,6 +4171,777 @@
                 ctx.fillText(`${Math.round(values[i] * 100)}%`, x, y + (lines.length * 11) + 2);
             }
         }
+
+        // ========== MINECRAFT EASTER EGG GAME ==========
+        const minecraftGame = {
+            canvas: null,
+            ctx: null,
+            isActive: false,
+            isPaused: false,
+            camera: { x: 0, y: 50, z: 0, rotX: 0, rotY: 0 },
+            velocity: { x: 0, y: 0, z: 0 },
+            world: {},
+            selectedBlock: 'grass',
+            keys: {},
+            isJumping: false,
+            gravity: -0.015,
+            lastPos: { x: 0, z: 0 },
+            mouseInCanvas: false,
+            
+            // Stats
+            stats: {
+                blocksPlaced: 0,
+                blocksBroken: 0,
+                distance: 0,
+                jumps: 0,
+                startTime: 0
+            },
+            
+            // Graphics settings
+            settings: {
+                brightness: 100,
+                filter: 'none',
+                renderDistance: 20,
+                shadows: false,
+                lighting: true,
+                antialiasing: false
+            },
+            
+            blockColors: {
+                grass: { top: '#7cba5f', side: '#8b6b4a', bottom: '#6b4423' },
+                dirt: { top: '#8b6b4a', side: '#8b6b4a', bottom: '#8b6b4a' },
+                stone: { top: '#888888', side: '#777777', bottom: '#666666' },
+                wood: { top: '#a0825a', side: '#6b4423', bottom: '#6b4423' },
+                leaves: { top: '#ffb7c5', side: '#ffa0b5', bottom: '#ff90a5' },
+                water: { top: '#4a90d9', side: '#3a80c9', bottom: '#2a70b9' },
+                sand: { top: '#e6d9a0', side: '#d9cc93', bottom: '#ccbf86' },
+                brick: { top: '#b35050', side: '#a04040', bottom: '#903030' }
+            },
+            
+            init() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.generateWorld();
+                this.setupControls();
+                this.setupMenus();
+            },
+            
+            generateWorld() {
+                this.world = {};
+                for (let x = -15; x <= 15; x++) {
+                    for (let z = -15; z <= 15; z++) {
+                        const height = Math.floor(Math.sin(x * 0.3) * Math.cos(z * 0.3) * 3 + 5);
+                        for (let y = 0; y < height - 2; y++) {
+                            this.setBlock(x, y, z, 'stone');
+                        }
+                        for (let y = Math.max(0, height - 2); y < height; y++) {
+                            this.setBlock(x, y, z, 'dirt');
+                        }
+                        this.setBlock(x, height, z, 'grass');
+                        if (height < 4) {
+                            for (let y = height + 1; y <= 4; y++) {
+                                this.setBlock(x, y, z, 'water');
+                            }
+                        }
+                        if (Math.random() < 0.03 && height >= 4) {
+                            this.generateTree(x, height + 1, z);
+                        }
+                    }
+                }
+            },
+            
+            generateTree(x, y, z) {
+                for (let h = 0; h < 4; h++) {
+                    this.setBlock(x, y + h, z, 'wood');
+                }
+                for (let dx = -2; dx <= 2; dx++) {
+                    for (let dz = -2; dz <= 2; dz++) {
+                        for (let dy = 3; dy <= 5; dy++) {
+                            if (Math.abs(dx) + Math.abs(dz) + Math.abs(dy - 4) < 4) {
+                                if (!(dx === 0 && dz === 0 && dy < 4)) {
+                                    this.setBlock(x + dx, y + dy, z + dz, 'leaves');
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+            setBlock(x, y, z, type) {
+                const key = `${x},${y},${z}`;
+                if (type === null) {
+                    delete this.world[key];
+                } else {
+                    this.world[key] = type;
+                }
+            },
+            
+            getBlock(x, y, z) {
+                return this.world[`${x},${y},${z}`] || null;
+            },
+            
+            setupControls() {
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => {
+                    if (!this.isActive) return;
+                    
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        if (this.isPaused) {
+                            this.resume();
+                        } else {
+                            this.pause();
+                        }
+                        return;
+                    }
+                    
+                    if (this.isPaused) return;
+                    
+                    this.keys[e.key.toLowerCase()] = true;
+                    
+                    const blockKeys = ['1', '2', '3', '4', '5', '6', '7', '8'];
+                    const blockTypes = ['grass', 'dirt', 'stone', 'wood', 'leaves', 'water', 'sand', 'brick'];
+                    const idx = blockKeys.indexOf(e.key);
+                    if (idx !== -1) {
+                        this.selectedBlock = blockTypes[idx];
+                        this.updateHotbar();
+                    }
+                    
+                    if (e.key === ' ' && !this.isJumping) {
+                        this.velocity.y = 0.35;
+                        this.isJumping = true;
+                        this.stats.jumps++;
+                    }
+                    
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    this.keys[e.key.toLowerCase()] = false;
+                });
+                
+                // Free-look mouse controls - move mouse over canvas to look
+                this.lastMouseX = 0;
+                this.lastMouseY = 0;
+                this.mouseInCanvas = false;
+                
+                // Track when mouse enters/exits canvas
+                this.canvas.addEventListener('mouseenter', (e) => {
+                    this.mouseInCanvas = true;
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.mouseInCanvas = false;
+                });
+                
+                // Mouse movement = camera rotation when over canvas
+                document.addEventListener('mousemove', (e) => {
+                    if (!this.isActive || this.isPaused || !this.mouseInCanvas) return;
+                    
+                    const dx = e.clientX - this.lastMouseX;
+                    const dy = e.clientY - this.lastMouseY;
+                    
+                    this.camera.rotY -= dx * 0.005;
+                    this.camera.rotX = Math.max(-1.5, Math.min(1.5, this.camera.rotX + dy * 0.005));
+                    
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                });
+                
+                // Left click to place blocks
+                this.canvas.addEventListener('click', (e) => {
+                    if (!this.isActive || this.isPaused) return;
+                    
+                    const hit = this.raycast();
+                    if (hit && hit.place) {
+                        this.setBlock(hit.place.x, hit.place.y, hit.place.z, this.selectedBlock);
+                        this.stats.blocksPlaced++;
+                    }
+                });
+                
+                // Right click to break blocks
+                this.canvas.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    if (!this.isActive || this.isPaused) return;
+                    
+                    const hit = this.raycast();
+                    if (hit && hit.block) {
+                        this.setBlock(hit.hit.x, hit.hit.y, hit.hit.z, null);
+                        this.stats.blocksBroken++;
+                    }
+                });
+                
+                // Visibility change - pause when hidden
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden && this.isActive && !this.isPaused) {
+                        this.pause();
+                    }
+                });
+                
+                // Window resize - update canvas size in fullscreen
+                window.addEventListener('resize', () => {
+                    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+                    if (isFs && this.isActive) {
+                        this.canvas.width = window.innerWidth;
+                        this.canvas.height = window.innerHeight;
+                    }
+                });
+                
+                // Hotbar clicks
+                document.querySelectorAll('.hotbar-slot').forEach(slot => {
+                    slot.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.selectedBlock = slot.dataset.block;
+                        this.updateHotbar();
+                    });
+                });
+            },
+            
+            setupMenus() {
+                // Resume button
+                document.getElementById('btnResume').addEventListener('click', () => this.resume());
+                
+                // Fullscreen toggle button
+                document.getElementById('btnFullscreen').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const container = document.getElementById('minecraftGame');
+                    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+                    
+                    if (isFs) {
+                        // Exit fullscreen
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        }
+                    } else {
+                        // Enter fullscreen - must be in same click handler
+                        if (container.requestFullscreen) {
+                            container.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+                        } else if (container.webkitRequestFullscreen) {
+                            container.webkitRequestFullscreen();
+                        }
+                    }
+                    
+                    // Resume game after toggling
+                    this.resume();
+                });
+                
+                // Update button text on fullscreen change
+                document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+                document.addEventListener('webkitfullscreenchange', () => this.updateFullscreenButton());
+                
+                // Account button (disabled)
+                document.getElementById('btnAccount').addEventListener('click', (e) => {
+                    e.preventDefault();
+                });
+                
+                // Stats button
+                document.getElementById('btnStats').addEventListener('click', () => {
+                    this.showSubmenu('menuStats');
+                    this.updateStatsDisplay();
+                });
+                
+                // Options button
+                document.getElementById('btnOptions').addEventListener('click', () => {
+                    this.showSubmenu('menuOptions');
+                });
+                
+                // Quit button
+                document.getElementById('btnQuit').addEventListener('click', () => this.stop());
+                
+                // Back buttons
+                document.getElementById('statsBack').addEventListener('click', () => this.showSubmenu('menuMain'));
+                document.getElementById('optionsBack').addEventListener('click', () => this.showSubmenu('menuMain'));
+                
+                // Options controls
+                document.getElementById('optBrightness').addEventListener('input', (e) => {
+                    this.settings.brightness = parseInt(e.target.value);
+                    this.applyFilters();
+                });
+                
+                document.getElementById('optFilter').addEventListener('change', (e) => {
+                    this.settings.filter = e.target.value;
+                    this.applyFilters();
+                });
+                
+                document.getElementById('optRenderDist').addEventListener('change', (e) => {
+                    this.settings.renderDistance = parseInt(e.target.value);
+                });
+                
+                // Toggle switches
+                ['optShadows', 'optLighting', 'optAA'].forEach(id => {
+                    document.getElementById(id).addEventListener('click', (e) => {
+                        const toggle = e.target;
+                        const isOn = toggle.dataset.on === 'true';
+                        toggle.dataset.on = (!isOn).toString();
+                        toggle.classList.toggle('on', !isOn);
+                        
+                        if (id === 'optShadows') this.settings.shadows = !isOn;
+                        if (id === 'optLighting') this.settings.lighting = !isOn;
+                        if (id === 'optAA') {
+                            this.settings.antialiasing = !isOn;
+                            this.canvas.style.imageRendering = !isOn ? 'pixelated' : 'auto';
+                        }
+                    });
+                });
+            },
+            
+            showSubmenu(menuId) {
+                document.querySelectorAll('.pause-submenu').forEach(m => m.classList.remove('active'));
+                document.getElementById(menuId).classList.add('active');
+            },
+            
+            updateStatsDisplay() {
+                document.getElementById('statPlaced').textContent = this.stats.blocksPlaced;
+                document.getElementById('statBroken').textContent = this.stats.blocksBroken;
+                document.getElementById('statDistance').textContent = Math.floor(this.stats.distance) + 'm';
+                document.getElementById('statJumps').textContent = this.stats.jumps;
+                
+                const elapsed = Math.floor((Date.now() - this.stats.startTime) / 1000);
+                const mins = Math.floor(elapsed / 60);
+                const secs = elapsed % 60;
+                document.getElementById('statTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            },
+            
+            applyFilters() {
+                let filter = `brightness(${this.settings.brightness}%)`;
+                
+                switch (this.settings.filter) {
+                    case 'sepia':
+                        filter += ' sepia(80%)';
+                        break;
+                    case 'grayscale':
+                        filter += ' grayscale(100%)';
+                        break;
+                    case 'trippy':
+                        filter += ' hue-rotate(' + (Date.now() % 3600) / 10 + 'deg) saturate(200%)';
+                        break;
+                }
+                
+                this.canvas.style.filter = filter;
+            },
+            
+            updateHotbar() {
+                document.querySelectorAll('.hotbar-slot').forEach(slot => {
+                    slot.classList.toggle('selected', slot.dataset.block === this.selectedBlock);
+                });
+            },
+            
+            raycast() {
+                // Direction must match camera view (projection uses -rotY)
+                const dir = {
+                    x: -Math.sin(this.camera.rotY) * Math.cos(this.camera.rotX),
+                    y: Math.sin(this.camera.rotX),
+                    z: Math.cos(this.camera.rotY) * Math.cos(this.camera.rotX)
+                };
+                
+                let lastEmpty = null;
+                for (let t = 0.5; t < 6; t += 0.1) {
+                    const x = Math.floor(this.camera.x + dir.x * t);
+                    const y = Math.floor(this.camera.y + dir.y * t);
+                    const z = Math.floor(this.camera.z + dir.z * t);
+                    
+                    const block = this.getBlock(x, y, z);
+                    if (block) {
+                        return { hit: { x, y, z }, place: lastEmpty, block };
+                    }
+                    lastEmpty = { x, y, z };
+                }
+                return null;
+            },
+            
+            update() {
+                if (!this.isActive || this.isPaused) return;
+                
+                const speed = 0.12;
+                // Forward direction matches camera view: (-sin(rotY), cos(rotY))
+                const sin = Math.sin(this.camera.rotY);
+                const cos = Math.cos(this.camera.rotY);
+                
+                let moveX = 0;
+                let moveZ = 0;
+                
+                // Forward/backward (W/S)
+                if (this.keys['w']) {
+                    moveX -= sin * speed;
+                    moveZ += cos * speed;
+                }
+                if (this.keys['s']) {
+                    moveX += sin * speed;
+                    moveZ -= cos * speed;
+                }
+                // Strafe left/right (A/D) - perpendicular to view
+                if (this.keys['a']) {
+                    moveX -= cos * speed;
+                    moveZ -= sin * speed;
+                }
+                if (this.keys['d']) {
+                    moveX += cos * speed;
+                    moveZ += sin * speed;
+                }
+                
+                // Track old position
+                const oldX = this.camera.x;
+                const oldZ = this.camera.z;
+                
+                // Try to move with collision detection
+                const newX = this.camera.x + moveX;
+                const newZ = this.camera.z + moveZ;
+                
+                // Check horizontal collision (player is ~0.6 units wide, ~1.8 units tall)
+                const playerRadius = 0.3;
+                const playerHeight = 1.8;
+                const feetY = Math.floor(this.camera.y - 2);
+                
+                // Check if new X position is valid
+                if (!this.collidesAt(newX, this.camera.y, this.camera.z, playerRadius, playerHeight)) {
+                    this.camera.x = newX;
+                }
+                // Check if new Z position is valid
+                if (!this.collidesAt(this.camera.x, this.camera.y, newZ, playerRadius, playerHeight)) {
+                    this.camera.z = newZ;
+                }
+                
+                // Track distance
+                const dx = this.camera.x - oldX;
+                const dz = this.camera.z - oldZ;
+                this.stats.distance += Math.sqrt(dx * dx + dz * dz);
+                
+                // Gravity
+                this.velocity.y += this.gravity;
+                const newY = this.camera.y + this.velocity.y;
+                
+                // Ground collision - only check directly below player
+                const groundY = this.getGroundHeightBelow(this.camera.x, this.camera.z, this.camera.y) + 2.5;
+                if (newY < groundY) {
+                    this.camera.y = groundY;
+                    this.velocity.y = 0;
+                    this.isJumping = false;
+                } else {
+                    this.camera.y = newY;
+                }
+                
+                // Ceiling collision
+                const ceilingY = this.getCeilingAbove(this.camera.x, this.camera.z, this.camera.y);
+                if (ceilingY !== null && this.camera.y > ceilingY - 0.5) {
+                    this.camera.y = ceilingY - 0.5;
+                    this.velocity.y = 0;
+                }
+                
+                // Trippy filter animation
+                if (this.settings.filter === 'trippy') {
+                    this.applyFilters();
+                }
+            },
+            
+            // Check if player would collide with blocks at position
+            collidesAt(x, y, z, radius, height) {
+                const feetY = y - 2; // Camera is at eye level, feet are 2 units below
+                // Check corners and center at multiple heights
+                const checkPoints = [
+                    { x: x - radius, z: z - radius },
+                    { x: x + radius, z: z - radius },
+                    { x: x - radius, z: z + radius },
+                    { x: x + radius, z: z + radius },
+                    { x: x, z: z }
+                ];
+                
+                for (const point of checkPoints) {
+                    const bx = Math.floor(point.x);
+                    const bz = Math.floor(point.z);
+                    // Check at feet, middle, and head level
+                    for (let checkY = Math.floor(feetY); checkY < Math.floor(feetY + height); checkY++) {
+                        if (this.getBlock(bx, checkY, bz)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            },
+            
+            // Get ground height directly below player (not teleporting to trees)
+            getGroundHeightBelow(x, z, currentY) {
+                const bx = Math.floor(x);
+                const bz = Math.floor(z);
+                const startY = Math.floor(currentY - 2); // Start from feet level
+                
+                for (let y = startY; y >= 0; y--) {
+                    if (this.getBlock(bx, y, bz)) {
+                        return y + 1;
+                    }
+                }
+                return 0;
+            },
+            
+            // Get ceiling above player
+            getCeilingAbove(x, z, currentY) {
+                const bx = Math.floor(x);
+                const bz = Math.floor(z);
+                const headY = Math.floor(currentY);
+                
+                for (let y = headY; y <= headY + 3; y++) {
+                    if (this.getBlock(bx, y, bz)) {
+                        return y;
+                    }
+                }
+                return null;
+            },
+            
+            render() {
+                if (!this.isActive) return;
+                
+                const ctx = this.ctx;
+                const width = this.canvas.width;
+                const height = this.canvas.height;
+                
+                // Sky gradient
+                const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+                if (this.settings.lighting) {
+                    skyGrad.addColorStop(0, '#1a0a1a');
+                    skyGrad.addColorStop(0.5, '#2d1f3d');
+                    skyGrad.addColorStop(1, '#ffb7c5');
+                } else {
+                    skyGrad.addColorStop(0, '#111');
+                    skyGrad.addColorStop(1, '#333');
+                }
+                ctx.fillStyle = skyGrad;
+                ctx.fillRect(0, 0, width, height);
+                
+                // Collect and sort blocks
+                const blocks = [];
+                const renderDist = this.settings.renderDistance;
+                
+                for (const key in this.world) {
+                    const [x, y, z] = key.split(',').map(Number);
+                    const dx = x - this.camera.x;
+                    const dy = y - this.camera.y;
+                    const dz = z - this.camera.z;
+                    const dist = dx * dx + dy * dy + dz * dz;
+                    
+                    if (dist < renderDist * renderDist) {
+                        blocks.push({ x, y, z, dist, type: this.world[key] });
+                    }
+                }
+                
+                blocks.sort((a, b) => b.dist - a.dist);
+                
+                blocks.forEach(block => {
+                    this.renderBlock(block.x, block.y, block.z, block.type);
+                });
+                
+                // Crosshair (only when playing)
+                if (!this.isPaused) {
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(width / 2 - 10, height / 2);
+                    ctx.lineTo(width / 2 + 10, height / 2);
+                    ctx.moveTo(width / 2, height / 2 - 10);
+                    ctx.lineTo(width / 2, height / 2 + 10);
+                    ctx.stroke();
+                }
+            },
+            
+            project(x, y, z) {
+                const dx = x - this.camera.x;
+                const dy = y - this.camera.y;
+                const dz = z - this.camera.z;
+                
+                const cosY = Math.cos(-this.camera.rotY);
+                const sinY = Math.sin(-this.camera.rotY);
+                const rx = dx * cosY - dz * sinY;
+                const rz = dx * sinY + dz * cosY;
+                
+                const cosX = Math.cos(-this.camera.rotX);
+                const sinX = Math.sin(-this.camera.rotX);
+                const ry = dy * cosX - rz * sinX;
+                const finalZ = dy * sinX + rz * cosX;
+                
+                if (finalZ <= 0.1) return null;
+                
+                const fov = 400;
+                const screenX = this.canvas.width / 2 + (rx / finalZ) * fov;
+                const screenY = this.canvas.height / 2 - (ry / finalZ) * fov;
+                
+                return { x: screenX, y: screenY, z: finalZ };
+            },
+            
+            renderBlock(x, y, z, type) {
+                const colors = this.blockColors[type];
+                if (!colors) return;
+                
+                const size = 1;
+                const vertices = [
+                    { x: x, y: y, z: z + size },
+                    { x: x + size, y: y, z: z + size },
+                    { x: x + size, y: y + size, z: z + size },
+                    { x: x, y: y + size, z: z + size },
+                    { x: x, y: y, z: z },
+                    { x: x + size, y: y, z: z },
+                    { x: x + size, y: y + size, z: z },
+                    { x: x, y: y + size, z: z },
+                    { x: x, y: y + size, z: z },
+                    { x: x + size, y: y + size, z: z },
+                    { x: x + size, y: y + size, z: z + size },
+                    { x: x, y: y + size, z: z + size }
+                ];
+                
+                const projected = vertices.map(v => this.project(v.x, v.y, v.z));
+                if (projected.some(p => p === null)) return;
+                
+                const faces = [
+                    { indices: [0, 1, 2, 3], color: colors.side, normal: { z: 1 } },
+                    { indices: [5, 4, 7, 6], color: colors.side, normal: { z: -1 } },
+                    { indices: [8, 9, 10, 11], color: colors.top, normal: { y: 1 } },
+                    { indices: [4, 5, 1, 0], color: colors.bottom, normal: { y: -1 } },
+                    { indices: [4, 0, 3, 7], color: colors.side, normal: { x: -1 } },
+                    { indices: [1, 5, 6, 2], color: colors.side, normal: { x: 1 } }
+                ];
+                
+                const ctx = this.ctx;
+                
+                faces.forEach(face => {
+                    const pts = face.indices.map(i => projected[i]);
+                    if (pts.some(p => !p)) return;
+                    
+                    const cx = (x + 0.5) - this.camera.x;
+                    const cy = (y + 0.5) - this.camera.y;
+                    const cz = (z + 0.5) - this.camera.z;
+                    
+                    if (face.normal.z === 1 && cz > 0.5) return;
+                    if (face.normal.z === -1 && cz < -0.5) return;
+                    if (face.normal.y === 1 && cy > 0.5) return;
+                    if (face.normal.y === -1 && cy < -0.5) return;
+                    if (face.normal.x === 1 && cx > 0.5) return;
+                    if (face.normal.x === -1 && cx < -0.5) return;
+                    
+                    let fillColor = face.color;
+                    
+                    // Shadow effect
+                    if (this.settings.shadows) {
+                        if (face.normal.y === -1 || face.normal.z === -1) {
+                            fillColor = this.darkenColor(fillColor, 0.7);
+                        } else if (face.normal.x) {
+                            fillColor = this.darkenColor(fillColor, 0.85);
+                        }
+                    }
+                    
+                    ctx.fillStyle = fillColor;
+                    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                    ctx.lineWidth = 1;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(pts[0].x, pts[0].y);
+                    for (let i = 1; i < pts.length; i++) {
+                        ctx.lineTo(pts[i].x, pts[i].y);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                });
+            },
+            
+            darkenColor(hex, factor) {
+                const r = Math.floor(parseInt(hex.slice(1, 3), 16) * factor);
+                const g = Math.floor(parseInt(hex.slice(3, 5), 16) * factor);
+                const b = Math.floor(parseInt(hex.slice(5, 7), 16) * factor);
+                return `rgb(${r},${g},${b})`;
+            },
+            
+            gameLoop() {
+                if (!this.isActive) return;
+                this.update();
+                this.render();
+                requestAnimationFrame(() => this.gameLoop());
+            },
+            
+            start() {
+                this.isActive = true;
+                this.isPaused = false;
+                this.mouseInCanvas = false;
+                this.stats = { blocksPlaced: 0, blocksBroken: 0, distance: 0, jumps: 0, startTime: Date.now() };
+                document.getElementById('minecraftGame').classList.add('active');
+                document.getElementById('pauseMenu').classList.remove('active');
+                document.getElementById('gameUI').style.display = 'flex';
+                document.getElementById('clickToPlay').classList.remove('active');
+                this.camera = { x: 0, y: 12, z: -8, rotX: -0.3, rotY: 0 };
+                this.canvas.style.filter = '';
+                
+                this.gameLoop();
+            },
+            
+            pause() {
+                if (!this.isActive) return;
+                this.isPaused = true;
+                this.mouseInCanvas = false;
+                document.getElementById('pauseMenu').classList.add('active');
+                document.getElementById('gameUI').style.display = 'none';
+                document.getElementById('clickToPlay').classList.remove('active');
+                this.showSubmenu('menuMain');
+            },
+            
+            resume() {
+                this.isPaused = false;
+                document.getElementById('pauseMenu').classList.remove('active');
+                document.getElementById('gameUI').style.display = 'flex';
+                document.getElementById('clickToPlay').classList.remove('active');
+            },
+            
+            updateFullscreenButton() {
+                const btn = document.getElementById('btnFullscreen');
+                const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+                btn.textContent = isFs ? 'Windowed' : 'Fullscreen';
+                
+                // Update canvas size based on fullscreen state
+                if (isFs) {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                } else {
+                    this.canvas.width = 800;
+                    this.canvas.height = 450;
+                }
+            },
+            
+            stop() {
+                this.isActive = false;
+                this.isPaused = false;
+                this.mouseInCanvas = false;
+                this.canvas.width = 800;
+                this.canvas.height = 450;
+                document.getElementById('minecraftGame').classList.remove('active');
+                document.getElementById('pauseMenu').classList.remove('active');
+                document.getElementById('clickToPlay').classList.remove('active');
+                this.canvas.style.filter = '';
+                
+                // Exit fullscreen if active
+                if (document.fullscreenElement || document.webkitFullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            }
+        };
+
+        // Initialize game on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            minecraftGame.init();
+            
+            // Hero image click handler (subtle - no hint shown)
+            document.querySelector('.hero-image-container').addEventListener('click', () => {
+                minecraftGame.start();
+            });
+            
+            // Close button
+            document.getElementById('closeMinecraft').addEventListener('click', () => {
+                minecraftGame.stop();
+            });
+        });
+
 
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', () => {
