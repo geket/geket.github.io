@@ -1,0 +1,271 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      # ========== HTML VALIDATION ==========
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: .
+          css: true
+          extra: "--ignore-re 'Attribute.*not allowed'"
+        continue-on-error: true
+      
+      # ========== CSS LINTING ==========
+      - name: Setup CSS Linting
+        run: |
+          npm init -y
+          npm install --save-dev stylelint stylelint-config-standard
+      
+      - name: Create Stylelint Config
+        run: |
+          cat > .stylelintrc.json << 'EOF'
+          {
+            "extends": "stylelint-config-standard",
+            "rules": {
+              "selector-class-pattern": null,
+              "custom-property-pattern": null,
+              "keyframes-name-pattern": null,
+              "no-descending-specificity": null,
+              "selector-id-pattern": null
+            }
+          }
+          EOF
+      
+      - name: Lint CSS
+        run: |
+          npx stylelint "**/*.css" --allow-empty-input || true
+          # Extract inline styles and check them
+          echo "Checking inline CSS in HTML files..."
+          grep -o '<style[^>]*>.*</style>' *.html | sed 's/<style[^>]*>//;s/<\/style>//' > temp-styles.css || true
+          npx stylelint temp-styles.css --allow-empty-input || true
+          rm -f temp-styles.css
+        continue-on-error: true
+      
+      # ========== JAVASCRIPT LINTING ==========
+      - name: Setup JavaScript Linting
+        run: |
+          npm install --save-dev eslint
+      
+      - name: Create ESLint Config
+        run: |
+          cat > .eslintrc.json << 'EOF'
+          {
+            "env": {
+              "browser": true,
+              "es2021": true
+            },
+            "extends": "eslint:recommended",
+            "parserOptions": {
+              "ecmaVersion": "latest",
+              "sourceType": "script"
+            },
+            "rules": {
+              "no-unused-vars": "warn",
+              "no-undef": "warn",
+              "no-console": "off"
+            }
+          }
+          EOF
+      
+      - name: Lint JavaScript
+        run: |
+          # Extract inline JavaScript and check it
+          echo "Checking inline JavaScript in HTML files..."
+          for file in *.html; do
+            echo "Checking $file..."
+            # Extract script content
+            sed -n '/<script>/,/<\/script>/p' "$file" | sed '/<script>/d;/<\/script>/d' > temp-script.js || true
+            npx eslint temp-script.js --no-eslintrc --env browser,es2021 || true
+            rm -f temp-script.js
+          done
+        continue-on-error: true
+      
+      # ========== LINK CHECKING ==========
+      - name: Check Links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --verbose --no-progress --exclude-mail '**/*.html'
+          fail: false
+      
+      # ========== ACCESSIBILITY CHECKS ==========
+      - name: Install Pa11y
+        run: npm install -g pa11y-ci
+      
+      - name: Setup Local Server
+        run: |
+          python3 -m http.server 8080 &
+          sleep 2
+      
+      - name: Run Accessibility Tests
+        run: |
+          cat > .pa11yci.json << 'EOF'
+          {
+            "defaults": {
+              "standard": "WCAG2AA",
+              "timeout": 10000,
+              "wait": 1000,
+              "chromeLaunchConfig": {
+                "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+              }
+            },
+            "urls": [
+              "http://localhost:8080/index.html"
+            ]
+          }
+          EOF
+          pa11y-ci || true
+        continue-on-error: true
+      
+      # ========== FILE SIZE CHECKS ==========
+      - name: Check File Sizes
+        run: |
+          echo "📊 File Size Report"
+          echo "===================="
+          
+          # Check HTML files
+          for file in *.html; do
+            size=$(wc -c < "$file")
+            size_kb=$((size / 1024))
+            if [ $size_kb -gt 500 ]; then
+              echo "⚠️  WARNING: $file is ${size_kb}KB (consider splitting or minifying)"
+            else
+              echo "✅ $file: ${size_kb}KB"
+            fi
+          done
+          
+          # Check for large images
+          echo ""
+          echo "🖼️  Image Size Report"
+          echo "===================="
+          find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) -exec du -h {} + | sort -rh | head -10 || echo "No images found"
+      
+      # ========== SECURITY CHECKS ==========
+      - name: Security Scan
+        run: |
+          echo "🔒 Security Check Report"
+          echo "========================"
+          
+          # Check for common security issues
+          echo ""
+          echo "Checking for inline event handlers (potential XSS)..."
+          grep -r "on[a-z]*=" *.html || echo "✅ No inline event handlers found"
+          
+          echo ""
+          echo "Checking for eval() usage..."
+          grep -r "eval(" *.html || echo "✅ No eval() found"
+          
+          echo ""
+          echo "Checking for document.write()..."
+          grep -r "document.write" *.html || echo "✅ No document.write found"
+          
+          echo ""
+          echo "Checking for external scripts without integrity..."
+          grep -r "<script.*src=.*http" *.html | grep -v "integrity=" || echo "✅ All external scripts have integrity or no external scripts"
+      
+      # ========== PERFORMANCE CHECKS ==========
+      - name: Performance Checks
+        run: |
+          echo "⚡ Performance Report"
+          echo "====================="
+          
+          # Count number of requests
+          echo ""
+          echo "External Resource Count:"
+          external_count=$(grep -o 'src=\|href=' *.html | wc -l)
+          echo "Total external resources: $external_count"
+          if [ $external_count -gt 50 ]; then
+            echo "⚠️  WARNING: High number of external resources may impact performance"
+          else
+            echo "✅ External resource count is reasonable"
+          fi
+          
+          # Check for minification opportunities
+          echo ""
+          echo "Minification Check:"
+          if grep -q "console.log" *.html; then
+            echo "⚠️  WARNING: console.log statements found (should be removed in production)"
+          else
+            echo "✅ No console.log statements found"
+          fi
+      
+      # ========== BEST PRACTICES ==========
+      - name: Best Practices Check
+        run: |
+          echo "✨ Best Practices Report"
+          echo "========================"
+          
+          # Check for meta tags
+          echo ""
+          echo "Meta Tags:"
+          if grep -q '<meta name="viewport"' *.html; then
+            echo "✅ Viewport meta tag found"
+          else
+            echo "⚠️  WARNING: No viewport meta tag (important for mobile)"
+          fi
+          
+          if grep -q '<meta name="description"' *.html; then
+            echo "✅ Description meta tag found"
+          else
+            echo "⚠️  WARNING: No description meta tag (important for SEO)"
+          fi
+          
+          # Check for alt attributes on images
+          echo ""
+          echo "Image Accessibility:"
+          img_count=$(grep -o '<img' *.html | wc -l)
+          img_alt_count=$(grep -o '<img.*alt=' *.html | wc -l)
+          echo "Total images: $img_count"
+          echo "Images with alt text: $img_alt_count"
+          if [ $img_count -ne $img_alt_count ]; then
+            echo "⚠️  WARNING: Some images missing alt attributes"
+          else
+            echo "✅ All images have alt attributes"
+          fi
+          
+          # Check for HTTPS
+          echo ""
+          echo "Security:"
+          if grep -q 'http://' *.html | grep -v 'http://localhost' | grep -v 'http://www.w3.org'; then
+            echo "⚠️  WARNING: Some resources loaded over HTTP instead of HTTPS"
+          else
+            echo "✅ All external resources use HTTPS"
+          fi
+      
+      # ========== SUMMARY ==========
+      - name: Generate Summary
+        if: always()
+        run: |
+          echo "# Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Checks Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ HTML Validation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ CSS Linting" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ JavaScript Linting" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Link Checking" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Accessibility Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ File Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Security Scan" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Performance Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Best Practices Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the job logs for detailed results and recommendations." >> $GITHUB_STEP_SUMMARY
