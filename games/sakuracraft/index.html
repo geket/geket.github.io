@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SakuraCraft - A Voxel Adventure</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .landing {
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+    
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .tagline {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    
+    .feature {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .play-button {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      padding: 1.2rem 3rem;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      margin-top: 2rem;
+      font-weight: bold;
+    }
+    
+    .play-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    
+    .play-button:active {
+      transform: translateY(-1px);
+    }
+    
+    .controls {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      text-align: left;
+    }
+    
+    .controls h3 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+      font-size: 0.95rem;
+    }
+    
+    .control-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .key {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+      font-weight: bold;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .debug-toggle {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 10001;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+  <script type="module" crossorigin src="/games/sakuracraft/assets/main.BVIwBOvH.js"></script>
+</head>
+<body>
+  <div class="landing">
+    <h1>🌸 SakuraCraft</h1>
+    <p class="tagline">Build, Explore, Create in a Beautiful Voxel World</p>
+    
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">⛏️</div>
+        <strong>Mine & Build</strong>
+        <p>Break blocks, gather resources</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎨</div>
+        <strong>Creative Freedom</strong>
+        <p>Build anything you imagine</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🌸</div>
+        <strong>Cherry Blossoms</strong>
+        <p>Beautiful Japanese aesthetics</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🐦</div>
+        <strong>Survive</strong>
+        <p>Defend against birds and complete rituals</p>
+      </div>
+    </div>
+    
+    <button class="play-button" id="playGame">▶ Play Game</button>
+    
+    <div class="controls">
+      <h3>Controls</h3>
+      <div class="control-grid">
+        <div class="control-item">
+          <span class="key">WASD</span>
+          <span>Move</span>
+        </div>
+        <div class="control-item">
+          <span class="key">Space</span>
+          <span>Jump</span>
+        </div>
+        <div class="control-item">
+          <span class="key">Mouse</span>
+          <span>Look Around</span>
+        </div>
+        <div class="control-item">
+          <span class="key">Click</span>
+          <span>Break/Place</span>
+        </div>
+        <div class="control-item">
+          <span class="key">1-9</span>
+          <span>Select Item</span>
+        </div>
+        <div class="control-item">
+          <span class="key">E</span>
+          <span>Inventory</span>
+        </div>
+        <div class="control-item">
+          <span class="key">C</span>
+          <span>Toggle Sneak</span>
+        </div>
+        <div class="control-item">
+          <span class="key">Ctrl</span>
+          <span>Hold to Sneak</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
