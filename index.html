@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         :root {
             --petal-pink: #ffb7c5;
@@ -4961,18 +4962,6 @@
                             }
                         });
                     }
-            } else {
-                // No activity data available (rate limited or no activity)
-                const activityContainer = document.getElementById('activity-feed');
-                if (activityContainer) {
-                    activityContainer.innerHTML = `
-                        <div class="activity-item" style="text-align: center; padding: 20px; color: rgba(255,183,197,0.7);">
-                            <p>Activity data temporarily unavailable</p>
-                            <p style="font-size: 0.8em; margin-top: 10px;">GitHub API rate limit reached. Data will refresh in ~1 hour.</p>
-                        </div>
-                    `;
-                }
-            }
 
                     // Calculate activity breakdown for pentagon chart from ALL fetched events
                     // Use allPublicEvents for more accurate percentages, not just displayEvents
@@ -5015,6 +5004,25 @@
                     activityCounts.commits = Math.max(activityCounts.commits, 1);
                     
                     drawActivityChart(activityCounts);
+                } else {
+                    // No activity data available (rate limited or no activity)
+                    const activityContainer = document.getElementById('activity-feed');
+                    if (activityContainer) {
+                        activityContainer.innerHTML = `
+                            <div class="activity-item" style="text-align: center; padding: 20px; color: rgba(255,183,197,0.7);">
+                                <p>Activity data temporarily unavailable</p>
+                                <p style="font-size: 0.8em; margin-top: 10px;">GitHub API rate limit reached. Try again later.</p>
+                            </div>
+                        `;
+                    }
+                    // Draw empty chart with baseline values
+                    drawActivityChart({
+                        commits: 0,
+                        codeReview: 0,
+                        issues: 0,
+                        pullRequests: 0,
+                        privateContrib: 1
+                    });
                 }
             }
         
