@@ -1940,6 +1940,43 @@
             transform: rotate(180deg);
         }
 
+        /* Language Mode Toggle Button */
+        .lang-mode-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.25);
+            border-radius: 12px;
+            color: var(--petal-pink);
+            font-size: 0.65rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-mode-toggle:hover {
+            background: rgba(255, 183, 197, 0.2);
+            border-color: var(--petal-pink);
+        }
+
+        .lang-mode-toggle .mode-icon {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .lang-mode-toggle:hover .mode-icon {
+            transform: rotate(180deg);
+        }
+
+        .custom-stat-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         /* Clickable Link Badge */
         .stat-link-badge {
             position: absolute;
@@ -3035,6 +3072,10 @@
                             <div class="custom-stat-header">
                                 <span class="stat-icon">💻</span>
                                 <h3>Top Languages</h3>
+                                <button class="lang-mode-toggle" id="langModeToggle" title="Toggle between Size and Repos">
+                                    <span class="mode-text">By Repos</span>
+                                    <span class="mode-icon">⇄</span>
+                                </button>
                             </div>
                             <div class="language-bars" id="language-bars">
                                 <div class="lang-loading">Loading languages...</div>
@@ -3763,12 +3804,85 @@
         }
         
         // ========== CELESTIAL BODY (SUN/MOON) ==========
-        function initCelestialBody() {
+        // Global variables for celestial state
+        let celestialIsDay = null;
+        let celestialWeatherCode = null;
+
+        async function initCelestialBody() {
             const celestial = document.getElementById('celestialBody');
-            const hour = new Date().getHours();
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             
-            // Day: 6 AM to 6 PM, Night: 6 PM to 6 AM
-            const isDay = hour >= 6 && hour < 18;
+            // Get coordinates based on timezone for sunrise/sunset API
+            const timezoneCoords = {
+                'America/New_York': { lat: 40.7128, lon: -74.0060 },
+                'America/Los_Angeles': { lat: 34.0522, lon: -118.2437 },
+                'America/Chicago': { lat: 41.8781, lon: -87.6298 },
+                'America/Denver': { lat: 39.7392, lon: -104.9903 },
+                'America/Phoenix': { lat: 33.4484, lon: -112.0740 },
+                'America/Anchorage': { lat: 61.2181, lon: -149.9003 },
+                'America/Honolulu': { lat: 21.3069, lon: -157.8583 },
+                'America/Toronto': { lat: 43.6532, lon: -79.3832 },
+                'America/Vancouver': { lat: 49.2827, lon: -123.1207 },
+                'America/Mexico_City': { lat: 19.4326, lon: -99.1332 },
+                'America/Sao_Paulo': { lat: -23.5505, lon: -46.6333 },
+                'America/Buenos_Aires': { lat: -34.6037, lon: -58.3816 },
+                'Europe/London': { lat: 51.5074, lon: -0.1278 },
+                'Europe/Paris': { lat: 48.8566, lon: 2.3522 },
+                'Europe/Berlin': { lat: 52.5200, lon: 13.4050 },
+                'Europe/Rome': { lat: 41.9028, lon: 12.4964 },
+                'Europe/Madrid': { lat: 40.4168, lon: -3.7038 },
+                'Europe/Amsterdam': { lat: 52.3676, lon: 4.9041 },
+                'Europe/Stockholm': { lat: 59.3293, lon: 18.0686 },
+                'Europe/Moscow': { lat: 55.7558, lon: 37.6173 },
+                'Europe/Istanbul': { lat: 41.0082, lon: 28.9784 },
+                'Asia/Tokyo': { lat: 35.6762, lon: 139.6503 },
+                'Asia/Shanghai': { lat: 31.2304, lon: 121.4737 },
+                'Asia/Hong_Kong': { lat: 22.3193, lon: 114.1694 },
+                'Asia/Singapore': { lat: 1.3521, lon: 103.8198 },
+                'Asia/Seoul': { lat: 37.5665, lon: 126.9780 },
+                'Asia/Dubai': { lat: 25.2048, lon: 55.2708 },
+                'Asia/Mumbai': { lat: 19.0760, lon: 72.8777 },
+                'Asia/Bangkok': { lat: 13.7563, lon: 100.5018 },
+                'Asia/Jakarta': { lat: -6.2088, lon: 106.8456 },
+                'Australia/Sydney': { lat: -33.8688, lon: 151.2093 },
+                'Australia/Melbourne': { lat: -37.8136, lon: 144.9631 },
+                'Australia/Perth': { lat: -31.9505, lon: 115.8605 },
+                'Pacific/Auckland': { lat: -36.8485, lon: 174.7633 },
+                'Africa/Cairo': { lat: 30.0444, lon: 31.2357 },
+                'Africa/Lagos': { lat: 6.5244, lon: 3.3792 },
+                'Africa/Johannesburg': { lat: -26.2041, lon: 28.0473 }
+            };
+
+            const coords = timezoneCoords[timezone] || { lat: 40.7128, lon: -74.0060 }; // Default NYC
+            
+            let isDay = false;
+            let weatherCode = 0; // Default to clear
+            
+            try {
+                // Fetch sunrise/sunset and weather data from Open-Meteo (free, no key needed)
+                const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=weather_code,cloud_cover&daily=sunrise,sunset&timezone=auto&forecast_days=1`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.daily && data.daily.sunrise && data.daily.sunset) {
+                    const now = new Date();
+                    const sunriseTime = new Date(data.daily.sunrise[0]);
+                    const sunsetTime = new Date(data.daily.sunset[0]);
+                    
+                    isDay = now >= sunriseTime && now < sunsetTime;
+                    weatherCode = data.current?.weather_code || 0;
+                    celestialWeatherCode = weatherCode;
+                }
+            } catch (err) {
+                // Fallback to simple time-based calculation
+                const hour = new Date().getHours();
+                isDay = hour >= 6 && hour < 18;
+            }
+            
+            celestialIsDay = isDay;
+            
+            // Apply weather-based color filter to page
+            applyWeatherFilter(weatherCode, isDay);
             
             if (isDay) {
                 // Create sun structure with enhanced gooey flame filter
@@ -3800,199 +3914,8 @@
                 `;
                 
                 // Create kris blade rays - smaller with wobble
-                const raysContainer = document.getElementById('sunRays');
-                const bladeCount = 12;
-                
-                for (let i = 0; i < bladeCount; i++) {
-                    const blade = document.createElement('div');
-                    blade.className = 'kris-blade';
-                    blade.style.setProperty('--ray-rotation', `${i * (360 / bladeCount)}deg`);
-                    blade.style.setProperty('--ray-translate', '-40px');
-                    
-                    // Kris blade with 7 wave joints
-                    const waves = 7;
-                    const bladeHeight = 35;
-                    const bladeWidth = 10;
-                    const amplitude = 1.5;
-                    
-                    // Build serpentine blade path
-                    let pathD = `M ${bladeWidth/2} ${bladeHeight}`;
-                    
-                    // Left edge with 7 waves
-                    const segments = 28;
-                    for (let s = 0; s <= segments; s++) {
-                        const progress = s / segments;
-                        const y = bladeHeight * (1 - progress);
-                        const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
-                        const x = bladeWidth/2 - 1.5 - waveOffset;
-                        pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
-                    }
-                    
-                    // Tip
-                    pathD += ` L ${bladeWidth/2} -3`;
-                    
-                    // Right edge (mirrored)
-                    for (let s = segments; s >= 0; s--) {
-                        const progress = s / segments;
-                        const y = bladeHeight * (1 - progress);
-                        const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
-                        const x = bladeWidth/2 + 1.5 + waveOffset;
-                        pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
-                    }
-                    
-                    pathD += ' Z';
-                    
-                    // SVG with wobble filter
-                    blade.innerHTML = `
-                        <svg viewBox="0 0 ${bladeWidth} ${bladeHeight + 6}" preserveAspectRatio="none" style="filter: url(#bladeWobble);">
-                            <defs>
-                                <linearGradient id="bg${i}" x1="0%" y1="100%" x2="0%" y2="0%">
-                                    <stop offset="0%" stop-color="#ffd700"/>
-                                    <stop offset="40%" stop-color="#ffb000"/>
-                                    <stop offset="70%" stop-color="#ff8c00"/>
-                                    <stop offset="100%" stop-color="#ff4500" stop-opacity="0.3"/>
-                                </linearGradient>
-                            </defs>
-                            <path d="${pathD}" fill="url(#bg${i})" transform="translate(0, 3)"/>
-                        </svg>
-                    `;
-                    
-                    raysContainer.appendChild(blade);
-                }
-                
-                // Create flame particles with enhanced gooey effect
-                const flameContainer = document.getElementById('flameParticles');
-                const particleCount = 45;
-                let particleIndex = 0;
-                
-                function createFlameParticle(forceAngle = null, forceType = null) {
-                    const particle = document.createElement('div');
-                    
-                    // Random type: flame, ember, spark, wisp, scatter, or mingle
-                    const rand = forceType !== null ? -1 : Math.random();
-                    const type = forceType || (
-                        rand < 0.25 ? 'flame' :
-                        rand < 0.40 ? 'ember' :
-                        rand < 0.52 ? 'spark' :
-                        rand < 0.65 ? 'wisp' :
-                        rand < 0.82 ? 'scatter' : 'mingle'
-                    );
-                    
-                    if (type === 'flame') {
-                        // Main flames - larger teardrop shapes
-                        particle.className = 'flame-particle';
-                        particle.style.width = (8 + Math.random() * 10) + 'px';
-                        particle.style.height = (12 + Math.random() * 14) + 'px';
-                    } else if (type === 'ember') {
-                        // Embers - medium glowing orbs
-                        particle.className = 'flame-particle ember';
-                        const size = 5 + Math.random() * 7;
-                        particle.style.width = size + 'px';
-                        particle.style.height = size + 'px';
-                    } else if (type === 'spark') {
-                        // Sparks - bright tiny dots
-                        particle.className = 'flame-particle spark';
-                        const size = 2 + Math.random() * 3;
-                        particle.style.width = size + 'px';
-                        particle.style.height = size + 'px';
-                    } else if (type === 'wisp') {
-                        // Wisps - elongated ethereal flames
-                        particle.className = 'flame-particle wisp';
-                        particle.style.width = (6 + Math.random() * 8) + 'px';
-                        particle.style.height = (16 + Math.random() * 20) + 'px';
-                    } else if (type === 'scatter') {
-                        // Scatter - small erratic particles
-                        particle.className = 'flame-particle scatter';
-                        const size = 3 + Math.random() * 4;
-                        particle.style.width = size + 'px';
-                        particle.style.height = size + 'px';
-                        // Erratic zigzag waypoints
-                        particle.style.setProperty('--scatter-x1', (Math.random() * 16 - 8) + 'px');
-                        particle.style.setProperty('--scatter-y1', (-5 - Math.random() * 12) + 'px');
-                        particle.style.setProperty('--scatter-x2', (Math.random() * 20 - 10) + 'px');
-                        particle.style.setProperty('--scatter-y2', (-18 - Math.random() * 15) + 'px');
-                        particle.style.setProperty('--scatter-x3', (Math.random() * 18 - 9) + 'px');
-                        particle.style.setProperty('--scatter-y3', (-30 - Math.random() * 15) + 'px');
-                    } else {
-                        // Mingle - particles that gravitate toward others
-                        particle.className = 'flame-particle mingle';
-                        const size = 5 + Math.random() * 6;
-                        particle.style.width = size + 'px';
-                        particle.style.height = size + 'px';
-                        // Movement toward center/other particles
-                        particle.style.setProperty('--mingle-x', (Math.random() * 12 - 6) + 'px');
-                        particle.style.setProperty('--mingle-y', (Math.random() * 10 - 5) + 'px');
-                    }
-                    
-                    // Use golden angle for even distribution, or forced angle
-                    const goldenAngle = 137.508 * (Math.PI / 180);
-                    const baseAngle = forceAngle !== null ? forceAngle : (particleIndex * goldenAngle);
-                    const angle = baseAngle + (Math.random() - 0.5) * 0.6;
-                    particleIndex++;
-                    
-                    // Vary distance in layers
-                    const layer = Math.floor(Math.random() * 4);
-                    const baseDistance = [36, 46, 56, 68][layer];
-                    const distance = baseDistance + (Math.random() - 0.5) * 10;
-                    
-                    const startX = Math.cos(angle) * distance;
-                    const startY = Math.sin(angle) * distance;
-                    
-                    // Drift direction (outward + upward bias)
-                    const driftAngle = angle + (Math.random() - 0.5) * 0.7;
-                    const driftDistance = 25 + Math.random() * 35;
-                    const endX = Math.cos(driftAngle) * (distance + driftDistance);
-                    const endY = Math.sin(driftAngle) * (distance + driftDistance) - 20 - Math.random() * 30;
-                    
-                    particle.style.setProperty('--start-x', startX + 'px');
-                    particle.style.setProperty('--start-y', startY + 'px');
-                    particle.style.setProperty('--drift-x', (endX - startX) / 2 + 'px');
-                    particle.style.setProperty('--drift-y', (endY - startY) / 2 + 'px');
-                    particle.style.setProperty('--end-x', (endX - startX) + 'px');
-                    particle.style.setProperty('--end-y', (endY - startY) + 'px');
-                    particle.style.setProperty('--rotation', (Math.random() * 60 - 30) + 'deg');
-                    particle.style.setProperty('--flame-duration', (1.5 + Math.random() * 1.5) + 's');
-                    particle.style.setProperty('--flame-delay', (Math.random() * 0.5) + 's');
-                    
-                    return particle;
-                }
-                
-                // Initial particles - evenly distributed around the sun
-                for (let i = 0; i < particleCount; i++) {
-                    const angle = (i / particleCount) * Math.PI * 2;
-                    flameContainer.appendChild(createFlameParticle(angle));
-                }
-                // Second wave with offset for fuller coverage
-                for (let i = 0; i < 20; i++) {
-                    const angle = ((i + 0.5) / 20) * Math.PI * 2;
-                    flameContainer.appendChild(createFlameParticle(angle));
-                }
-                // Third wave - scatter particles for erratic movement
-                for (let i = 0; i < 12; i++) {
-                    const angle = ((i + 0.25) / 12) * Math.PI * 2;
-                    flameContainer.appendChild(createFlameParticle(angle, 'scatter'));
-                }
-                // Fourth wave - mingle particles that gravitate
-                for (let i = 0; i < 10; i++) {
-                    const angle = ((i + 0.75) / 10) * Math.PI * 2;
-                    flameContainer.appendChild(createFlameParticle(angle, 'mingle'));
-                }
-                
-                // Continuously regenerate particles with variety
-                setInterval(() => {
-                    const toAdd = Math.floor(Math.random() * 4) + 3;
-                    for (let i = 0; i < toAdd; i++) {
-                        if (flameContainer.children.length < particleCount + 45) {
-                            // Occasionally force scatter or mingle types
-                            const forceType = Math.random() < 0.3 ? (Math.random() < 0.5 ? 'scatter' : 'mingle') : null;
-                            flameContainer.appendChild(createFlameParticle(null, forceType));
-                        }
-                    }
-                    // Remove old particles
-                    while (flameContainer.children.length > particleCount + 50) {
-                        flameContainer.removeChild(flameContainer.firstChild);
-                    }
-                }, 250);
+                createSunRays();
+                createFlameParticles();
             } else {
                 // Calculate moon phase (synodic month = 29.53 days)
                 const moonPhase = getMoonPhase();
@@ -4016,6 +3939,282 @@
                 // Create moon sparkles
                 createMoonSparkles();
             }
+        }
+
+        // Apply weather-based color filter overlay
+        function applyWeatherFilter(weatherCode, isDay) {
+            // Remove any existing weather filter
+            const existingFilter = document.getElementById('weatherColorFilter');
+            if (existingFilter) existingFilter.remove();
+            
+            const filter = document.createElement('div');
+            filter.id = 'weatherColorFilter';
+            filter.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+                transition: background 1s ease;
+            `;
+            
+            // WMO Weather codes:
+            // 0: Clear, 1-3: Mainly clear/partly cloudy/overcast
+            // 45, 48: Fog
+            // 51-67, 80-82: Rain/drizzle
+            // 71-77, 85-86: Snow
+            // 95-99: Thunderstorm
+            
+            if (isDay) {
+                // Daytime filters
+                if (weatherCode === 0) {
+                    // Clear day - subtle blue tint
+                    filter.style.background = 'rgba(135, 206, 250, 0.08)';
+                } else if (weatherCode >= 1 && weatherCode <= 2) {
+                    // Partly cloudy - very subtle grey
+                    filter.style.background = 'rgba(180, 180, 200, 0.05)';
+                } else if (weatherCode === 3) {
+                    // Overcast/Cloudy - grey filter
+                    filter.style.background = 'rgba(120, 120, 140, 0.15)';
+                } else if (weatherCode === 45 || weatherCode === 48) {
+                    // Fog - misty grey
+                    filter.style.background = 'rgba(200, 200, 210, 0.2)';
+                } else if ((weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 82)) {
+                    // Rain - bluish grey
+                    filter.style.background = 'rgba(100, 110, 130, 0.18)';
+                } else if ((weatherCode >= 71 && weatherCode <= 77) || (weatherCode >= 85 && weatherCode <= 86)) {
+                    // Snow - cool white
+                    filter.style.background = 'rgba(220, 225, 240, 0.12)';
+                } else if (weatherCode >= 95) {
+                    // Thunderstorm - dark grey
+                    filter.style.background = 'rgba(80, 80, 100, 0.2)';
+                }
+            } else {
+                // Nighttime filters - no blue sky at night
+                if (weatherCode === 0) {
+                    // Clear night - slight purple/black (not blue!)
+                    filter.style.background = 'rgba(10, 5, 20, 0.1)';
+                } else if (weatherCode >= 1 && weatherCode <= 2) {
+                    // Partly cloudy night - subtle purple
+                    filter.style.background = 'rgba(30, 25, 45, 0.08)';
+                } else if (weatherCode === 3) {
+                    // Cloudy night - grey over purple
+                    filter.style.background = 'rgba(60, 55, 70, 0.2)';
+                } else if (weatherCode === 45 || weatherCode === 48) {
+                    // Foggy night - misty grey-purple
+                    filter.style.background = 'rgba(80, 75, 90, 0.25)';
+                } else if ((weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 82)) {
+                    // Rainy night - dark grey
+                    filter.style.background = 'rgba(50, 50, 60, 0.2)';
+                } else if ((weatherCode >= 71 && weatherCode <= 77) || (weatherCode >= 85 && weatherCode <= 86)) {
+                    // Snowy night - cool grey
+                    filter.style.background = 'rgba(100, 105, 120, 0.15)';
+                } else if (weatherCode >= 95) {
+                    // Thunderstorm night - very dark
+                    filter.style.background = 'rgba(20, 20, 30, 0.25)';
+                }
+            }
+            
+            document.body.appendChild(filter);
+        }
+        
+        // Helper function to create sun rays
+        function createSunRays() {
+            const raysContainer = document.getElementById('sunRays');
+            if (!raysContainer) return;
+            
+            const bladeCount = 12;
+            
+            for (let i = 0; i < bladeCount; i++) {
+                const blade = document.createElement('div');
+                blade.className = 'kris-blade';
+                blade.style.setProperty('--ray-rotation', `${i * (360 / bladeCount)}deg`);
+                blade.style.setProperty('--ray-translate', '-40px');
+                
+                const waves = 7;
+                const bladeHeight = 35;
+                const bladeWidth = 10;
+                const amplitude = 1.5;
+                
+                let pathD = `M ${bladeWidth/2} ${bladeHeight}`;
+                
+                const segments = 28;
+                for (let s = 0; s <= segments; s++) {
+                    const progress = s / segments;
+                    const y = bladeHeight * (1 - progress);
+                    const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
+                    const x = bladeWidth/2 - 1.5 - waveOffset;
+                    pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+                }
+                
+                pathD += ` L ${bladeWidth/2} -3`;
+                
+                for (let s = segments; s >= 0; s--) {
+                    const progress = s / segments;
+                    const y = bladeHeight * (1 - progress);
+                    const waveOffset = Math.sin(progress * waves * Math.PI) * amplitude * (1 - progress * 0.4);
+                    const x = bladeWidth/2 + 1.5 + waveOffset;
+                    pathD += ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+                }
+                
+                pathD += ' Z';
+                
+                blade.innerHTML = `
+                    <svg viewBox="0 0 ${bladeWidth} ${bladeHeight + 6}" preserveAspectRatio="none" style="filter: url(#bladeWobble);">
+                        <defs>
+                            <linearGradient id="bg${i}" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="#ffd700"/>
+                                <stop offset="40%" stop-color="#ffb000"/>
+                                <stop offset="70%" stop-color="#ff8c00"/>
+                                <stop offset="100%" stop-color="#ff4500" stop-opacity="0.3"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="${pathD}" fill="url(#bg${i})" transform="translate(0, 3)"/>
+                    </svg>
+                `;
+                
+                raysContainer.appendChild(blade);
+            }
+        }
+        
+        // Helper function to create flame particles
+        function createFlameParticles() {
+            const flameContainer = document.getElementById('flameParticles');
+            if (!flameContainer) return;
+            
+            const particleCount = 45;
+            let particleIndex = 0;
+            
+            function createFlameParticle(forceAngle = null, forceType = null) {
+                const particle = document.createElement('div');
+                
+                // Random type: flame, ember, spark, wisp, scatter, or mingle
+                const rand = forceType !== null ? -1 : Math.random();
+                const type = forceType || (
+                    rand < 0.25 ? 'flame' :
+                    rand < 0.40 ? 'ember' :
+                    rand < 0.52 ? 'spark' :
+                    rand < 0.65 ? 'wisp' :
+                    rand < 0.82 ? 'scatter' : 'mingle'
+                );
+                
+                if (type === 'flame') {
+                    // Main flames - larger teardrop shapes
+                    particle.className = 'flame-particle';
+                    particle.style.width = (8 + Math.random() * 10) + 'px';
+                    particle.style.height = (12 + Math.random() * 14) + 'px';
+                } else if (type === 'ember') {
+                    // Embers - medium glowing orbs
+                    particle.className = 'flame-particle ember';
+                    const size = 5 + Math.random() * 7;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                } else if (type === 'spark') {
+                    // Sparks - bright tiny dots
+                    particle.className = 'flame-particle spark';
+                    const size = 2 + Math.random() * 3;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                } else if (type === 'wisp') {
+                    // Wisps - elongated ethereal flames
+                    particle.className = 'flame-particle wisp';
+                    particle.style.width = (6 + Math.random() * 8) + 'px';
+                    particle.style.height = (16 + Math.random() * 20) + 'px';
+                } else if (type === 'scatter') {
+                    // Scatter - small erratic particles
+                    particle.className = 'flame-particle scatter';
+                    const size = 3 + Math.random() * 4;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    // Erratic zigzag waypoints
+                    particle.style.setProperty('--scatter-x1', (Math.random() * 16 - 8) + 'px');
+                    particle.style.setProperty('--scatter-y1', (-5 - Math.random() * 12) + 'px');
+                    particle.style.setProperty('--scatter-x2', (Math.random() * 20 - 10) + 'px');
+                    particle.style.setProperty('--scatter-y2', (-18 - Math.random() * 15) + 'px');
+                    particle.style.setProperty('--scatter-x3', (Math.random() * 18 - 9) + 'px');
+                    particle.style.setProperty('--scatter-y3', (-30 - Math.random() * 15) + 'px');
+                } else {
+                    // Mingle - particles that gravitate toward others
+                    particle.className = 'flame-particle mingle';
+                    const size = 5 + Math.random() * 6;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    // Movement toward center/other particles
+                    particle.style.setProperty('--mingle-x', (Math.random() * 12 - 6) + 'px');
+                    particle.style.setProperty('--mingle-y', (Math.random() * 10 - 5) + 'px');
+                }
+                
+                // Use golden angle for even distribution, or forced angle
+                const goldenAngle = 137.508 * (Math.PI / 180);
+                const baseAngle = forceAngle !== null ? forceAngle : (particleIndex * goldenAngle);
+                const angle = baseAngle + (Math.random() - 0.5) * 0.6;
+                particleIndex++;
+                
+                // Vary distance in layers
+                const layer = Math.floor(Math.random() * 4);
+                const baseDistance = [36, 46, 56, 68][layer];
+                const distance = baseDistance + (Math.random() - 0.5) * 10;
+                
+                const startX = Math.cos(angle) * distance;
+                const startY = Math.sin(angle) * distance;
+                
+                // Drift direction (outward + upward bias)
+                const driftAngle = angle + (Math.random() - 0.5) * 0.7;
+                const driftDistance = 25 + Math.random() * 35;
+                const endX = Math.cos(driftAngle) * (distance + driftDistance);
+                const endY = Math.sin(driftAngle) * (distance + driftDistance) - 20 - Math.random() * 30;
+                
+                particle.style.setProperty('--start-x', startX + 'px');
+                particle.style.setProperty('--start-y', startY + 'px');
+                particle.style.setProperty('--drift-x', (endX - startX) / 2 + 'px');
+                particle.style.setProperty('--drift-y', (endY - startY) / 2 + 'px');
+                particle.style.setProperty('--end-x', (endX - startX) + 'px');
+                particle.style.setProperty('--end-y', (endY - startY) + 'px');
+                particle.style.setProperty('--rotation', (Math.random() * 60 - 30) + 'deg');
+                particle.style.setProperty('--flame-duration', (1.5 + Math.random() * 1.5) + 's');
+                particle.style.setProperty('--flame-delay', (Math.random() * 0.5) + 's');
+                
+                return particle;
+            }
+            
+            // Initial particles - evenly distributed around the sun
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (i / particleCount) * Math.PI * 2;
+                flameContainer.appendChild(createFlameParticle(angle));
+            }
+            // Second wave with offset for fuller coverage
+            for (let i = 0; i < 20; i++) {
+                const angle = ((i + 0.5) / 20) * Math.PI * 2;
+                flameContainer.appendChild(createFlameParticle(angle));
+            }
+            // Third wave - scatter particles for erratic movement
+            for (let i = 0; i < 12; i++) {
+                const angle = ((i + 0.25) / 12) * Math.PI * 2;
+                flameContainer.appendChild(createFlameParticle(angle, 'scatter'));
+            }
+            // Fourth wave - mingle particles that gravitate
+            for (let i = 0; i < 10; i++) {
+                const angle = ((i + 0.75) / 10) * Math.PI * 2;
+                flameContainer.appendChild(createFlameParticle(angle, 'mingle'));
+            }
+            
+            // Continuously regenerate particles with variety
+            setInterval(() => {
+                const toAdd = Math.floor(Math.random() * 4) + 3;
+                for (let i = 0; i < toAdd; i++) {
+                    if (flameContainer.children.length < particleCount + 45) {
+                        // Occasionally force scatter or mingle types
+                        const forceType = Math.random() < 0.3 ? (Math.random() < 0.5 ? 'scatter' : 'mingle') : null;
+                        flameContainer.appendChild(createFlameParticle(null, forceType));
+                    }
+                }
+                // Remove old particles
+                while (flameContainer.children.length > particleCount + 50) {
+                    flameContainer.removeChild(flameContainer.firstChild);
+                }
+            }, 250);
         }
         
         // Calculate current moon phase (0 = new moon, 0.5 = full moon, 1 = new moon)
@@ -4413,20 +4612,29 @@
             });
 
         // Fetch starred repos (responsive: mobile=16, desktop=21)
+        // Use application/vnd.github.star+json to get starred_at timestamp
         const isMobile = window.innerWidth <= 768;
         const starsPerPage = isMobile ? 16 : 21;
         const initialVisible = isMobile ? 6 : 9;
         
-        fetch(`https://api.github.com/users/${username}/starred?per_page=${starsPerPage}&sort=created`)
+        fetch(`https://api.github.com/users/${username}/starred?per_page=${starsPerPage}&sort=created`, {
+            headers: {
+                'Accept': 'application/vnd.github.star+json'
+            }
+        })
             .then(res => res.json())
             .then(starred => {
                 if (starred && starred.length > 0 && !starred.message) {
                     const starsContainer = document.getElementById('recent-stars');
                     const expandBtn = document.getElementById('expandStarsBtn');
                     
-                    starsContainer.innerHTML = starred.map((repo, index) => {
+                    starsContainer.innerHTML = starred.map((starData, index) => {
+                        // With star+json header, response is { starred_at, repo } format
+                        const repo = starData.repo || starData;
+                        const starredAt = starData.starred_at;
+                        
                         // Format the starred timestamp
-                        const starredDate = new Date(repo.starred_at || repo.created_at);
+                        const starredDate = new Date(starredAt || repo.created_at);
                         const now = new Date();
                         const diffMs = now - starredDate;
                         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -4494,14 +4702,15 @@
                 document.getElementById('recent-stars').innerHTML = '<p style="opacity:0.6; font-size:0.85rem;">Stars will load when deployed</p>';
             });
 
-        // Fetch activity feed with automatic pagination to get full 15 public events
+        // Fetch activity feed with automatic pagination to get comprehensive data
         async function fetchRecentActivity() {
-            const maxEvents = 15;
-            const maxPages = 5; // Don't fetch more than 5 pages
+            const maxDisplayEvents = 15;
+            const maxPages = 5; // Fetch up to 5 pages for comprehensive activity data
             let allPublicEvents = [];
             let page = 1;
             
-            while (allPublicEvents.length < maxEvents && page <= maxPages) {
+            // Fetch all pages for accurate chart data (not just until we have 15)
+            while (page <= maxPages) {
                 try {
                     const res = await fetch(`https://api.github.com/users/${username}/events/public?per_page=30&page=${page}`);
                     const events = await res.json();
@@ -4521,8 +4730,8 @@
                 }
             }
             
-            // Take only the first maxEvents
-            const displayEvents = allPublicEvents.slice(0, maxEvents);
+            // Take only the first maxDisplayEvents for the feed display
+            const displayEvents = allPublicEvents.slice(0, maxDisplayEvents);
             
             if (displayEvents.length > 0) {
                     const activityContainer = document.getElementById('activity-feed');
@@ -4628,16 +4837,18 @@
                         });
                     }
 
-                    // Calculate activity breakdown for pentagon chart
+                    // Calculate activity breakdown for pentagon chart from ALL fetched events
+                    // Use allPublicEvents for more accurate percentages, not just displayEvents
                     const activityCounts = {
                         commits: 0,
                         codeReview: 0,
                         issues: 0,
                         pullRequests: 0,
-                        privateContrib: 6 // Default estimate for private contributions
+                        privateContrib: 3 // Baseline for private contributions
                     };
 
-                    displayEvents.forEach(event => {
+                    // Count from all fetched public events for better accuracy
+                    allPublicEvents.forEach(event => {
                         switch(event.type) {
                             case 'PushEvent':
                                 activityCounts.commits += event.payload.commits?.length || event.payload.size || 1;
@@ -4656,6 +4867,16 @@
                         }
                     });
 
+                    // Ensure minimum visibility for each category if it has any activity
+                    // This prevents 0% for categories that DO have activity
+                    const ensureMinimum = (value, hasActivity) => {
+                        if (hasActivity && value === 0) return 1;
+                        return value;
+                    };
+                    
+                    // Apply minimums for better visual representation
+                    activityCounts.commits = Math.max(activityCounts.commits, 1);
+                    
                     drawActivityChart(activityCounts);
                 }
             }
