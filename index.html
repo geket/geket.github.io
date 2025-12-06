@@ -4412,13 +4412,15 @@
                         totalLangRepos,
                         totalLangLines,
                         langColors,
-                        currentMode: 'lines' // Default to "by lines"
+                        currentMode: 'lines', // Default to "by lines"
+                        isExpanded: false // Track expanded state
                     };
 
                     // Function to render language bars based on current mode
                     function renderLanguageBars(mode = 'lines') {
                         const sortedLangs = mode === 'lines' ? sortedLangsByLines : sortedLangsByRepos;
                         const totalLang = mode === 'lines' ? totalLangLines : totalLangRepos;
+                        const isExpanded = window.langData.isExpanded;
                         
                         const langBarsContainer = document.getElementById('language-bars');
                         const langExpandBtn = document.getElementById('langExpandBtn');
@@ -4437,7 +4439,8 @@
                             }
                             
                             const color = langColors[lang] || langColors.Default;
-                            const hiddenClass = index >= 5 ? 'hidden' : '';
+                            // Respect expanded state when determining hidden class
+                            const hiddenClass = (index >= 5 && !isExpanded) ? 'hidden' : '';
                             const repoCount = langRepos[lang]?.length || 0;
                             
                             return `
@@ -4480,6 +4483,14 @@
                         // Show expand button if more than 5 languages
                         if (sortedLangs.length > 5) {
                             langExpandBtn.style.display = 'flex';
+                            // Sync button state with expanded state
+                            if (isExpanded) {
+                                langExpandBtn.classList.add('expanded');
+                                langExpandBtn.querySelector('span:first-child').textContent = 'Show less';
+                            } else {
+                                langExpandBtn.classList.remove('expanded');
+                                langExpandBtn.querySelector('span:first-child').textContent = 'Show more';
+                            }
                         } else {
                             langExpandBtn.style.display = 'none';
                         }
@@ -4504,7 +4515,11 @@
                     const langExpandBtn = document.getElementById('langExpandBtn');
                     
                     langExpandBtn.addEventListener('click', function() {
-                        const isExpanded = this.classList.toggle('expanded');
+                        // Toggle and store expanded state
+                        window.langData.isExpanded = !window.langData.isExpanded;
+                        const isExpanded = window.langData.isExpanded;
+                        
+                        this.classList.toggle('expanded', isExpanded);
                         const hiddenLangs = langBarsContainer.querySelectorAll('.lang-item[data-index]');
                         hiddenLangs.forEach(item => {
                             const idx = parseInt(item.dataset.index);
