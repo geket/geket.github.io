@@ -4356,7 +4356,7 @@
                     const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
                     document.getElementById('stat-stars').textContent = totalStars;
 
-                    // Calculate language stats BY REPOS (original method)
+                    // Calculate language stats BY REPOS (original method - always works)
                     const langCountRepos = {};
                     const langRepos = {}; // Track repos per language
                     repos.forEach(repo => {
@@ -4367,42 +4367,97 @@
                         }
                     });
 
-                    // Calculate language stats BY LINES (fetch language breakdown for each repo)
-                    const langCountLines = {};
-                    const batchSize = 5; // Process 5 repos at a time
+                    // Calculate language stats BY LINES with caching
+                    let langCountLines = {};
+                    const cacheKey = `langLines_${username}`;
+                    const cacheExpiry = 60 * 60 * 1000; // 1 hour cache
                     
-                    for (let i = 0; i < repos.length; i += batchSize) {
-                        const batch = repos.slice(i, i + batchSize);
-                        await Promise.all(batch.map(async repo => {
-                            try {
-                                const langRes = await fetch(`https://api.github.com/repos/${username}/${repo.name}/languages`);
-                                const langData = await langRes.json();
-                                if (langData && !langData.message) {
-                                    Object.entries(langData).forEach(([lang, bytes]) => {
-                                        langCountLines[lang] = (langCountLines[lang] || 0) + bytes;
-                                    });
-                                }
-                            } catch (err) {
-                                // Silently fail for rate limits or errors
+                    // Try to load from cache first
+                    try {
+                        const cached = localStorage.getItem(cacheKey);
+                        if (cached) {
+                            const { data, timestamp } = JSON.parse(cached);
+                            if (Date.now() - timestamp < cacheExpiry) {
+                                langCountLines = data;
+                                console.log('Loaded language data from cache');
                             }
-                        }));
-                        // Small delay between batches to avoid rate limits
-                        if (i + batchSize < repos.length) {
-                            await new Promise(resolve => setTimeout(resolve, 100));
+                        }
+                    } catch (e) {
+                        console.log('Cache read failed, will fetch fresh data');
+                    }
+                    
+                    // If no cached data, fetch from API
+                    if (Object.keys(langCountLines).length === 0) {
+                        const batchSize = 5;
+                        let rateLimited = false;
+                        
+                        for (let i = 0; i < repos.length && !rateLimited; i += batchSize) {
+                            const batch = repos.slice(i, i + batchSize);
+                            await Promise.all(batch.map(async repo => {
+                                if (rateLimited) return;
+                                try {
+                                    const langRes = await fetch(`https://api.github.com/repos/${username}/${repo.name}/languages`);
+                                    if (langRes.status === 403) {
+                                        rateLimited = true;
+                                        console.log('Rate limited - using cached/fallback data');
+                                        return;
+                                    }
+                                    const langData = await langRes.json();
+                                    if (langData && !langData.message) {
+                                        Object.entries(langData).forEach(([lang, bytes]) => {
+                                            langCountLines[lang] = (langCountLines[lang] || 0) + bytes;
+                                        });
+                                    }
+                                } catch (err) {
+                                    // Silently fail for network errors
+                                }
+                            }));
+                            if (i + batchSize < repos.length && !rateLimited) {
+                                await new Promise(resolve => setTimeout(resolve, 100));
+                            }
+                        }
+                        
+                        // Cache the results if we got data
+                        if (Object.keys(langCountLines).length > 0) {
+                            try {
+                                localStorage.setItem(cacheKey, JSON.stringify({
+                                    data: langCountLines,
+                                    timestamp: Date.now()
+                                }));
+                                console.log('Cached language data');
+                            } catch (e) {
+                                // localStorage might be full or disabled
+                            }
                         }
                     }
-
-                    // Sort and get top 8 languages BY LINES (most comprehensive data)
-                    const sortedLangsByLines = Object.entries(langCountLines)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 8);
                     
-                    // For "By Repos" view, use the SAME languages in the SAME order
-                    // This ensures consistent expand button behavior across both views
-                    const sortedLangsByRepos = sortedLangsByLines.map(([lang]) => [lang, langCountRepos[lang] || 0]);
-
-                    const totalLangRepos = sortedLangsByRepos.reduce((sum, [, count]) => sum + count, 0);
-                    const totalLangLines = sortedLangsByLines.reduce((sum, [, bytes]) => sum + bytes, 0);
+                    // Determine which data to use and set default mode
+                    const hasLineData = Object.keys(langCountLines).length > 0;
+                    const defaultMode = hasLineData ? 'lines' : 'repos';
+                    
+                    // Sort languages - if no line data, use repo data for both views
+                    let sortedLangsByLines, sortedLangsByRepos, totalLangLines, totalLangRepos;
+                    
+                    if (hasLineData) {
+                        sortedLangsByLines = Object.entries(langCountLines)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 8);
+                        sortedLangsByRepos = sortedLangsByLines.map(([lang]) => [lang, langCountRepos[lang] || 0]);
+                        totalLangLines = sortedLangsByLines.reduce((sum, [, bytes]) => sum + bytes, 0);
+                        totalLangRepos = sortedLangsByRepos.reduce((sum, [, count]) => sum + count, 0);
+                    } else {
+                        // Fallback: use repo data for both views
+                        sortedLangsByRepos = Object.entries(langCountRepos)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 8);
+                        sortedLangsByLines = sortedLangsByRepos; // Same data
+                        totalLangRepos = sortedLangsByRepos.reduce((sum, [, count]) => sum + count, 0);
+                        totalLangLines = totalLangRepos;
+                        
+                        // Hide the mode toggle if we only have repo data
+                        const langModeToggle = document.getElementById('langModeToggle');
+                        if (langModeToggle) langModeToggle.style.display = 'none';
+                    }
 
                     // Store both language data globally with separate expanded states per mode
                     window.langData = { 
@@ -4412,7 +4467,8 @@
                         totalLangRepos,
                         totalLangLines,
                         langColors,
-                        currentMode: 'lines', // Default to "by lines"
+                        currentMode: defaultMode,
+                        hasLineData,
                         expandedStates: {
                             lines: false,
                             repos: false
@@ -4424,6 +4480,7 @@
                         const sortedLangs = mode === 'lines' ? sortedLangsByLines : sortedLangsByRepos;
                         const totalLang = mode === 'lines' ? totalLangLines : totalLangRepos;
                         const isExpanded = window.langData.expandedStates[mode] || false;
+                        const useLineDisplay = mode === 'lines' && hasLineData;
                         
                         const langBarsContainer = document.getElementById('language-bars');
                         const langExpandBtn = document.getElementById('langExpandBtn');
@@ -4433,7 +4490,7 @@
                         // Build HTML for all languages in this view
                         const languageHTML = sortedLangs.map(([lang, value], index) => {
                             let percent, displayText;
-                            if (mode === 'lines') {
+                            if (useLineDisplay) {
                                 percent = totalLang > 0 ? Math.round((value / totalLang) * 100) : 0;
                                 const kb = Math.round(value / 1024);
                                 const mb = (kb / 1024).toFixed(1);
@@ -4498,22 +4555,27 @@
                         }
                     }
 
-                    // Initial render with "by lines" mode (default)
-                    renderLanguageBars('lines');
+                    // Initial render with default mode (falls back to 'repos' if rate limited)
+                    renderLanguageBars(defaultMode);
                     
-                    // Mode toggle button handler
+                    // Update toggle button text based on default mode
                     const langModeToggle = document.getElementById('langModeToggle');
-                    langModeToggle.addEventListener('click', function() {
-                        // Switch mode
-                        const newMode = window.langData.currentMode === 'lines' ? 'repos' : 'lines';
-                        window.langData.currentMode = newMode;
+                    if (langModeToggle && hasLineData) {
+                        langModeToggle.querySelector('.mode-text').textContent = defaultMode === 'lines' ? 'By Repos' : 'By Lines';
                         
-                        // Re-render with new mode
-                        renderLanguageBars(newMode);
-                        
-                        // Update toggle button text (shows what you can switch TO)
-                        this.querySelector('.mode-text').textContent = newMode === 'lines' ? 'By Repos' : 'By Lines';
-                    });
+                        // Mode toggle button handler
+                        langModeToggle.addEventListener('click', function() {
+                            // Switch mode
+                            const newMode = window.langData.currentMode === 'lines' ? 'repos' : 'lines';
+                            window.langData.currentMode = newMode;
+                            
+                            // Re-render with new mode
+                            renderLanguageBars(newMode);
+                            
+                            // Update toggle button text (shows what you can switch TO)
+                            this.querySelector('.mode-text').textContent = newMode === 'lines' ? 'By Repos' : 'By Lines';
+                        });
+                    }
 
                     // Language expand button handler
                     const langBarsContainer = document.getElementById('language-bars');
@@ -4727,31 +4789,69 @@
                 document.getElementById('recent-stars').innerHTML = '<p style="opacity:0.6; font-size:0.85rem;">Stars will load when deployed</p>';
             });
 
-        // Fetch activity feed with automatic pagination to get comprehensive data
+        // Fetch activity feed with caching and automatic pagination
         async function fetchRecentActivity() {
             const maxDisplayEvents = 15;
-            const maxPages = 5; // Fetch up to 5 pages for comprehensive activity data
+            const maxPages = 5;
             let allPublicEvents = [];
-            let page = 1;
             
-            // Fetch all pages for accurate chart data (not just until we have 15)
-            while (page <= maxPages) {
-                try {
-                    const res = await fetch(`https://api.github.com/users/${username}/events/public?per_page=30&page=${page}`);
-                    const events = await res.json();
-                    
-                    if (!events || events.length === 0 || events.message) break;
-                    
-                    // Filter out events from private repos (they won't have full repo data)
-                    const publicEvents = events.filter(event => event.repo && event.repo.name);
-                    allPublicEvents.push(...publicEvents);
-                    
-                    // If we got fewer events than requested, we've reached the end
-                    if (events.length < 30) break;
-                    
-                    page++;
-                } catch (err) {
-                    break;
+            // Try to load from cache first
+            const activityCacheKey = `activity_${username}`;
+            const cacheExpiry = 30 * 60 * 1000; // 30 minutes cache for activity
+            
+            try {
+                const cached = localStorage.getItem(activityCacheKey);
+                if (cached) {
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < cacheExpiry) {
+                        allPublicEvents = data;
+                        console.log('Loaded activity data from cache');
+                    }
+                }
+            } catch (e) {
+                // Cache read failed
+            }
+            
+            // If no cached data, fetch from API
+            if (allPublicEvents.length === 0) {
+                let page = 1;
+                let rateLimited = false;
+                
+                while (page <= maxPages && !rateLimited) {
+                    try {
+                        const res = await fetch(`https://api.github.com/users/${username}/events/public?per_page=30&page=${page}`);
+                        
+                        if (res.status === 403) {
+                            rateLimited = true;
+                            console.log('Activity API rate limited');
+                            break;
+                        }
+                        
+                        const events = await res.json();
+                        
+                        if (!events || events.length === 0 || events.message) break;
+                        
+                        const publicEvents = events.filter(event => event.repo && event.repo.name);
+                        allPublicEvents.push(...publicEvents);
+                        
+                        if (events.length < 30) break;
+                        
+                        page++;
+                    } catch (err) {
+                        break;
+                    }
+                }
+                
+                // Cache the results
+                if (allPublicEvents.length > 0) {
+                    try {
+                        localStorage.setItem(activityCacheKey, JSON.stringify({
+                            data: allPublicEvents,
+                            timestamp: Date.now()
+                        }));
+                    } catch (e) {
+                        // localStorage might be full
+                    }
                 }
             }
             
@@ -4861,6 +4961,18 @@
                             }
                         });
                     }
+            } else {
+                // No activity data available (rate limited or no activity)
+                const activityContainer = document.getElementById('activity-feed');
+                if (activityContainer) {
+                    activityContainer.innerHTML = `
+                        <div class="activity-item" style="text-align: center; padding: 20px; color: rgba(255,183,197,0.7);">
+                            <p>Activity data temporarily unavailable</p>
+                            <p style="font-size: 0.8em; margin-top: 10px;">GitHub API rate limit reached. Data will refresh in ~1 hour.</p>
+                        </div>
+                    `;
+                }
+            }
 
                     // Calculate activity breakdown for pentagon chart from ALL fetched events
                     // Use allPublicEvents for more accurate percentages, not just displayEvents
