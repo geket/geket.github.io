@@ -4392,19 +4392,19 @@
                         }
                     }
 
-                    // Sort and get top 8 languages for both methods
-                    const sortedLangsByRepos = Object.entries(langCountRepos)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 8);
-
+                    // Sort and get top 8 languages BY LINES (most comprehensive data)
                     const sortedLangsByLines = Object.entries(langCountLines)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 8);
+                    
+                    // For "By Repos" view, use the SAME languages in the SAME order
+                    // This ensures consistent expand button behavior across both views
+                    const sortedLangsByRepos = sortedLangsByLines.map(([lang]) => [lang, langCountRepos[lang] || 0]);
 
                     const totalLangRepos = sortedLangsByRepos.reduce((sum, [, count]) => sum + count, 0);
                     const totalLangLines = sortedLangsByLines.reduce((sum, [, bytes]) => sum + bytes, 0);
 
-                    // Store both language data globally
+                    // Store both language data globally with separate expanded states per mode
                     window.langData = { 
                         sortedLangsByRepos, 
                         sortedLangsByLines,
@@ -4413,38 +4413,43 @@
                         totalLangLines,
                         langColors,
                         currentMode: 'lines', // Default to "by lines"
-                        isExpanded: false // Track expanded state
+                        expandedStates: {
+                            lines: false,
+                            repos: false
+                        }
                     };
 
                     // Function to render language bars based on current mode
                     function renderLanguageBars(mode = 'lines') {
                         const sortedLangs = mode === 'lines' ? sortedLangsByLines : sortedLangsByRepos;
                         const totalLang = mode === 'lines' ? totalLangLines : totalLangRepos;
-                        const isExpanded = window.langData.isExpanded;
+                        const isExpanded = window.langData.expandedStates[mode] || false;
                         
                         const langBarsContainer = document.getElementById('language-bars');
                         const langExpandBtn = document.getElementById('langExpandBtn');
                         
-                        langBarsContainer.innerHTML = sortedLangs.map(([lang, value], index) => {
+                        if (!langBarsContainer || !langExpandBtn) return;
+                        
+                        // Build HTML for all languages in this view
+                        const languageHTML = sortedLangs.map(([lang, value], index) => {
                             let percent, displayText;
                             if (mode === 'lines') {
-                                percent = Math.round((value / totalLang) * 100);
-                                // Convert bytes to KB/MB for display
+                                percent = totalLang > 0 ? Math.round((value / totalLang) * 100) : 0;
                                 const kb = Math.round(value / 1024);
                                 const mb = (kb / 1024).toFixed(1);
                                 displayText = kb > 1024 ? `${mb} MB` : `${kb} KB`;
                             } else {
-                                percent = Math.round((value / totalLang) * 100);
-                                displayText = `${value} repos`;
+                                percent = totalLang > 0 ? Math.round((value / totalLang) * 100) : 0;
+                                displayText = `${value} repo${value !== 1 ? 's' : ''}`;
                             }
                             
                             const color = langColors[lang] || langColors.Default;
-                            // Respect expanded state when determining hidden class
-                            const hiddenClass = (index >= 5 && !isExpanded) ? 'hidden' : '';
+                            // Only hide items beyond index 4 (5th item is index 4) if NOT expanded
+                            const shouldHide = index >= 5 && !isExpanded;
                             const repoCount = langRepos[lang]?.length || 0;
                             
                             return `
-                                <div class="lang-item expandable ${hiddenClass}" data-lang="${lang}" data-index="${index}">
+                                <div class="lang-item expandable ${shouldHide ? 'hidden' : ''}" data-lang="${lang}" data-index="${index}">
                                     <div class="lang-info">
                                         <span class="lang-name">
                                             <span class="lang-dot" style="background: ${color}"></span>
@@ -4479,35 +4484,35 @@
                                 </div>
                             `;
                         }).join('');
+                        
+                        langBarsContainer.innerHTML = languageHTML;
 
-                        // Show expand button if more than 5 languages
-                        if (sortedLangs.length > 5) {
-                            langExpandBtn.style.display = 'flex';
-                            // Sync button state with expanded state
-                            if (isExpanded) {
-                                langExpandBtn.classList.add('expanded');
-                                langExpandBtn.querySelector('span:first-child').textContent = 'Show less';
-                            } else {
-                                langExpandBtn.classList.remove('expanded');
-                                langExpandBtn.querySelector('span:first-child').textContent = 'Show more';
-                            }
-                        } else {
-                            langExpandBtn.style.display = 'none';
+                        // Show/hide expand button based on number of languages in THIS view
+                        const hasMoreThan5 = sortedLangs.length > 5;
+                        langExpandBtn.style.display = hasMoreThan5 ? 'flex' : 'none';
+                        
+                        if (hasMoreThan5) {
+                            // Update button state to match current expanded state for this mode
+                            langExpandBtn.classList.toggle('expanded', isExpanded);
+                            langExpandBtn.querySelector('span:first-child').textContent = isExpanded ? 'Show less' : 'Show more';
                         }
                     }
 
                     // Initial render with "by lines" mode (default)
                     renderLanguageBars('lines');
                     
-                    // Add toggle button handler
+                    // Mode toggle button handler
                     const langModeToggle = document.getElementById('langModeToggle');
                     langModeToggle.addEventListener('click', function() {
-                        window.langData.currentMode = window.langData.currentMode === 'lines' ? 'repos' : 'lines';
-                        renderLanguageBars(window.langData.currentMode);
+                        // Switch mode
+                        const newMode = window.langData.currentMode === 'lines' ? 'repos' : 'lines';
+                        window.langData.currentMode = newMode;
                         
-                        // Update button text
-                        this.querySelector('.mode-text').textContent = 
-                            window.langData.currentMode === 'lines' ? 'By Repos' : 'By Lines';
+                        // Re-render with new mode
+                        renderLanguageBars(newMode);
+                        
+                        // Update toggle button text (shows what you can switch TO)
+                        this.querySelector('.mode-text').textContent = newMode === 'lines' ? 'By Repos' : 'By Lines';
                     });
 
                     // Language expand button handler
@@ -4515,19 +4520,24 @@
                     const langExpandBtn = document.getElementById('langExpandBtn');
                     
                     langExpandBtn.addEventListener('click', function() {
-                        // Toggle and store expanded state
-                        window.langData.isExpanded = !window.langData.isExpanded;
-                        const isExpanded = window.langData.isExpanded;
+                        const currentMode = window.langData.currentMode;
                         
+                        // Toggle expanded state for current mode only
+                        window.langData.expandedStates[currentMode] = !window.langData.expandedStates[currentMode];
+                        const isExpanded = window.langData.expandedStates[currentMode];
+                        
+                        // Update button appearance
                         this.classList.toggle('expanded', isExpanded);
-                        const hiddenLangs = langBarsContainer.querySelectorAll('.lang-item[data-index]');
-                        hiddenLangs.forEach(item => {
+                        this.querySelector('span:first-child').textContent = isExpanded ? 'Show less' : 'Show more';
+                        
+                        // Toggle visibility of items with index >= 5
+                        const allLangItems = langBarsContainer.querySelectorAll('.lang-item[data-index]');
+                        allLangItems.forEach(item => {
                             const idx = parseInt(item.dataset.index);
                             if (idx >= 5) {
                                 item.classList.toggle('hidden', !isExpanded);
                             }
                         });
-                        this.querySelector('span:first-child').textContent = isExpanded ? 'Show less' : 'Show more';
                     });
 
                     // Language item click handler for sub-expand
