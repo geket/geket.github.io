@@ -3042,7 +3042,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .spotify-icon {
@@ -3065,7 +3065,7 @@
         }
 
         .spotify-card-content {
-            min-height: 100px;
+            min-height: 80px;
         }
 
         /* Currently Playing Card */
@@ -3159,14 +3159,14 @@
         .top-tracks-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .top-track-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 12px;
+            padding: 8px 12px;
             background: rgba(255, 183, 197, 0.04);
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -3191,7 +3191,7 @@
         }
 
         .track-name {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--moon-glow);
             white-space: nowrap;
             overflow: hidden;
@@ -3199,7 +3199,7 @@
         }
 
         .track-artist {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--petal-soft);
             opacity: 0.7;
         }
@@ -3383,6 +3383,99 @@
             background: linear-gradient(145deg, rgba(255, 183, 197, 0.1), rgba(26, 26, 46, 0.7));
         }
 
+        /* Compact Profile Layout */
+        .compact-profile {
+            padding: 15px 20px;
+        }
+
+        .compact-profile .spotify-card-content {
+            min-height: auto;
+        }
+
+        .spotify-profile-compact {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spotify-avatar-small {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 183, 197, 0.4);
+            box-shadow: 0 2px 15px rgba(255, 183, 197, 0.25);
+            flex-shrink: 0;
+        }
+
+        .spotify-avatar-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .spotify-username-compact {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--moon-glow);
+        }
+
+        .spotify-stats-inline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--petal-soft);
+            opacity: 0.85;
+        }
+
+        .spotify-stats-inline span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .spotify-stats-inline strong {
+            color: var(--petal-pink);
+            font-weight: 600;
+        }
+
+        .compact-btn {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .spotify-profile-compact {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .profile-left {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .spotify-stats-inline {
+                justify-content: center;
+            }
+        }
+
         @media (max-width: 768px) {
             .spotify-card.full-width {
                 grid-column: auto;
@@ -3483,13 +3576,13 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            margin-top: 15px;
-            padding: 10px 16px;
+            margin-top: 10px;
+            padding: 8px 14px;
             background: rgba(255, 183, 197, 0.1);
             border: 1px solid rgba(255, 183, 197, 0.25);
             border-radius: 8px;
             color: var(--petal-pink);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -3901,21 +3994,21 @@
                                     <div class="track-artist">Glass Candy</div>
                                 </div>
                             </div>
-                            <div class="top-track-item hidden-track">
+                            <div class="top-track-item">
                                 <span class="track-number">6</span>
                                 <div class="track-info">
                                     <div class="track-name">Fleurs Du Mal - Fragrance</div>
                                     <div class="track-artist">Julia Bondar</div>
                                 </div>
                             </div>
-                            <div class="top-track-item hidden-track">
+                            <div class="top-track-item">
                                 <span class="track-number">7</span>
                                 <div class="track-info">
                                     <div class="track-name">The Legacy</div>
                                     <div class="track-artist">Saltwater, Alphazone</div>
                                 </div>
                             </div>
-                            <div class="top-track-item hidden-track">
+                            <div class="top-track-item">
                                 <span class="track-number">8</span>
                                 <div class="track-info">
                                     <div class="track-name">Love Caboose</div>
@@ -3945,7 +4038,7 @@
                             </div>
                         </div>
                         <button class="expand-tracks-btn" onclick="toggleTopTracks(this)">
-                            <span>Show all 11</span>
+                            <span>Show 3 more</span>
                             <span class="expand-icon">▼</span>
                         </button>
                     </div>
@@ -3990,7 +4083,7 @@
                 </div>
 
                 <!-- Full Profile -->
-                <div class="spotify-card full-width sakura-card">
+                <div class="spotify-card full-width sakura-card compact-profile">
                     <div class="spotify-card-header">
                         <svg class="spotify-icon sakura-icon" viewBox="0 0 24 24">
                             <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
@@ -3998,36 +4091,23 @@
                         <h3>Full Profile</h3>
                     </div>
                     <div class="spotify-card-content">
-                        <div class="spotify-profile-content">
-                            <div class="spotify-avatar-wrapper">
-                                <img src="https://i.scdn.co/image/ab6775700000ee850aa71cd2ce43d6d3e0081706" 
-                                     alt="Catastrophe" 
-                                     class="spotify-avatar-img"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                                <div class="spotify-avatar-fallback" style="display: none;">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                                    </svg>
+                        <div class="spotify-profile-compact">
+                            <div class="profile-left">
+                                <div class="spotify-avatar-small">
+                                    <img src="https://i.scdn.co/image/ab6775700000ee850aa71cd2ce43d6d3e0081706" 
+                                         alt="Catastrophe" 
+                                         onerror="this.src='data:image/svg+xml,...';" />
+                                </div>
+                                <div class="profile-info">
+                                    <div class="spotify-username-compact">Catastrophe</div>
+                                    <div class="spotify-stats-inline">
+                                        <span><strong>141</strong> Playlists</span>
+                                        <span><strong>23</strong> Followers</span>
+                                        <span><strong>437</strong> Following</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="spotify-username">Catastrophe</div>
-                            <div class="spotify-stats-row">
-                                <div class="spotify-stat">
-                                    <span class="stat-value">141</span>
-                                    <span class="stat-label">Playlists</span>
-                                </div>
-                                <div class="spotify-stat-divider"></div>
-                                <div class="spotify-stat">
-                                    <span class="stat-value">23</span>
-                                    <span class="stat-label">Followers</span>
-                                </div>
-                                <div class="spotify-stat-divider"></div>
-                                <div class="spotify-stat">
-                                    <span class="stat-value">437</span>
-                                    <span class="stat-label">Following</span>
-                                </div>
-                            </div>
-                            <a href="https://open.spotify.com/user/1282927638" target="_blank" rel="noopener noreferrer" class="spotify-profile-btn sakura-btn">
+                            <a href="https://open.spotify.com/user/1282927638" target="_blank" rel="noopener noreferrer" class="spotify-profile-btn sakura-btn compact-btn">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                                 </svg>
@@ -6421,7 +6501,7 @@
             if (isExpanded) {
                 tracksList.classList.remove('top-tracks-expanded');
                 btn.classList.remove('expanded');
-                btn.querySelector('span:first-child').textContent = 'Show all 11';
+                btn.querySelector('span:first-child').textContent = 'Show 3 more';
             } else {
                 tracksList.classList.add('top-tracks-expanded');
                 btn.classList.add('expanded');
