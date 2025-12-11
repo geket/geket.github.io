@@ -2633,6 +2633,55 @@
             border-radius: 15px;
         }
 
+        /* YouTube lazy-load facade */
+        .youtube-facade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .youtube-facade img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+
+        .youtube-facade:hover img {
+            opacity: 1;
+        }
+
+        .youtube-facade .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 0, 0, 0.85);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            padding-left: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .youtube-facade:hover .play-button {
+            background: rgba(255, 0, 0, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
         /* ========== SAKURACRAFT GAME SECTION ========== */
         .game-section {
             margin: 80px 0;
@@ -2940,6 +2989,523 @@
                 transform: scale(0.7);
             }
         }
+
+        /* ========== SPOTIFY SECTION ========== */
+        .spotify-section {
+            margin: 80px 0 60px;
+        }
+
+        .spotify-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .spotify-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .spotify-card {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.08), rgba(26, 26, 46, 0.7));
+            border: 1px solid rgba(255, 183, 197, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotify-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--petal-pink), transparent);
+            opacity: 0.6;
+        }
+
+        .spotify-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 183, 197, 0.35);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25),
+                        0 0 25px rgba(255, 183, 197, 0.1);
+        }
+
+        .spotify-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .spotify-icon {
+            width: 28px;
+            height: 28px;
+            fill: var(--petal-pink);
+            flex-shrink: 0;
+        }
+
+        .spotify-icon.sakura-icon {
+            fill: var(--petal-pink);
+        }
+
+        .spotify-card h3 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--moon-glow);
+            margin: 0;
+        }
+
+        .spotify-card-content {
+            min-height: 100px;
+        }
+
+        /* Currently Playing Card */
+        .now-playing-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 183, 197, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 183, 197, 0.15);
+        }
+
+        .now-playing-art {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 183, 197, 0.3), rgba(232, 145, 160, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .now-playing-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .now-playing-label {
+            font-size: 0.7rem;
+            color: var(--petal-pink);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--petal-pink);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .now-playing-track {
+            font-size: 1rem;
+            color: var(--moon-glow);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .now-playing-artist {
+            font-size: 0.85rem;
+            color: var(--petal-soft);
+            opacity: 0.8;
+        }
+
+        .now-playing-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 8px 14px;
+            background: rgba(255, 183, 197, 0.15);
+            border: 1px solid rgba(255, 183, 197, 0.3);
+            border-radius: 20px;
+            color: var(--petal-pink);
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .now-playing-link:hover {
+            background: rgba(255, 183, 197, 0.25);
+            transform: translateX(3px);
+        }
+
+        /* Top Tracks List */
+        .top-tracks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .top-track-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255, 183, 197, 0.04);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .top-track-item:hover {
+            background: rgba(255, 183, 197, 0.1);
+            transform: translateX(4px);
+        }
+
+        .track-number {
+            font-size: 0.75rem;
+            color: var(--petal-pink);
+            font-weight: 600;
+            width: 20px;
+            text-align: center;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-name {
+            font-size: 0.9rem;
+            color: var(--moon-glow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            font-size: 0.75rem;
+            color: var(--petal-soft);
+            opacity: 0.7;
+        }
+
+        .top-tracks-note {
+            text-align: center;
+            padding: 15px;
+            color: var(--petal-soft);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Playlist Embed Container */
+        .spotify-embed-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #121212;
+        }
+
+        .spotify-embed-wrapper iframe {
+            display: block;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+        }
+
+        .playlist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Profile Card - Sakura Theme */
+        .spotify-profile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .spotify-avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 25px rgba(255, 183, 197, 0.3);
+            overflow: hidden;
+            border: 3px solid rgba(255, 183, 197, 0.4);
+        }
+
+        .spotify-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .spotify-avatar-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--petal-pink), var(--petal-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spotify-avatar-fallback svg {
+            width: 50px;
+            height: 50px;
+            fill: white;
+        }
+
+        .spotify-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--petal-pink), var(--petal-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(255, 183, 197, 0.3);
+        }
+
+        .spotify-avatar svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .spotify-username {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--moon-glow);
+            margin-bottom: 12px;
+        }
+
+        .spotify-bio {
+            font-size: 0.85rem;
+            color: var(--petal-soft);
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        /* Stats Row */
+        .spotify-stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 22px;
+            padding: 15px 25px;
+            background: rgba(255, 183, 197, 0.06);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 183, 197, 0.12);
+        }
+
+        .spotify-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .spotify-stat .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--petal-pink);
+        }
+
+        .spotify-stat .stat-label {
+            font-size: 0.7rem;
+            color: var(--petal-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+
+        .spotify-stat-divider {
+            width: 1px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent, rgba(255, 183, 197, 0.3), transparent);
+        }
+
+        .spotify-profile-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--petal-pink), var(--petal-deep));
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .spotify-profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 183, 197, 0.4);
+        }
+
+        .spotify-profile-btn.sakura-btn {
+            background: linear-gradient(135deg, var(--petal-pink), var(--petal-deep));
+        }
+
+        .spotify-profile-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        /* Full width card modifier */
+        .spotify-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .spotify-card.sakura-card {
+            background: linear-gradient(145deg, rgba(255, 183, 197, 0.1), rgba(26, 26, 46, 0.7));
+        }
+
+        @media (max-width: 768px) {
+            .spotify-card.full-width {
+                grid-column: auto;
+            }
+            
+            .playlist-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* Now Playing Widget */
+        .now-playing-widget {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .now-playing-widget img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .spotify-connect-prompt {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 183, 197, 0.08);
+            border: 1px dashed rgba(255, 183, 197, 0.3);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--moon-glow);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .spotify-connect-prompt:hover {
+            background: rgba(255, 183, 197, 0.15);
+            border-color: rgba(255, 183, 197, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .connect-icon {
+            font-size: 1.5rem;
+        }
+
+        .connect-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .connect-text strong {
+            color: var(--petal-pink);
+            font-size: 0.95rem;
+        }
+
+        .connect-text span {
+            font-size: 0.8rem;
+            color: var(--petal-soft);
+            opacity: 0.8;
+        }
+
+        .widget-note {
+            font-size: 0.75rem;
+            color: var(--petal-soft);
+            opacity: 0.6;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        /* Hidden tracks for expand/collapse */
+        .top-track-item.hidden-track {
+            display: none;
+        }
+
+        .top-tracks-expanded .top-track-item.hidden-track {
+            display: flex;
+            animation: fadeSlideIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Expand tracks button */
+        .expand-tracks-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px 16px;
+            background: rgba(255, 183, 197, 0.1);
+            border: 1px solid rgba(255, 183, 197, 0.25);
+            border-radius: 8px;
+            color: var(--petal-pink);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-tracks-btn:hover {
+            background: rgba(255, 183, 197, 0.2);
+            border-color: rgba(255, 183, 197, 0.4);
+        }
+
+        .expand-tracks-btn .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .expand-tracks-btn.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
     </style>
 <body>
     <!-- Celestial Body (Moon/Sun based on time) -->
@@ -3237,32 +3803,238 @@
             </h2>
             <div class="video-container" data-video-id="10TOhu3uhUU">
                 <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/10TOhu3uhUU" 
-                        title="Exchange"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
+                    <div class="youtube-facade" onclick="loadYouTube(this, '10TOhu3uhUU')">
+                        <img src="https://img.youtube.com/vi/10TOhu3uhUU/hqdefault.jpg" alt="Exchange" loading="lazy">
+                        <div class="play-button">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="video-container" data-video-id="eonNGjxNRco">
                 <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/eonNGjxNRco" 
-                        title="Wilsie"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
+                    <div class="youtube-facade" onclick="loadYouTube(this, 'eonNGjxNRco')">
+                        <img src="https://img.youtube.com/vi/eonNGjxNRco/hqdefault.jpg" alt="Wilsie" loading="lazy">
+                        <div class="play-button">▶</div>
+                    </div>
                 </div>
             </div>
             <div class="video-container" data-video-id="tgcdZ2iz53Y">
                 <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/tgcdZ2iz53Y" 
-                        title="Letchworth"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
+                    <div class="youtube-facade" onclick="loadYouTube(this, 'tgcdZ2iz53Y')">
+                        <img src="https://img.youtube.com/vi/tgcdZ2iz53Y/hqdefault.jpg" alt="Letchworth" loading="lazy">
+                        <div class="play-button">▶</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spotify Section -->
+        <section class="spotify-section">
+            <h2 class="section-title">
+                <span class="section-title-jp" data-text="音楽">音楽</span>
+                <span class="section-title-en">Music</span>
+            </h2>
+            <div class="spotify-grid">
+                <!-- Currently Listening -->
+                <div class="spotify-card">
+                    <div class="spotify-card-header">
+                        <svg class="spotify-icon sakura-icon" viewBox="0 0 24 24">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        <h3>Currently Listening</h3>
+                    </div>
+                    <div class="spotify-card-content">
+                        <div class="now-playing-widget" id="spotify-now-playing">
+                            <a href="https://open.spotify.com/user/1282927638" target="_blank" rel="noopener noreferrer">
+                                <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=1282927638&cover_image=true&theme=default&show_offline=false&background_color=1a1a2e&interchange=true&bar_color=ffb7c5&bar_color_cover=false" 
+                                     alt="Spotify Now Playing" 
+                                     loading="lazy"
+                                     style="max-width: 100%; border-radius: 12px;"
+                                     onerror="this.parentElement.parentElement.innerHTML='<a href=\'https://spotify-github-profile.kittinanx.com/api/login\' target=\'_blank\' class=\'spotify-connect-prompt\'><div class=\'connect-icon\'>🔗</div><div class=\'connect-text\'><strong>Connect Spotify</strong><span>One-time setup to enable widget</span></div></a>'" />
+                            </a>
+                        </div>
+                        <p class="widget-note">Shows currently playing or recently played</p>
+                    </div>
+                </div>
+
+                <!-- Top Tracks / On Repeat -->
+                <div class="spotify-card">
+                    <div class="spotify-card-header">
+                        <svg class="spotify-icon sakura-icon" viewBox="0 0 24 24">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        <h3>On Repeat 🌸</h3>
+                    </div>
+                    <div class="spotify-card-content">
+                        <div class="top-tracks-list">
+                            <div class="top-track-item">
+                                <span class="track-number">1</span>
+                                <div class="track-info">
+                                    <div class="track-name">At Night</div>
+                                    <div class="track-artist">The Cure</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <span class="track-number">2</span>
+                                <div class="track-info">
+                                    <div class="track-name">M</div>
+                                    <div class="track-artist">The Cure</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <span class="track-number">3</span>
+                                <div class="track-info">
+                                    <div class="track-name">Inner Time</div>
+                                    <div class="track-artist">Sic</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <span class="track-number">4</span>
+                                <div class="track-info">
+                                    <div class="track-name">A Forest</div>
+                                    <div class="track-artist">The Cure</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item">
+                                <span class="track-number">5</span>
+                                <div class="track-info">
+                                    <div class="track-name">Digital Versicolor</div>
+                                    <div class="track-artist">Glass Candy</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">6</span>
+                                <div class="track-info">
+                                    <div class="track-name">Fleurs Du Mal - Fragrance</div>
+                                    <div class="track-artist">Julia Bondar</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">7</span>
+                                <div class="track-info">
+                                    <div class="track-name">The Legacy</div>
+                                    <div class="track-artist">Saltwater, Alphazone</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">8</span>
+                                <div class="track-info">
+                                    <div class="track-name">Love Caboose</div>
+                                    <div class="track-artist">Geneva Jacuzzi</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">9</span>
+                                <div class="track-info">
+                                    <div class="track-name">Psychic Sobriety</div>
+                                    <div class="track-artist">Foie Gras</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">10</span>
+                                <div class="track-info">
+                                    <div class="track-name">Summer Calling</div>
+                                    <div class="track-artist">Andain</div>
+                                </div>
+                            </div>
+                            <div class="top-track-item hidden-track">
+                                <span class="track-number">11</span>
+                                <div class="track-info">
+                                    <div class="track-name">TINA TOWN</div>
+                                    <div class="track-artist">Kas Product</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="expand-tracks-btn" onclick="toggleTopTracks(this)">
+                            <span>Show all 11</span>
+                            <span class="expand-icon">▼</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Favorite Playlists -->
+                <div class="spotify-card full-width">
+                    <div class="spotify-card-header">
+                        <svg class="spotify-icon sakura-icon" viewBox="0 0 24 24">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        <h3>Favorite Playlists</h3>
+                    </div>
+                    <div class="spotify-card-content">
+                        <div class="playlist-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div class="spotify-embed-wrapper">
+                                <iframe 
+                                    style="border-radius:12px" 
+                                    src="https://open.spotify.com/embed/playlist/4NhExbd4vmNZxwRKC5WSDc?utm_source=generator&theme=0" 
+                                    width="100%" 
+                                    height="352" 
+                                    frameBorder="0" 
+                                    allowfullscreen="" 
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                            <div class="spotify-embed-wrapper">
+                                <iframe 
+                                    style="border-radius:12px" 
+                                    src="https://open.spotify.com/embed/playlist/25cPsTnAStqcyW43G83GBU?utm_source=generator&theme=0" 
+                                    width="100%" 
+                                    height="352" 
+                                    frameBorder="0" 
+                                    allowfullscreen="" 
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Profile -->
+                <div class="spotify-card full-width sakura-card">
+                    <div class="spotify-card-header">
+                        <svg class="spotify-icon sakura-icon" viewBox="0 0 24 24">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                        <h3>Full Profile</h3>
+                    </div>
+                    <div class="spotify-card-content">
+                        <div class="spotify-profile-content">
+                            <div class="spotify-avatar-wrapper">
+                                <img src="https://i.scdn.co/image/ab6775700000ee850aa71cd2ce43d6d3e0081706" 
+                                     alt="Catastrophe" 
+                                     class="spotify-avatar-img"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                <div class="spotify-avatar-fallback" style="display: none;">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="spotify-username">Catastrophe</div>
+                            <div class="spotify-stats-row">
+                                <div class="spotify-stat">
+                                    <span class="stat-value">141</span>
+                                    <span class="stat-label">Playlists</span>
+                                </div>
+                                <div class="spotify-stat-divider"></div>
+                                <div class="spotify-stat">
+                                    <span class="stat-value">23</span>
+                                    <span class="stat-label">Followers</span>
+                                </div>
+                                <div class="spotify-stat-divider"></div>
+                                <div class="spotify-stat">
+                                    <span class="stat-value">437</span>
+                                    <span class="stat-label">Following</span>
+                                </div>
+                            </div>
+                            <a href="https://open.spotify.com/user/1282927638" target="_blank" rel="noopener noreferrer" class="spotify-profile-btn sakura-btn">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                                </svg>
+                                Follow on Spotify
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -3272,6 +4044,7 @@
             <p>Crafted with 桜 spirit</p>
             <div class="social-links">
                 <a href="https://github.com/geket" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://open.spotify.com/user/1282927638" target="_blank" rel="noopener noreferrer">Spotify</a>
                 <a href="#">LinkedIn</a>
                 <a href="#">Twitter</a>
             </div>
@@ -3285,14 +4058,25 @@
             id="sakuracraft-iframe"
             src=""
             title="SakuraCraft Game"
-            sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups"
-            allow="fullscreen; gamepad"
+            allow="fullscreen; gamepad; pointer-lock"
             loading="lazy"
             style="width: 100%; height: 100%; border: none;">
         </iframe>
     </div>
 
     <script>
+        // ========== YOUTUBE LAZY LOADING ==========
+        function loadYouTube(facade, videoId) {
+            const wrapper = facade.parentElement;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+            iframe.title = facade.querySelector('img').alt;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:15px;';
+            wrapper.replaceChild(iframe, facade);
+        }
+
         // ========== CLOUD ANIMATION ==========
         function createCloud(layer, config) {
             const cloud = document.createElement('div');
@@ -5628,6 +6412,22 @@
             initVideoClickHandlers();
             initHeroEasterEgg();  // Easter egg!
         });
+
+        // ========== TOP TRACKS TOGGLE ==========
+        function toggleTopTracks(btn) {
+            const tracksList = btn.parentElement.querySelector('.top-tracks-list');
+            const isExpanded = tracksList.classList.contains('top-tracks-expanded');
+            
+            if (isExpanded) {
+                tracksList.classList.remove('top-tracks-expanded');
+                btn.classList.remove('expanded');
+                btn.querySelector('span:first-child').textContent = 'Show all 11';
+            } else {
+                tracksList.classList.add('top-tracks-expanded');
+                btn.classList.add('expanded');
+                btn.querySelector('span:first-child').textContent = 'Show less';
+            }
+        }
     </script>
 </body>
 </html>
